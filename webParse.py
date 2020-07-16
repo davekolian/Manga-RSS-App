@@ -16,19 +16,10 @@ while urlCount < len(urlList):
     views = tree.xpath('//div[@class="row"]/span/text()')
     times = tree.xpath('//span/@title')
 
-    print(manga)
-    print('Chapter: ', chap)
-    #print('Views: ', views)
-    #print('Date: ', times)
-
     start = 0
     count = 1
 
-    x = views[5]
-
-    #print(x)
-    #print(len(views))
-
+    # Cleans and organizes the data to be in a cleaner form
     if views[0] == '0':
         start = 0
         count = 2
@@ -44,14 +35,38 @@ while urlCount < len(urlList):
     if start != -1:
         for x in range(start,len(views)//2,1):
             views.pop(x)
+            chap.pop(x)
+    # End of the cleaning
+
+
+    for x in range(0, len(views)):
+        if "day" in views[x] or "days" in views[x]:
+            if int(str(views[x][0:1])) < 2:
+                print("\n")
+                print(manga, end="\n")
+                break
+        elif "hour" in views[x] or "hours" in views[x]:
+            if int(str(views[x][0:2])) < 24:
+                print("\n")
+                print(manga, end="\n")
+                break
+
+
+    for x in range(0, len(views)):
+        if "day" in views[x] or "days" in views[x]:
+            if int(str(views[x][0:1])) < 2:
+                print(chap[x] + " |", end=" ")
+                print(views[x])
+        elif "hour" in views[x] or "hours" in views[x]:
+            if int(str(views[x][0:2])) < 24:
+                print(chap[x] + " |", end=" ")
+                print(views[x])
 
 
 
+    #print('Date: ', views)
 
-    print('Date: ', views)
     urlCount += 1;
-    print('\n')
-
 
 """
 #Leviatan|Zero Scans|Reaper Scans
