@@ -42,7 +42,7 @@ while urlCount < len(urlList):
     for x in range(0, len(views)):
         if "day" in views[x] or "days" in views[x]:
             if int(str(views[x][0:1])) < 2:
-                print("\n")
+                #print("\n")
                 print(manga, end="\n")
                 break
         elif "hour" in views[x] or "hours" in views[x]:
@@ -68,7 +68,7 @@ while urlCount < len(urlList):
 
     urlCount += 1;
 
-"""
+
 #Leviatan|Zero Scans|Reaper Scans
 
 urlCount = 0
@@ -93,19 +93,44 @@ while urlCount < len(urlList):
     for x in range(0, len(chap)):
         chap[x] = "Chapter " + str(chap[x]).replace("\n","")
 
-    date = tree.xpath('//a[@class="item-company text-muted h-1x"]/text()')
-
-    for x in range(0, len(date)):
-        date[x] = str(date[x]).strip("\n")
+    dates = tree.xpath('//a[@class="item-company text-muted h-1x"]/text()')
 
 
-    print(manga_clean)
-    print(chap)
-    print(date)
-    print('\n')
+
+    for x in range(0, len(dates)):
+        dates[x] = str(dates[x]).replace("\n", " ")
+
+    for x in range(0, len(dates)):
+        if "day" in dates[x] or "days" in dates[x]:
+            if int(str(dates[x][1:2])) < 2:
+                print("\n")
+                print(manga_clean, end="\n")
+                break
+        elif "hour" in dates[x] or "hours" in dates[x]:
+            if int(str(dates[x][1:2])) < 24:
+                print("\n")
+                print(manga_clean, end="\n")
+                break
+
+
+    for x in range(0, len(dates)):
+        if "day" in dates[x] or "days" in dates[x]:
+            if int(str(dates[x][1:2])) < 2:
+                print(chap[x] + " |", end=" ")
+                print(dates[x])
+        elif "hour" in dates[x] or "hours" in dates[x]:
+            if int(str(dates[x][1:2])) < 24:
+                print(chap[x] + " |", end=" ")
+                print(dates[x])
+
+
+    #print(manga_clean)
+    #print(chap)
+    #print(dates)
+    #print('\n')
     urlCount += 1
-"""
-"""
+
+
 #Manganelo
 urlCount = 0
 urlList = ['https://manganelo.com/manga/xn921310', 'https://manganelo.com/manga/apotheosis',
@@ -120,17 +145,39 @@ while urlCount < len(urlList):
     tree = html.fromstring(page.content)
 
     manga = tree.xpath('//div[@class="story-info-right"]/h1//text()')
-    chaps = tree.xpath('//a[@class="chapter-name text-nowrap"]/text()')
+    chap = tree.xpath('//a[@class="chapter-name text-nowrap"]/text()')
     dates = tree.xpath('//span[@class="chapter-time text-nowrap"]/text()')
 
-    print(manga)
-    print(chaps)
-    print(dates)
+    for x in range(0, len(dates)):
+        if "day" in dates[x] or "days" in dates[x]:
+            if int(str(dates[x][0:1])) < 2:
+                print("\n")
+                print(manga, end="\n")
+                break
+        elif "hour" in dates[x] or "hours" in dates[x]:
+            if int(str(dates[x][0:2])) < 24:
+                print("\n")
+                print(manga, end="\n")
+                break
 
-    print("\n")
+
+    for x in range(0, len(dates)):
+        if "day" in dates[x] or "days" in dates[x]:
+            if int(str(dates[x][0:1])) < 2:
+                print(chap[x] + " |", end=" ")
+                print(dates[x])
+        elif "hour" in dates[x] or "hours" in dates[x]:
+            if int(str(dates[x][0:2])) < 24:
+                print(chap[x] + " |", end=" ")
+                print(dates[x])
+
+    #print(manga)
+    #print(chap)
+    #print(dates)
+
+    #print("\n")
     urlCount += 1
-"""
-"""
+
 #Mangatx
 urlCount = 0
 urlList = ['https://mangatx.com/manga/battle-through-the-heavens/', 'https://mangatx.com/manga/wu-dong-qian-kun/']
@@ -154,13 +201,34 @@ while urlCount < len(urlList):
         dates[x] = str(dates[x]).replace("\n","")
         dates[x] = str(dates[x]).replace("\t","")
 
-    print(manga)
-    print(chap)
-    print(dates)
+    for x in range(0, len(dates)):
+        if "day" in dates[x] or "days" in dates[x]:
+            if int(str(dates[x][0:1])) < 2:
+                print("\n")
+                print(manga, end="\n")
+                break
+        elif "hour" in dates[x] or "hours" in dates[x]:
+            if int(str(dates[x][0:2])) < 24:
+                print("\n")
+                print(manga, end="\n")
+                break
 
-    print("\n")
+
+    for x in range(0, len(dates)):
+        if "day" in dates[x] or "days" in dates[x]:
+            if int(str(dates[x][0:1])) < 2:
+                print(chap[x] + " |", end=" ")
+                print(dates[x])
+        elif "hour" in dates[x] or "hours" in dates[x]:
+            if int(str(dates[x][0:2])) < 24:
+                print(chap[x] + " |", end=" ")
+                print(dates[x])
+
+    #print(manga)
+    #print(chap)
+    #print(dates)
     urlCount += 1
-"""
+
 
 #if first is 0 then go in odd, else in even, else dont change
 #i can check whatever i have not read and start counting from today
