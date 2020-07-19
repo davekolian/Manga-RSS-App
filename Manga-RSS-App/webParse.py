@@ -1,11 +1,22 @@
 from lxml import html
 import requests
 
+from kivy.app import App
+from kivy.app import Widget
+from kivy.uix.button import Button
+from kivy.uix.gridlayout import GridLayout
+
+from kivy.config import Config
+Config.set('graphics', 'width', 1000)
+Config.set('graphics', 'height', 1000)
+
+
+not_read = []
+not_read_counter = 0
+no_of_manga = 0
+
 
 def func_find_daily_chaps():
-    not_read = []
-    not_read_counter = 0
-
     # Mangakakalot
     url_counter = 0
     url_list = ['https://mangakakalot.com/read-lm7ib158504847850',
@@ -116,7 +127,9 @@ def func_find_daily_chaps():
         tree = html.fromstring(page.content)
 
         manga = tree.xpath('//h5[@class="text-highlight"]/text()')
-        manga_clean = str(manga[0]).replace("\n", "")
+        manga_clean = str(manga).replace("\\n", "")
+        manga_clean = manga_clean.replace("['", "")
+        manga_clean = manga_clean.replace("']", "")
 
         chap = tree.xpath('//span[@class="text-muted text-sm"]/text()')
 
@@ -316,13 +329,43 @@ def func_find_daily_chaps():
         # print(dates)
         url_counter += 1
 
-    for item in not_read:
-        if str(item) == "s":
-            print("\n")
-        else:
-            print(item, end="|")
 
 func_find_daily_chaps()
+
+for item in not_read:
+    if str(item) == "s":
+        print("\n")
+        no_of_manga += 1
+    else:
+        print(item, end="|")
+
+
+
+class WebParseApp(App):
+    def build(self):
+        layout = GridLayout(cols=3)
+        name_chapter_time = ""
+        x = 0
+
+        for y in range(0, no_of_manga):
+            if not_read[x] == "s":
+                x += 1
+
+            while not_read[x] != "s":
+                name_chapter_time += not_read[x]
+                name_chapter_time += "\n"
+                if x+1 < len(not_read):
+                    x += 1
+                else:
+                    return layout
+
+            layout.add_widget(Button(text=name_chapter_time))
+            name_chapter_time = ""
+
+        return layout
+
+
+WebParseApp().run()
 
 # if first is 0 then go in odd, else in even, else dont change
 # i can check whatever i have not read and start counting from today
