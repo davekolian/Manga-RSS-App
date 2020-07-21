@@ -49,6 +49,18 @@ def func_find_daily_chaps():
         start = 0
         count = 1
 
+        chap_clean = []
+
+        for x in range(0, len(chap)):
+            start_chapter = chap[x].find("Chapter")
+            if ":" in chap[x]:
+                end_line = chap[x].find(":")
+                chap_clean.append(str(chap[x][start_chapter:end_line]).replace("Chapter ", ""))
+            else:
+                chap_clean.append(str(chap[x][start_chapter:]).replace("Chapter ", ""))
+
+
+
         # Cleans and organizes the data to be in a cleaner form
         if views[0] == '0':
             start = 0
@@ -68,6 +80,7 @@ def func_find_daily_chaps():
                 chap.pop(x)
         # End of the cleaning
 
+
         for x in range(0, len(views)):
             if "day" in views[x] or "days" in views[x]:
                 if int(str(views[x][0:1])) < 2:
@@ -98,19 +111,19 @@ def func_find_daily_chaps():
             if "day" in views[x] or "days" in views[x]:
                 if int(str(views[x][0:1])) < 2:
                     # print(chap[x] + " |", end=" ")
-                    not_read.append(chap[x])
+                    not_read.append(chap_clean[x])
                     # print(views[x])
                     not_read.append(views[x])
             elif "hour" in views[x] or "hours" in views[x]:
                 if int(str(views[x][0:2])) < 24:
                     # print(chap[x] + " |", end=" ")
-                    not_read.append(chap[x])
+                    not_read.append(chap_clean[x])
                     # print(views[x])
                     not_read.append(views[x])
             elif "mins" in views[x] or "min" in views[x] or "minutes" in views[x] or "minute" in views[x]:
                 if int(str(views[x][0:1])) < 60:
                     # print(chap[x] + " |", end=" ")
-                    not_read.append(chap[x])
+                    not_read.append(chap_clean[x])
                     # print(views[x])
                     not_read.append(views[x])
 
@@ -151,6 +164,17 @@ def func_find_daily_chaps():
 
         for x in range(0, len(chap)):
             chap[x] = "Chapter " + str(chap[x]).replace("\n", "")
+
+        chap_clean = []
+
+        for x in range(0, len(chap)):
+            start_chapter = chap[x].find("Chapter")
+            if ":" in chap[x]:
+                end_line = chap[x].find(":")
+                chap_clean.append(str(chap[x][start_chapter:end_line]).replace("Chapter ", ""))
+            else:
+                chap_clean.append(str(chap[x][start_chapter:]).replace("Chapter ", ""))
+
 
         dates = tree.xpath('//a[@class="item-company text-muted h-1x"]/text()')
 
@@ -216,19 +240,19 @@ def func_find_daily_chaps():
             if "day" in dates[x] or "days" in dates[x]:
                 if int(str(dates[x][1:2])) < 2:
                     # print(chap[x] + " |", end=" ")
-                    not_read.append(chap[x])
+                    not_read.append(chap_clean[x])
                     # print(dates[x])
                     not_read.append(dates[x])
             elif "hour" in dates[x] or "hours" in dates[x]:
                 if int(str(dates[x][1:2])) < 24:
                     # print(chap[x] + " |", end=" ")
-                    not_read.append(chap[x])
+                    not_read.append(chap_clean[x])
                     # print(dates[x])
                     not_read.append(dates[x])
             elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
                 if int(str(dates[x][0:2])) < 60:
                     # print(chap[x] + " |", end=" ")
-                    not_read.append(chap[x])
+                    not_read.append(chap_clean[x])
                     # print(dates[x])
                     not_read.append(dates[x])
 
@@ -246,7 +270,8 @@ def func_find_daily_chaps():
                 'https://manganelo.com/manga/read_one_punch_man_manga_online_free3',
                 'https://manganelo.com/manga/black_clover', 'https://manganelo.com/manga/uaxz925974686',
                 'https://manganelo.com/manga/dnha19771568647794', 'https://manganelo.com/manga/doulou_dalu_manga',
-                'https://manganelo.com/manga/pn918005', 'https://manganelo.com/manga/ad921253','https://manganelo.com/manga/dz919342']
+                'https://manganelo.com/manga/pn918005', 'https://manganelo.com/manga/ad921253',
+                'https://manganelo.com/manga/dz919342', 'https://manganelo.com/manga/wu_dong_qian_kun']
 
     while url_counter < len(url_list):
 
@@ -257,6 +282,36 @@ def func_find_daily_chaps():
         chap = tree.xpath('//a[@class="chapter-name text-nowrap"]/text()')
         dates = tree.xpath('//span[@class="chapter-time text-nowrap"]/text()')
         imgs_srcs = tree.xpath('//span[@class="info-image"]/img/@src')
+
+        chap_clean = []
+
+        for x in range(0, len(chap)):
+            if "Chapter" in chap[x]:
+                start_chapter = chap[x].find("Chapter")
+
+                if ":" in chap[x]:
+                    end_line = chap[x].find(":")
+                    chap_no = str(chap[x][start_chapter:end_line]).replace("Chapter", "")
+                    if " " in chap_no:
+                        chap_clean.append(chap_no.replace(" ", ""))
+                    else:
+                        chap_clean.append("SC")
+                elif " -" in chap[x]:
+                    end_line = chap[x].find(" -")
+                    chap_no = str(chap[x][start_chapter:end_line]).replace("Chapter", "")
+                    if " " in chap_no:
+                        chap_clean.append(chap_no.replace(" ", ""))
+                    else:
+                        chap_clean.append("SC")
+                else:
+                    chap_no = str(chap[x][start_chapter:]).replace("Chapter", "")
+                    if " " in chap_no:
+                        chap_clean.append(chap_no.replace(" ", ""))
+                    else:
+                        chap_clean.append("SC")
+            else:
+                chap_clean.append("SC")
+
 
         for x in range(0, len(dates)):
             if "day" in dates[x] or "days" in dates[x]:
@@ -286,19 +341,19 @@ def func_find_daily_chaps():
             if "day" in dates[x] or "days" in dates[x]:
                 if int(str(dates[x][0:1])) < 2:
                     # print(chap[x] + " |", end=" ")
-                    not_read.append(chap[x])
+                    not_read.append(chap_clean[x])
                     # print(dates[x])
                     not_read.append(dates[x])
             elif "hour" in dates[x] or "hours" in dates[x]:
                 if int(str(dates[x][0:2])) < 24:
                     # print(chap[x] + " |", end=" ")
-                    not_read.append(chap[x])
+                    not_read.append(chap_clean[x])
                     # print(dates[x])
                     not_read.append(dates[x])
             elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
                 if int(str(dates[x][0:2])) < 60:
                     # print(chap[x] + " |", end=" ")
-                    not_read.append(chap[x])
+                    not_read.append(chap_clean[x])
                     # print(dates[x])
                     not_read.append(dates[x])
 
@@ -309,6 +364,7 @@ def func_find_daily_chaps():
         # print("\n")
         url_counter += 1
 
+    """
     # Mangatx
     url_counter = 0
     url_list = ['https://mangatx.com/manga/battle-through-the-heavens/',
@@ -327,6 +383,37 @@ def func_find_daily_chaps():
         for x in range(0, len(chap)):
             chap[x] = str(chap[x]).replace("\n", "")
             chap[x] = str(chap[x]).replace("\t", "")
+
+        chap_clean = []
+
+        for x in range(0, len(chap)):
+            if "Chapter" in chap[x]:
+                start_chapter = chap[x].find("Chapter")
+
+                if ":" in chap[x]:
+                    end_line = chap[x].find(":")
+                    chap_no = str(chap[x][start_chapter:end_line]).replace("Chapter", "")
+                    if " " in chap_no:
+                        chap_clean.append(chap_no.replace(" ", ""))
+                    else:
+                        chap_clean.append("SC")
+                elif " -" in chap[x]:
+                    end_line = chap[x].find(" -")
+                    chap_no = str(chap[x][start_chapter:end_line]).replace("Chapter", "")
+                    if " " in chap_no:
+                        chap_clean.append(chap_no.replace(" ", ""))
+                    else:
+                        chap_clean.append("SC")
+                else:
+                    chap_no = str(chap[x][start_chapter:]).replace("Chapter", "")
+                    if " " in chap_no:
+                        chap_clean.append(chap_no.replace(" ", ""))
+                    else:
+                        chap_clean.append("SC")
+            else:
+                chap_clean.append("SC")
+
+        print(chap_clean)
 
         dates = tree.xpath('//span[@class="chapter-release-date"]/i/text()')
         for x in range(0, len(dates)):
@@ -385,6 +472,7 @@ def func_find_daily_chaps():
         # print(chap)
         # print(dates)
         url_counter += 1
+        """
 
 
 def func_find_imgs_manga_active():
@@ -436,7 +524,7 @@ class BabyGrids(FloatLayout):
         img = Image(source=name_pic, allow_stretch=True, keep_ratio=False, pos_hint={'x': 0, 'top': 1})
         self.add_widget(img)
         print(title)
-        self.add_widget(Button(text=title[0], pos_hint={'x': 0, 'top': 1}, size_hint=(1, 0.3), disabled=True))
+        self.add_widget(Button(text=title[0], pos_hint={'x':0, 'top': 1}, size_hint=(1, 0.25), font_size='15sp', background_color=(0,0,0,0.4)))
         self.add_widget(Button(pos_hint={'x': 0, 'top': 0.6}, size_hint=(1, 0.3)))
         self.add_widget(Button(pos_hint={'x': 0, 'top': 0.3}, size_hint=(1, 0.3)))
         #self.add_widget(BabyGrids2())
