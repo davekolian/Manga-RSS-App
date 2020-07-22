@@ -2,6 +2,9 @@ from lxml import html
 import requests
 from urllib.request import Request, urlopen
 
+import kivy
+kivy.require('1.11.0')
+
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
@@ -12,18 +15,20 @@ from kivy.uix.image import Image
 from kivy.graphics import Rectangle, Color
 from kivy.uix.widget import Widget
 from kivy.uix.anchorlayout import AnchorLayout
+from kivy.core.window import Window
 
-from kivy.config import Config
-
-Config.set('graphics', 'width', 850)
-Config.set('graphics', 'height', 1000)
+Window.top = 50
+Window.size = (850, 1000)
+Window.pos = (0, 100)
 
 not_read = []
 not_read_counter = 0
 no_of_manga = 0
 manga_imgs = []
 manga_imgs_counter = 0
+chapter_links = []
 global g_var
+
 
 
 def func_find_daily_chaps():
@@ -44,7 +49,7 @@ def func_find_daily_chaps():
         views = tree.xpath('//div[@class="row"]/span/text()')
         times = tree.xpath('//span/@title')
         imgs_srcs = tree.xpath('//div[@class="manga-info-pic"]/img/@src')
-        # print(imgs_srcs)
+        links = tree.xpath('//div[@class="row"]/span/a/@href')
 
         start = 0
         count = 1
@@ -114,18 +119,21 @@ def func_find_daily_chaps():
                     not_read.append(chap_clean[x])
                     # print(views[x])
                     not_read.append(views[x])
+                    chapter_links.append(links[x])
             elif "hour" in views[x] or "hours" in views[x]:
                 if int(str(views[x][0:2])) < 24:
                     # print(chap[x] + " |", end=" ")
                     not_read.append(chap_clean[x])
                     # print(views[x])
                     not_read.append(views[x])
+                    chapter_links.append(links[x])
             elif "mins" in views[x] or "min" in views[x] or "minutes" in views[x] or "minute" in views[x]:
                 if int(str(views[x][0:1])) < 60:
                     # print(chap[x] + " |", end=" ")
                     not_read.append(chap_clean[x])
                     # print(views[x])
                     not_read.append(views[x])
+                    chapter_links.append(links[x])
 
         # print('Date: ', views)
 
@@ -175,6 +183,10 @@ def func_find_daily_chaps():
             else:
                 chap_clean.append(str(chap[x][start_chapter:]).replace("Chapter ", ""))
 
+        for x in range(0, len(chap_clean)):
+            if " " in chap_clean[x]:
+                chap_clean[x] = chap_clean[x].replace(" ", "")
+
 
         dates = tree.xpath('//a[@class="item-company text-muted h-1x"]/text()')
 
@@ -182,6 +194,7 @@ def func_find_daily_chaps():
             dates[x] = str(dates[x]).replace("\n", " ")
 
         imgs_srcs = tree.xpath('//a[@class="media-content"]/@style')
+        links = tree.xpath('//a[@class="item-author text-color "]/@href')
 
         for x in range(0, len(dates)):
             if "day" in dates[x] or "days" in dates[x]:
@@ -243,18 +256,21 @@ def func_find_daily_chaps():
                     not_read.append(chap_clean[x])
                     # print(dates[x])
                     not_read.append(dates[x])
+                    chapter_links.append(links[x])
             elif "hour" in dates[x] or "hours" in dates[x]:
                 if int(str(dates[x][1:2])) < 24:
                     # print(chap[x] + " |", end=" ")
                     not_read.append(chap_clean[x])
                     # print(dates[x])
                     not_read.append(dates[x])
+                    chapter_links.append(links[x])
             elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
                 if int(str(dates[x][0:2])) < 60:
                     # print(chap[x] + " |", end=" ")
                     not_read.append(chap_clean[x])
                     # print(dates[x])
                     not_read.append(dates[x])
+                    chapter_links.append(links[x])
 
         # print(manga_clean)
         # print(chap)
@@ -282,6 +298,7 @@ def func_find_daily_chaps():
         chap = tree.xpath('//a[@class="chapter-name text-nowrap"]/text()')
         dates = tree.xpath('//span[@class="chapter-time text-nowrap"]/text()')
         imgs_srcs = tree.xpath('//span[@class="info-image"]/img/@src')
+        links = tree.xpath('//a[@class="chapter-name text-nowrap"]/@href')
 
         chap_clean = []
 
@@ -344,22 +361,26 @@ def func_find_daily_chaps():
                     not_read.append(chap_clean[x])
                     # print(dates[x])
                     not_read.append(dates[x])
+                    chapter_links.append(links[x])
             elif "hour" in dates[x] or "hours" in dates[x]:
                 if int(str(dates[x][0:2])) < 24:
                     # print(chap[x] + " |", end=" ")
                     not_read.append(chap_clean[x])
                     # print(dates[x])
                     not_read.append(dates[x])
+                    chapter_links.append(links[x])
             elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
                 if int(str(dates[x][0:2])) < 60:
                     # print(chap[x] + " |", end=" ")
                     not_read.append(chap_clean[x])
                     # print(dates[x])
                     not_read.append(dates[x])
+                    chapter_links.append(links[x])
 
         # print(manga)
         # print(chap)
         # print(dates)
+
 
         # print("\n")
         url_counter += 1
@@ -493,44 +514,71 @@ for item in not_read:
     if str(item) == "s":
         print("\n")
         no_of_manga += 1
-    else:
-        print(item, end="|")
+    #else:
+        #print(item, end="|")
 
 func_find_imgs_manga_active()
 
+#link_c = 0
+chapt = []
+chapters = []
 
-#ScrollView > GridLayout(cols=3) > ____Layout > Button (takes up the whole page) >
+for item in not_read:
+    if item != "s":
+        chapters.append(item)
 
-class BabyGrids2(GridLayout):
-    def __init__(self):
-        GridLayout.__init__(self, rows=3)
-
-        #self.add_widget(Button(text="hi"))
-
-        # self.add_widget(Label(text="hi", pos_hint={'x': 0, 'top': 1}))
-        self.add_widget(Button(size_hint=(1,1)))
-
-
+for x in range(0, len(chapters)):
+    if " " not in chapters[x]:
+        chapt.append(chapters[x])
 
 
+#print(chapt) #list of all recent chapters
+#print(chapter_links)#list of all links to chapters in same order as chapt
+
+global c
+c = 0
 
 class BabyGrids(FloatLayout):
     def __init__(self, title, name_pic):
         FloatLayout.__init__(self)
 
-        #img = Image(source="1.jpg")
-        #self.add_widget(img)
-        #self.add_widget(BabyGrids2())
         img = Image(source=name_pic, allow_stretch=True, keep_ratio=False, pos_hint={'x': 0, 'top': 1})
         self.add_widget(img)
-        print(title)
-        self.add_widget(Button(text=title[0], pos_hint={'x':0, 'top': 1}, size_hint=(1, 0.25), font_size='15sp', background_color=(0,0,0,0.4)))
-        self.add_widget(Button(pos_hint={'x': 0, 'top': 0.6}, size_hint=(1, 0.3)))
-        self.add_widget(Button(pos_hint={'x': 0, 'top': 0.3}, size_hint=(1, 0.3)))
+
+        self.add_widget(Button(text=title[0], pos_hint={'x': 0, 'top': 1}, size_hint=(1, 0.25), font_size='16sp', background_color=(0,0,0,0.3)))
+
+
+
+        cha1 = []
+        cha2 = []
+
+        for item in title:
+            if item != "\n":
+                cha1.append(item)
+
+        for x in range(0, len(cha1)):
+            if x % 2 != 0:
+                cha2.append(cha1[x])
+
+        print(chapt)
+
+        for x in reversed(range(len(cha2))):#0.25 0.5 0.75
+
+            a = 1 - ((x+1) * 0.25)
+            btn = Button(id=chapter_links[0], text=chapt[0], pos_hint={'x': a, 'y': 0}, size_hint=(0.25, 0.15), background_color=(1,1,1,0.9))
+            self.add_widget(btn)
+            btn.bind(on_press=self.open_chapter)
+            a -= 0.25
+            chapt.pop(0)
+            chapter_links.pop(0)
+
+
+
         #self.add_widget(BabyGrids2())
         #self.add_widget(Button())
 
-
+    def open_chapter(self, instance):
+        print(instance.id)
 
 
 class MainGrid(GridLayout):
@@ -560,14 +608,26 @@ class MainGrid(GridLayout):
             name2 = str(y) + ".jpg"
             img = Image(source=name2, allow_stretch=True, keep_ratio=False)
             #self.add_widget(img)
+
+
+
+
             self.add_widget(BabyGrids(name_chapter_time, name2))
+
+
+            #print(chapters)
             name_chapter_time = []
 
 
 class ScrollBarView(ScrollView):
     def __init__(self):
         ScrollView.__init__(self, do_scroll_x="False", do_scroll_y="True", size=self.size, scroll_type=['bars'])
+
         self.add_widget(MainGrid())
+        #Window.bind(mouse_pos=self.on_mouse_pos)
+
+    def on_mouse_pos(self, window, pos):
+        print(pos)
 
 
 class WebParseApp(App):
@@ -575,7 +635,8 @@ class WebParseApp(App):
         return ScrollBarView()
 
 
-WebParseApp().run()
+if __name__ == '__main__':
+    WebParseApp().run()
 
 # if first is 0 then go in odd, else in even, else dont change
 # i can check whatever i have not read and start counting from today
