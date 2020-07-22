@@ -1,3 +1,7 @@
+#####################################################################
+#                All rights reserved to davekolian                  #
+#####################################################################
+
 from lxml import html
 import requests
 from urllib.request import Request, urlopen
