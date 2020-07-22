@@ -16,6 +16,7 @@ from kivy.graphics import Rectangle, Color
 from kivy.uix.widget import Widget
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.core.window import Window
+import os
 
 Window.top = 50
 Window.size = (850, 1000)
@@ -29,6 +30,13 @@ manga_imgs_counter = 0
 chapter_links = []
 global g_var
 
+
+def func_create_batch_files(link):
+    f = open("open_manga.bat", "w")
+    code = "start firefox.exe " + link
+    f.write(code)
+    f.close()
+    os.system("open_manga.bat")
 
 
 def func_find_daily_chaps():
@@ -578,7 +586,8 @@ class BabyGrids(FloatLayout):
         #self.add_widget(Button())
 
     def open_chapter(self, instance):
-        print(instance.id)
+        #method might be deprecated
+        func_create_batch_files(instance.id)
 
 
 class MainGrid(GridLayout):
