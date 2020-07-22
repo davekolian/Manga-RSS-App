@@ -3,20 +3,18 @@ import requests
 from urllib.request import Request, urlopen
 
 import kivy
+
 kivy.require('1.11.0')
+
+import os
 
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.label import Label
 from kivy.uix.image import Image
-from kivy.graphics import Rectangle, Color
-from kivy.uix.widget import Widget
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.core.window import Window
-import os
 
 Window.top = 50
 Window.size = (850, 1000)
@@ -28,7 +26,6 @@ no_of_manga = 0
 manga_imgs = []
 manga_imgs_counter = 0
 chapter_links = []
-global g_var
 
 
 def func_create_batch_files(link):
@@ -72,8 +69,6 @@ def func_find_daily_chaps():
             else:
                 chap_clean.append(str(chap[x][start_chapter:]).replace("Chapter ", ""))
 
-
-
         # Cleans and organizes the data to be in a cleaner form
         if views[0] == '0':
             start = 0
@@ -92,7 +87,6 @@ def func_find_daily_chaps():
                 views.pop(x)
                 chap.pop(x)
         # End of the cleaning
-
 
         for x in range(0, len(views)):
             if "day" in views[x] or "days" in views[x]:
@@ -194,7 +188,6 @@ def func_find_daily_chaps():
         for x in range(0, len(chap_clean)):
             if " " in chap_clean[x]:
                 chap_clean[x] = chap_clean[x].replace(" ", "")
-
 
         dates = tree.xpath('//a[@class="item-company text-muted h-1x"]/text()')
 
@@ -337,7 +330,6 @@ def func_find_daily_chaps():
             else:
                 chap_clean.append("SC")
 
-
         for x in range(0, len(dates)):
             if "day" in dates[x] or "days" in dates[x]:
                 if int(str(dates[x][0:1])) < 2:
@@ -388,7 +380,6 @@ def func_find_daily_chaps():
         # print(manga)
         # print(chap)
         # print(dates)
-
 
         # print("\n")
         url_counter += 1
@@ -522,12 +513,9 @@ for item in not_read:
     if str(item) == "s":
         print("\n")
         no_of_manga += 1
-    #else:
-        #print(item, end="|")
 
 func_find_imgs_manga_active()
 
-#link_c = 0
 chapt = []
 chapters = []
 
@@ -539,12 +527,9 @@ for x in range(0, len(chapters)):
     if " " not in chapters[x]:
         chapt.append(chapters[x])
 
+# print(chapt) #list of all recent chapters
+# print(chapter_links)#list of all links to chapters in same order as chapt
 
-#print(chapt) #list of all recent chapters
-#print(chapter_links)#list of all links to chapters in same order as chapt
-
-global c
-c = 0
 
 class BabyGrids(FloatLayout):
     def __init__(self, title, name_pic):
@@ -553,9 +538,8 @@ class BabyGrids(FloatLayout):
         img = Image(source=name_pic, allow_stretch=True, keep_ratio=False, pos_hint={'x': 0, 'top': 1})
         self.add_widget(img)
 
-        self.add_widget(Button(text=title[0], pos_hint={'x': 0, 'top': 1}, size_hint=(1, 0.25), font_size='16sp', background_color=(0,0,0,0.3)))
-
-
+        self.add_widget(Button(text=title[0], pos_hint={'x': 0, 'top': 1}, size_hint=(1, 0.25), font_size='16sp',
+                               background_color=(0, 0, 0, 0.3)))
 
         cha1 = []
         cha2 = []
@@ -568,12 +552,10 @@ class BabyGrids(FloatLayout):
             if x % 2 != 0:
                 cha2.append(cha1[x])
 
-        print(chapt)
-
-        for x in reversed(range(len(cha2))):#0.25 0.5 0.75
-
-            a = 1 - ((x+1) * 0.25)
-            btn = Button(id=chapter_links[0], text=chapt[0], pos_hint={'x': a, 'y': 0}, size_hint=(0.25, 0.15), background_color=(1,1,1,0.9))
+        for x in reversed(range(len(cha2))):  # 0.25 0.5 0.75
+            a = 1 - ((x + 1) * 0.25)
+            btn = Button(id=chapter_links[0], text=chapt[0], pos_hint={'x': a, 'y': 0}, size_hint=(0.25, 0.15),
+                         background_color=(1, 1, 1, 0.9))
             self.add_widget(btn)
             btn.bind(on_press=self.open_chapter)
             a -= 0.25
@@ -581,12 +563,8 @@ class BabyGrids(FloatLayout):
             chapter_links.pop(0)
 
 
-
-        #self.add_widget(BabyGrids2())
-        #self.add_widget(Button())
-
     def open_chapter(self, instance):
-        #method might be deprecated
+        # method might be deprecated
         func_create_batch_files(instance.id)
 
 
@@ -595,8 +573,6 @@ class MainGrid(GridLayout):
         GridLayout.__init__(self, cols=3, row_force_default="True", row_default_height=400, height=self.minimum_height,
                             size_hint=(1, None))
         self.bind(minimum_height=self.setter('height'))
-
-        counter = 0
 
         name_chapter_time = []
         x = 0
@@ -613,18 +589,11 @@ class MainGrid(GridLayout):
                 else:
                     break
 
-            # layout.add_widget(Button(text=name_chapter_time))
             name2 = str(y) + ".jpg"
             img = Image(source=name2, allow_stretch=True, keep_ratio=False)
-            #self.add_widget(img)
-
-
-
 
             self.add_widget(BabyGrids(name_chapter_time, name2))
 
-
-            #print(chapters)
             name_chapter_time = []
 
 
@@ -633,7 +602,7 @@ class ScrollBarView(ScrollView):
         ScrollView.__init__(self, do_scroll_x="False", do_scroll_y="True", size=self.size, scroll_type=['bars'])
 
         self.add_widget(MainGrid())
-        #Window.bind(mouse_pos=self.on_mouse_pos)
+        # Window.bind(mouse_pos=self.on_mouse_pos)
 
     def on_mouse_pos(self, window, pos):
         print(pos)
@@ -643,10 +612,28 @@ class WebParseApp(App):
     def build(self):
         return ScrollBarView()
 
+    def on_request_close(self):
+
+        for x in range(no_of_manga):
+            name3 = str(x) + ".jpg"
+            if os.path.exists(name3):
+                os.remove(name3)
+
+        if os.path.exists("open_manga.bat"):
+            os.remove("open_manga.bat")
+
+
+
+
+        self.close()
+        return True
+
+    Window.bind(on_request_close=on_request_close)
+
+
 
 if __name__ == '__main__':
     WebParseApp().run()
 
-# if first is 0 then go in odd, else in even, else dont change
 # i can check whatever i have not read and start counting from today
 # how do i save what i have not read
