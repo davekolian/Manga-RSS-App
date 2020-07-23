@@ -17,19 +17,21 @@ from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.image import Image
+from kivy.uix.image import Image, AsyncImage
 from kivy.core.window import Window
+from kivy.clock import Clock
 
-Window.top = 50
-Window.size = (850, 1000)
-Window.pos = (0, 100)
+from kivy.config import Config
+Config.set('graphics', 'resizable', False)
+
 
 not_read = []
-not_read_counter = 0
 no_of_manga = 0
 manga_imgs = []
-manga_imgs_counter = 0
 chapter_links = []
+loading = 1
+chapt = []
+chapters = []
 
 
 def func_create_batch_files(link):
@@ -41,6 +43,12 @@ def func_create_batch_files(link):
 
 
 def func_find_daily_chaps():
+    # global not_read
+    # global manga_imgs
+    # global chapter_links
+
+
+
     # Mangakakalot
     url_counter = 0
     url_list = ['https://mangakakalot.com/read-lm7ib158504847850',
@@ -510,33 +518,41 @@ def func_find_imgs_manga_active():
         f.write(urlopen(req).read())
         f.close()
 
+        global loading
+        loading = 0
 
-func_find_daily_chaps()
 
-for item in not_read:
-    if str(item) == "s":
-        print("\n")
-        no_of_manga += 1
+def func_get_stuff():
+    func_find_daily_chaps()
 
-func_find_imgs_manga_active()
+    for item in not_read:
+        if str(item) == "s":
+            print("\n")
+            global no_of_manga
+            no_of_manga += 1
 
-chapt = []
-chapters = []
+    func_find_imgs_manga_active()
 
-for item in not_read:
-    if item != "s":
-        chapters.append(item)
 
-for x in range(0, len(chapters)):
-    if " " not in chapters[x]:
-        chapt.append(chapters[x])
 
-# print(chapt) #list of all recent chapters
-# print(chapter_links)#list of all links to chapters in same order as chapt
+    for item in not_read:
+        if item != "s":
+            global chapters
+            chapters.append(item)
+
+    for x in range(0, len(chapters)):
+        if " " not in chapters[x]:
+            global chapt
+            chapt.append(chapters[x])
+
+    # print(chapt) #list of all recent chapters
+    # print(chapter_links)#list of all links to chapters in same order as chapt
 
 
 class BabyGrids(FloatLayout):
     def __init__(self, title, name_pic):
+        global chapt
+        global chapter_links
         FloatLayout.__init__(self)
 
         img = Image(source=name_pic, allow_stretch=True, keep_ratio=False, pos_hint={'x': 0, 'top': 1})
@@ -555,6 +571,10 @@ class BabyGrids(FloatLayout):
         for x in range(0, len(cha1)):
             if x % 2 != 0:
                 cha2.append(cha1[x])
+
+        # print(chapter_links)
+        # print(chapt)
+        # print(cha2)
 
         for x in reversed(range(len(cha2))):  # 0.25 0.5 0.75
             a = 1 - ((x + 1) * 0.25)
@@ -605,19 +625,35 @@ class ScrollBarView(ScrollView):
     def __init__(self):
         ScrollView.__init__(self, do_scroll_x="False", do_scroll_y="True", size=self.size, scroll_type=['bars'])
 
-        self.add_widget(MainGrid())
-        # Window.bind(mouse_pos=self.on_mouse_pos)
+        loading_screen = Image(source="Compz.jpg")
+        self.add_widget(loading_screen)
+        print("before loading")
 
-    def on_mouse_pos(self, window, pos):
-        print(pos)
+        print("wooo")
+        # Clock.schedule_once(func_get_stuff, 1)
+        func_get_stuff()
+        print("idk why")
+
+        print("outside loading")
+        self.remove_widget(loading_screen)
+
+        self.add_widget(MainGrid())
+
+            # Window.bind(mouse_pos=self.on_mouse_pos)
+
+    # def on_mouse_pos(self, window, pos):
+        # print(pos)
 
 
 class WebParseApp(App):
     def build(self):
+        Window.top = 50
+        Window.size = (850, 1000)
+        Window.pos = (0, 100)
+
         return ScrollBarView()
 
     def on_request_close(self):
-
         for x in range(no_of_manga):
             name3 = str(x) + ".jpg"
             if os.path.exists(name3):
@@ -626,14 +662,10 @@ class WebParseApp(App):
         if os.path.exists("open_manga.bat"):
             os.remove("open_manga.bat")
 
-
-
-
         self.close()
         return True
 
     Window.bind(on_request_close=on_request_close)
-
 
 
 if __name__ == '__main__':
@@ -641,3 +673,10 @@ if __name__ == '__main__':
 
 # i can check whatever i have not read and start counting from today
 # how do i save what i have not read
+# Bug #1: App doesnt start with a batch file
+# Bug #2: No Loading Screen, so users think it crashed
+# Bug #3: If more than 4 updates layout gets messy
+# Load the manga more effeciently
+
+
+# Loading GIF from : https://creativedesignsideafree.blogspot.com/2017/03/glow-loader-gif.html
