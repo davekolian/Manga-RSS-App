@@ -11,20 +11,15 @@ import kivy
 kivy.require('1.11.0')
 
 import os
-import threading
-import time
 
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.image import Image, AsyncImage
+from kivy.uix.image import Image
 from kivy.core.window import Window
-from kivy.clock import Clock, mainthread
-from kivy.clock import _default_time
-from kivy.uix.widget import Widget
-from kivy.graphics import Rectangle, Color
+from kivy.clock import mainthread
 
 from kivy.config import Config
 Config.set('graphics', 'resizable', False)
@@ -604,7 +599,7 @@ class MainGrid(GridLayout):
     empty_btn7 = Button(disabled=True)
     empty_btn8 = Button(disabled=True)
 
-    search_btn = Button(text="Run Manga Search!")
+    search_btn = Button(text="Run Manga Search!", font_size=20)
 
     def __init__(self):
         GridLayout.__init__(self, cols=3, row_force_default="True", row_default_height=400, height=self.minimum_height,
@@ -623,9 +618,15 @@ class MainGrid(GridLayout):
         self.add_widget(self.empty_btn7)
         self.add_widget(self.empty_btn8)
 
-        self.search_btn.bind(on_press=self.new_func)
+        self.search_btn.bind(on_press=self.update_btn_text)
 
-    def new_func(self, instance):
+    def update_btn_text(self, event):
+        self.search_btn.text = "Please wait!"
+        self.search_btn.font_size = 30
+        self.update_layout()
+
+    @mainthread
+    def update_layout(self):
         func_get_stuff()
         self.remove_widget(self.search_btn)
 
@@ -704,6 +705,6 @@ if __name__ == '__main__':
 # i can check whatever i have not read and start counting from today
 # how do i save what i have not read
 # Bug #1: App doesnt start with a batch file
-# Bug #2: No Loading Screen, so users think it crashed (Done more or less, UI still unresponsive when button is pressed)
+# Bug #2: No Loading Screen, so users think it crashed (Done more or less, UI still unresponsive but cleaner.)
 # Bug #3: If more than 4 updates layout gets messy
 # Load the manga more effeciently
