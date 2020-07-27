@@ -11,6 +11,8 @@ import kivy
 kivy.require('1.11.0')
 
 import os
+import threading
+import time
 
 from kivy.app import App
 from kivy.uix.button import Button
@@ -19,11 +21,13 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image, AsyncImage
 from kivy.core.window import Window
-from kivy.clock import Clock
+from kivy.clock import Clock, mainthread
+from kivy.clock import _default_time
+from kivy.uix.widget import Widget
+from kivy.graphics import Rectangle, Color
 
 from kivy.config import Config
 Config.set('graphics', 'resizable', False)
-
 
 not_read = []
 no_of_manga = 0
@@ -43,9 +47,9 @@ def func_create_batch_files(link):
 
 
 def func_find_daily_chaps():
-    # global not_read
-    # global manga_imgs
-    # global chapter_links
+    global not_read
+    global manga_imgs
+    global chapter_links
 
 
 
@@ -205,6 +209,8 @@ def func_find_daily_chaps():
 
         for x in range(0, len(dates)):
             dates[x] = str(dates[x]).replace("\n", " ")
+
+        # print(dates)
 
         imgs_srcs = tree.xpath('//a[@class="media-content"]/@style')
         links = tree.xpath('//a[@class="item-author text-color "]/@href')
@@ -518,9 +524,6 @@ def func_find_imgs_manga_active():
         f.write(urlopen(req).read())
         f.close()
 
-        global loading
-        loading = 0
-
 
 def func_get_stuff():
     func_find_daily_chaps()
@@ -533,11 +536,11 @@ def func_get_stuff():
 
     func_find_imgs_manga_active()
 
-
+    global chapters
+    global chapt
 
     for item in not_read:
         if item != "s":
-            global chapters
             chapters.append(item)
 
     for x in range(0, len(chapters)):
@@ -586,17 +589,54 @@ class BabyGrids(FloatLayout):
             chapt.pop(0)
             chapter_links.pop(0)
 
-
     def open_chapter(self, instance):
         # method might be deprecated
         func_create_batch_files(instance.id)
 
 
 class MainGrid(GridLayout):
+    empty_btn1 = Button(disabled=True)
+    empty_btn2 = Button(disabled=True)
+    empty_btn3 = Button(disabled=True)
+    empty_btn4 = Button(disabled=True)
+    empty_btn5 = Button(disabled=True)
+    empty_btn6 = Button(disabled=True)
+    empty_btn7 = Button(disabled=True)
+    empty_btn8 = Button(disabled=True)
+
+    search_btn = Button(text="Run Manga Search!")
+
     def __init__(self):
         GridLayout.__init__(self, cols=3, row_force_default="True", row_default_height=400, height=self.minimum_height,
                             size_hint=(1, None))
         self.bind(minimum_height=self.setter('height'))
+
+        self.add_widget(self.empty_btn1)
+        self.add_widget(self.empty_btn2)
+        self.add_widget(self.empty_btn3)
+        self.add_widget(self.empty_btn4)
+
+        self.add_widget(self.search_btn)
+
+        self.add_widget(self.empty_btn5)
+        self.add_widget(self.empty_btn6)
+        self.add_widget(self.empty_btn7)
+        self.add_widget(self.empty_btn8)
+
+        self.search_btn.bind(on_press=self.new_func)
+
+    def new_func(self, instance):
+        func_get_stuff()
+        self.remove_widget(self.search_btn)
+
+        self.remove_widget(self.empty_btn1)
+        self.remove_widget(self.empty_btn2)
+        self.remove_widget(self.empty_btn3)
+        self.remove_widget(self.empty_btn4)
+        self.remove_widget(self.empty_btn5)
+        self.remove_widget(self.empty_btn6)
+        self.remove_widget(self.empty_btn7)
+        self.remove_widget(self.empty_btn8)
 
         name_chapter_time = []
         x = 0
@@ -625,21 +665,10 @@ class ScrollBarView(ScrollView):
     def __init__(self):
         ScrollView.__init__(self, do_scroll_x="False", do_scroll_y="True", size=self.size, scroll_type=['bars'])
 
-        loading_screen = Image(source="Compz.jpg")
-        self.add_widget(loading_screen)
-        print("before loading")
-
-        print("wooo")
-        # Clock.schedule_once(func_get_stuff, 1)
-        func_get_stuff()
-        print("idk why")
-
-        print("outside loading")
-        self.remove_widget(loading_screen)
-
+        # func_get_stuff()
+        # self.add_widget(MainGrid())
         self.add_widget(MainGrid())
 
-            # Window.bind(mouse_pos=self.on_mouse_pos)
 
     # def on_mouse_pos(self, window, pos):
         # print(pos)
@@ -671,12 +700,10 @@ class WebParseApp(App):
 if __name__ == '__main__':
     WebParseApp().run()
 
+
 # i can check whatever i have not read and start counting from today
 # how do i save what i have not read
 # Bug #1: App doesnt start with a batch file
-# Bug #2: No Loading Screen, so users think it crashed
+# Bug #2: No Loading Screen, so users think it crashed (Done more or less, UI still unresponsive when button is pressed)
 # Bug #3: If more than 4 updates layout gets messy
 # Load the manga more effeciently
-
-
-# Loading GIF from : https://creativedesignsideafree.blogspot.com/2017/03/glow-loader-gif.html
