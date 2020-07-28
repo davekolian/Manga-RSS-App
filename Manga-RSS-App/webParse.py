@@ -7,8 +7,13 @@ import requests
 from urllib.request import Request, urlopen
 
 import kivy
-
 kivy.require('1.11.0')
+
+from kivy.config import Config
+Config.set('graphics', 'resizable', False)
+Config.set('graphics', 'height', 1000)
+Config.set('graphics', 'width', 850)
+Config.set('kivy', 'exit_on_escape', 0)
 
 import os
 
@@ -20,9 +25,8 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.core.window import Window
 from kivy.clock import mainthread
+from functools import partial
 
-from kivy.config import Config
-Config.set('graphics', 'resizable', False)
 
 not_read = []
 no_of_manga = 0
@@ -30,7 +34,9 @@ manga_imgs = []
 chapter_links = []
 loading = 1
 chapt = []
+dupl_chapt = []
 chapters = []
+url_counter = 0
 
 
 def func_create_batch_files(link):
@@ -38,6 +44,7 @@ def func_create_batch_files(link):
     code = "start firefox.exe " + link
     f.write(code)
     f.close()
+
     os.system("open_manga.bat")
 
 
@@ -102,24 +109,18 @@ def func_find_daily_chaps():
         for x in range(0, len(views)):
             if "day" in views[x] or "days" in views[x]:
                 if int(str(views[x][0:1])) < 2:
-                    # print("\n")
-                    # print(manga, end="\n")
                     not_read.append("s")
                     not_read.append(manga[0])
                     manga_imgs.append(imgs_srcs[0])
                     break
             elif "hour" in views[x] or "hours" in views[x]:
                 if int(str(views[x][0:2])) < 24:
-                    # print("\n")
-                    # print(manga, end="\n")
                     not_read.append("s")
                     not_read.append(manga[0])
                     manga_imgs.append(imgs_srcs[0])
                     break
             elif "mins" in views[x] or "min" in views[x] or "minutes" in views[x] or "minute" in views[x]:
                 if int(str(views[x][0:1])) < 60:
-                    # print("\n")
-                    # print(manga, end="\n")
                     not_read.append("s")
                     not_read.append(manga[0])
                     manga_imgs.append(imgs_srcs[0])
@@ -128,29 +129,21 @@ def func_find_daily_chaps():
         for x in range(0, len(views)):
             if "day" in views[x] or "days" in views[x]:
                 if int(str(views[x][0:1])) < 2:
-                    # print(chap[x] + " |", end=" ")
                     not_read.append(chap_clean[x])
-                    # print(views[x])
                     not_read.append(views[x])
                     chapter_links.append(links[x])
             elif "hour" in views[x] or "hours" in views[x]:
                 if int(str(views[x][0:2])) < 24:
-                    # print(chap[x] + " |", end=" ")
                     not_read.append(chap_clean[x])
-                    # print(views[x])
                     not_read.append(views[x])
                     chapter_links.append(links[x])
             elif "mins" in views[x] or "min" in views[x] or "minutes" in views[x] or "minute" in views[x]:
                 if int(str(views[x][0:1])) < 60:
-                    # print(chap[x] + " |", end=" ")
                     not_read.append(chap_clean[x])
-                    # print(views[x])
                     not_read.append(views[x])
                     chapter_links.append(links[x])
 
-        # print('Date: ', views)
-
-        url_counter += 1;
+        url_counter += 1
 
     # Leviatan|Zero Scans|Reaper Scans
 
@@ -168,7 +161,8 @@ def func_find_daily_chaps():
                 'https://zeroscans.com/comics/55416-record-of-the-war-god',
                 'https://zeroscans.com/comics/133460-yong-heng-zhi-zun',
                 'https://reaperscans.com/comics/915623-god-of-blackfield',
-                'https://reaperscans.com/comics/140270-the-great-mage-returns-after-4000-years']
+                'https://reaperscans.com/comics/140270-the-great-mage-returns-after-4000-years',
+                'https://leviatanscans.com/comics/524614-rebirth-of-an-8-circled-mage/1/29']
 
     while url_counter < len(url_list):
         page = requests.get(url_list[url_counter])
@@ -205,16 +199,12 @@ def func_find_daily_chaps():
         for x in range(0, len(dates)):
             dates[x] = str(dates[x]).replace("\n", " ")
 
-        # print(dates)
-
         imgs_srcs = tree.xpath('//a[@class="media-content"]/@style')
         links = tree.xpath('//a[@class="item-author text-color "]/@href')
 
         for x in range(0, len(dates)):
             if "day" in dates[x] or "days" in dates[x]:
                 if int(str(dates[x][1:2])) < 2:
-                    # print("\n")
-                    # print(manga_clean, end="\n")
                     not_read.append("s")
                     not_read.append(manga_clean)
                     if "leviatan" in url_list[url_counter]:
@@ -230,8 +220,6 @@ def func_find_daily_chaps():
                     break
             elif "hour" in dates[x] or "hours" in dates[x]:
                 if int(str(dates[x][1:2])) < 24:
-                    # print("\n")
-                    # print(manga_clean, end="\n")
                     not_read.append("s")
                     not_read.append(manga_clean)
                     if "leviatan" in url_list[url_counter]:
@@ -247,8 +235,6 @@ def func_find_daily_chaps():
                     break
             elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
                 if int(str(dates[x][0:2])) < 60:
-                    # print("\n")
-                    # print(manga_clean, end="\n")
                     not_read.append("s")
                     not_read.append(manga_clean)
                     if "leviatan" in url_list[url_counter]:
@@ -266,30 +252,20 @@ def func_find_daily_chaps():
         for x in range(0, len(dates)):
             if "day" in dates[x] or "days" in dates[x]:
                 if int(str(dates[x][1:2])) < 2:
-                    # print(chap[x] + " |", end=" ")
                     not_read.append(chap_clean[x])
-                    # print(dates[x])
                     not_read.append(dates[x])
                     chapter_links.append(links[x])
             elif "hour" in dates[x] or "hours" in dates[x]:
                 if int(str(dates[x][1:2])) < 24:
-                    # print(chap[x] + " |", end=" ")
                     not_read.append(chap_clean[x])
-                    # print(dates[x])
                     not_read.append(dates[x])
                     chapter_links.append(links[x])
             elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
                 if int(str(dates[x][0:2])) < 60:
-                    # print(chap[x] + " |", end=" ")
                     not_read.append(chap_clean[x])
-                    # print(dates[x])
                     not_read.append(dates[x])
                     chapter_links.append(links[x])
 
-        # print(manga_clean)
-        # print(chap)
-        # print(dates)
-        # print('\n')
         url_counter += 1
 
     # Manganelo
@@ -346,16 +322,12 @@ def func_find_daily_chaps():
         for x in range(0, len(dates)):
             if "day" in dates[x] or "days" in dates[x]:
                 if int(str(dates[x][0:1])) < 2:
-                    # print("\n")
-                    # print(manga, end="\n")
                     not_read.append("s")
                     not_read.append(manga[0])
                     manga_imgs.append(imgs_srcs[0])
                     break
             elif "hour" in dates[x] or "hours" in dates[x]:
                 if int(str(dates[x][0:2])) < 24:
-                    # print("\n")
-                    # print(manga, end="\n")
                     not_read.append("s")
                     not_read.append(manga[0])
                     manga_imgs.append(imgs_srcs[0])
@@ -370,148 +342,26 @@ def func_find_daily_chaps():
         for x in range(0, len(dates)):
             if "day" in dates[x] or "days" in dates[x]:
                 if int(str(dates[x][0:1])) < 2:
-                    # print(chap[x] + " |", end=" ")
                     not_read.append(chap_clean[x])
-                    # print(dates[x])
                     not_read.append(dates[x])
                     chapter_links.append(links[x])
             elif "hour" in dates[x] or "hours" in dates[x]:
                 if int(str(dates[x][0:2])) < 24:
-                    # print(chap[x] + " |", end=" ")
                     not_read.append(chap_clean[x])
-                    # print(dates[x])
                     not_read.append(dates[x])
                     chapter_links.append(links[x])
             elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
                 if int(str(dates[x][0:2])) < 60:
-                    # print(chap[x] + " |", end=" ")
                     not_read.append(chap_clean[x])
-                    # print(dates[x])
                     not_read.append(dates[x])
                     chapter_links.append(links[x])
 
-        # print(manga)
-        # print(chap)
-        # print(dates)
-
-        # print("\n")
         url_counter += 1
-
-    """
-    # Mangatx
-    url_counter = 0
-    url_list = ['https://mangatx.com/manga/battle-through-the-heavens/',
-                'https://mangatx.com/manga/wu-dong-qian-kun/']
-
-    while url_counter < len(url_list):
-
-        page = requests.get(url_list[url_counter])
-        tree = html.fromstring(page.content)
-
-        manga = tree.xpath('//div[@class="post-title"]/h1//text()')
-        manga = str(manga[0]).replace("\n", "")
-        manga = str(manga).replace("\t", "")
-
-        chap = tree.xpath('//li[@class="wp-manga-chapter  "]/a/text()')
-        for x in range(0, len(chap)):
-            chap[x] = str(chap[x]).replace("\n", "")
-            chap[x] = str(chap[x]).replace("\t", "")
-
-        chap_clean = []
-
-        for x in range(0, len(chap)):
-            if "Chapter" in chap[x]:
-                start_chapter = chap[x].find("Chapter")
-
-                if ":" in chap[x]:
-                    end_line = chap[x].find(":")
-                    chap_no = str(chap[x][start_chapter:end_line]).replace("Chapter", "")
-                    if " " in chap_no:
-                        chap_clean.append(chap_no.replace(" ", ""))
-                    else:
-                        chap_clean.append("SC")
-                elif " -" in chap[x]:
-                    end_line = chap[x].find(" -")
-                    chap_no = str(chap[x][start_chapter:end_line]).replace("Chapter", "")
-                    if " " in chap_no:
-                        chap_clean.append(chap_no.replace(" ", ""))
-                    else:
-                        chap_clean.append("SC")
-                else:
-                    chap_no = str(chap[x][start_chapter:]).replace("Chapter", "")
-                    if " " in chap_no:
-                        chap_clean.append(chap_no.replace(" ", ""))
-                    else:
-                        chap_clean.append("SC")
-            else:
-                chap_clean.append("SC")
-
-        print(chap_clean)
-
-        dates = tree.xpath('//span[@class="chapter-release-date"]/i/text()')
-        for x in range(0, len(dates)):
-            dates[x] = str(dates[x]).replace("\n", "")
-            dates[x] = str(dates[x]).replace("\t", "")
-
-        imgs_srcs = tree.xpath('//img[@class="img-responsive effect-fade ls-is-cached lazyloaded"]/@src')
-
-        for x in range(0, len(dates)):
-            if "day" in dates[x] or "days" in dates[x]:
-                if int(str(dates[x][0:1])) < 2:
-                    # print("\n")
-                    # print(manga, end="\n")
-                    not_read.append("s")
-                    not_read.append(manga[0])
-                    manga_imgs.append(imgs_srcs[0])
-                    break
-            elif "hour" in dates[x] or "hours" in dates[x]:
-                if int(str(dates[x][0:2])) < 24:
-                    # print("\n")
-                    # print(manga, end="\n")
-                    not_read.append("s")
-                    not_read.append(manga[0])
-                    manga_imgs.append(imgs_srcs[0])
-                    break
-            elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
-                if int(str(dates[x][0:2])) < 60:
-                    # print("\n")
-                    # print(manga, end="\n")
-                    not_read.append("s")
-                    not_read.append(manga[0])
-                    manga_imgs.append(imgs_srcs[0])
-                    break
-
-        for x in range(0, len(dates)):
-            if "day" in dates[x] or "days" in dates[x]:
-                if int(str(dates[x][0:1])) < 2:
-                    # print(chap[x] + " |", end=" ")
-                    not_read.append(chap[x])
-                    # print(dates[x])
-                    not_read.append(dates[x])
-            elif "hour" in dates[x] or "hours" in dates[x]:
-                if int(str(dates[x][0:2])) < 24:
-                    # print(chap[x] + " |", end=" ")
-                    not_read.append(chap[x])
-                    # print(dates[x])
-                    not_read.append(dates[x])
-            elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
-                if int(str(dates[x][0:2])) < 60:
-                    # print(chap[x] + " |", end=" ")
-                    not_read.append(chap[x])
-                    # print(dates[x])
-                    not_read.append(dates[x])
-
-        # print(manga)
-        # print(chap)
-        # print(dates)
-        url_counter += 1
-        """
 
 
 def func_find_imgs_manga_active():
     for x in range(0, no_of_manga):
         req = Request(manga_imgs[x], headers={'User-Agent': 'Mozilla/5.0'})
-        # print(manga_imgs[x])
 
         # if no update pop up no update
         name = str(x) + ".jpg"
@@ -543,15 +393,17 @@ def func_get_stuff():
             global chapt
             chapt.append(chapters[x])
 
+
     # print(chapt) #list of all recent chapters
     # print(chapter_links)#list of all links to chapters in same order as chapt
 
 
 class BabyGrids(FloatLayout):
     def __init__(self, title, name_pic):
+        super(BabyGrids, self).__init__()
         global chapt
         global chapter_links
-        FloatLayout.__init__(self)
+        global url_counter
 
         img = Image(source=name_pic, allow_stretch=True, keep_ratio=False, pos_hint={'x': 0, 'top': 1})
         self.add_widget(img)
@@ -570,74 +422,55 @@ class BabyGrids(FloatLayout):
             if x % 2 != 0:
                 cha2.append(cha1[x])
 
-        # print(chapter_links)
-        # print(chapt)
-        # print(cha2)
+        print(cha1)
+        print(cha2)
 
-        for x in reversed(range(len(cha2))):  # 0.25 0.5 0.75
+        for x in reversed(range(len(cha2))):
             a = 1 - ((x + 1) * 0.25)
             btn = Button(id=chapter_links[0], text=chapt[0], pos_hint={'x': a, 'y': 0}, size_hint=(0.25, 0.15),
                          background_color=(1, 1, 1, 0.9))
             self.add_widget(btn)
-            btn.bind(on_press=self.open_chapter)
+            # partial returns a new function with both arguments
+            btn.bind(on_press=partial(self.open_chapter, url_counter))
             a -= 0.25
+            url_counter += 1
             chapt.pop(0)
-            chapter_links.pop(0)
 
-    def open_chapter(self, instance):
-        # method might be deprecated
-        func_create_batch_files(instance.id)
+    # comment below is used to suppress the 'function may be static' error
+    # noinspection PyMethodMayBeStatic
+    def open_chapter(self, index, instance):
+        func_create_batch_files(chapter_links[index])
 
 
 class MainGrid(GridLayout):
-    empty_btn1 = Button(disabled=True)
-    empty_btn2 = Button(disabled=True)
-    empty_btn3 = Button(disabled=True)
-    empty_btn4 = Button(disabled=True)
-    empty_btn5 = Button(disabled=True)
-    empty_btn6 = Button(disabled=True)
-    empty_btn7 = Button(disabled=True)
-    empty_btn8 = Button(disabled=True)
-
-    search_btn = Button(text="Run Manga Search!", font_size=20)
+    button_list = [Button(disabled=True), Button(disabled=True), Button(disabled=True), Button(disabled=True),
+                   Button(text="Run Manga Search!", font_size=20), Button(disabled=True), Button(disabled=True),
+                   Button(disabled=True), Button(disabled=True)]
 
     def __init__(self):
-        GridLayout.__init__(self, cols=3, row_force_default="True", row_default_height=400, height=self.minimum_height,
-                            size_hint=(1, None))
+        # Initialized a GridLayout where there is a max of 3 columns and we force each row to be a default size of 400px
+        super(MainGrid, self).__init__(cols=3, row_force_default="True", row_default_height=400,
+                                       height=self.minimum_height, size_hint=(1, None))
         self.bind(minimum_height=self.setter('height'))
 
-        self.add_widget(self.empty_btn1)
-        self.add_widget(self.empty_btn2)
-        self.add_widget(self.empty_btn3)
-        self.add_widget(self.empty_btn4)
+        # Adding button_list to create layout
+        for x in range(9):
+            self.add_widget(self.button_list[x])
 
-        self.add_widget(self.search_btn)
-
-        self.add_widget(self.empty_btn5)
-        self.add_widget(self.empty_btn6)
-        self.add_widget(self.empty_btn7)
-        self.add_widget(self.empty_btn8)
-
-        self.search_btn.bind(on_press=self.update_btn_text)
+        # Binding the only clickable button to function
+        self.button_list[4].bind(on_press=self.update_btn_text)
 
     def update_btn_text(self, event):
-        self.search_btn.text = "Please wait!"
-        self.search_btn.font_size = 30
+        self.button_list[4].text = "Please wait!"
+        self.button_list[4].font_size = 30
         self.update_layout()
 
     @mainthread
     def update_layout(self):
         func_get_stuff()
-        self.remove_widget(self.search_btn)
 
-        self.remove_widget(self.empty_btn1)
-        self.remove_widget(self.empty_btn2)
-        self.remove_widget(self.empty_btn3)
-        self.remove_widget(self.empty_btn4)
-        self.remove_widget(self.empty_btn5)
-        self.remove_widget(self.empty_btn6)
-        self.remove_widget(self.empty_btn7)
-        self.remove_widget(self.empty_btn8)
+        for x in range(9):
+            self.remove_widget(self.button_list[x])
 
         name_chapter_time = []
         x = 0
@@ -662,39 +495,48 @@ class MainGrid(GridLayout):
             name_chapter_time = []
 
 
+# Enables us to scroll the content
 class ScrollBarView(ScrollView):
-    def __init__(self):
-        ScrollView.__init__(self, do_scroll_x="False", do_scroll_y="True", size=self.size, scroll_type=['bars'])
-
-        # func_get_stuff()
-        # self.add_widget(MainGrid())
+    def __init__(self, **kwargs):
+        # Created ScrollView which allows us to scroll only in the y direction and set it using a scroll bar
+        super(ScrollBarView, self).__init__(do_scroll_x="False", do_scroll_y="True", size=self.size, scroll_type=['bars'])
         self.add_widget(MainGrid())
 
 
-    # def on_mouse_pos(self, window, pos):
-        # print(pos)
+# Function which removes pictures if downloaded
+def remove_images():
+    for x in range(no_of_manga):
+        filename = str(x) + ".jpg"
+        if os.path.exists(filename):
+            os.remove(filename)
+
+    if os.path.exists("open_manga.bat"):
+        os.remove("open_manga.bat")
+
+    App.get_running_app().stop()
 
 
 class WebParseApp(App):
     def build(self):
-        Window.top = 50
-        Window.size = (850, 1000)
-        Window.pos = (0, 100)
-
         return ScrollBarView()
 
+    # Calls function to remove all the pictures downloaded when 'X' is clicked
+    # comment below is used to suppress the 'function may be static' error
+    # noinspection PyMethodMayBeStatic
     def on_request_close(self):
-        for x in range(no_of_manga):
-            name3 = str(x) + ".jpg"
-            if os.path.exists(name3):
-                os.remove(name3)
 
-        if os.path.exists("open_manga.bat"):
-            os.remove("open_manga.bat")
+        remove_images()
 
-        self.close()
-        return True
+    # comment below is used to suppress the 'function may be static' error
+    # noinspection PyMethodMayBeStatic
+    def on_keyboard_down(self, keyboard, keycode, text, modifiers):
+        # keyboard returns the ASCII value in DEC of the key pressed
+        if keyboard == 27:
+            remove_images()
 
+    # Binds the Window to a function which checks if a key is pressed
+    Window.bind(on_key_down=on_keyboard_down)
+    # Binds the Window to a function which is called when the 'X' button is called
     Window.bind(on_request_close=on_request_close)
 
 
@@ -708,3 +550,4 @@ if __name__ == '__main__':
 # Bug #2: No Loading Screen, so users think it crashed (Done more or less, UI still unresponsive but cleaner.)
 # Bug #3: If more than 4 updates layout gets messy
 # Load the manga more effeciently
+# Change which browser opens the manga
