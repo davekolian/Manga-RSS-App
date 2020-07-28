@@ -10,6 +10,7 @@ import kivy
 kivy.require('1.11.0')
 
 from kivy.config import Config
+# Sets Window to: not be resizable, size of 850x1000, not close when 'ESC' key is clicked
 Config.set('graphics', 'resizable', False)
 Config.set('graphics', 'height', 1000)
 Config.set('graphics', 'width', 850)
@@ -27,7 +28,7 @@ from kivy.core.window import Window
 from kivy.clock import mainthread
 from functools import partial
 
-
+# Global Variables
 not_read = []
 no_of_manga = 0
 manga_imgs = []
@@ -38,6 +39,7 @@ chapters = []  # list of all links to chapters in same order as chapt
 url_counter = 0
 
 
+# Function which creates a batch file to open the manga chapter in my browser of choice
 def func_create_batch_files(link):
     f = open("open_manga.bat", "w")
     code = "start firefox.exe " + link
@@ -45,6 +47,7 @@ def func_create_batch_files(link):
     f.close()
 
     os.system("open_manga.bat")
+
 
 # Function which scrapes the websites to find which chapters have been newly released
 def func_find_daily_chaps():
@@ -550,3 +553,4 @@ if __name__ == '__main__':
 # Bug #3: If more than 4 updates layout gets messy
 # Load the manga more effeciently
 # Change which browser opens the manga
+# Be able to check which manga has been read (in same day/through-out)
