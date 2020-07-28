@@ -159,12 +159,12 @@ def func_find_daily_chaps():
                 'https://leviatanscans.com/comics/246282-medical-return',
                 'https://leviatanscans.com/comics/11268-survival-story-of-a-sword-king-in-a-fantasy-world',
                 'https://leviatanscans.com/comics/337225-the-rebirth-of-the-demon-god',
+                'https://leviatanscans.com/comics/524614-rebirth-of-an-8-circled-mage/',
                 'https://zeroscans.com/comics/204586-omniscient-readers-point-of-view',
                 'https://zeroscans.com/comics/55416-record-of-the-war-god',
                 'https://zeroscans.com/comics/133460-yong-heng-zhi-zun',
                 'https://reaperscans.com/comics/915623-god-of-blackfield',
-                'https://reaperscans.com/comics/140270-the-great-mage-returns-after-4000-years',
-                'https://leviatanscans.com/comics/524614-rebirth-of-an-8-circled-mage/1/29']
+                'https://reaperscans.com/comics/140270-the-great-mage-returns-after-4000-years']
 
     while url_counter < len(url_list):
         page = requests.get(url_list[url_counter])
