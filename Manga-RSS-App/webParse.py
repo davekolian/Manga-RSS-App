@@ -33,9 +33,8 @@ no_of_manga = 0
 manga_imgs = []
 chapter_links = []
 loading = 1
-chapt = []
-dupl_chapt = []
-chapters = []
+chapt = []  # list of all recent chapters
+chapters = []  # list of all links to chapters in same order as chapt
 url_counter = 0
 
 
@@ -47,7 +46,7 @@ def func_create_batch_files(link):
 
     os.system("open_manga.bat")
 
-
+# Function which scrapes the websites to find which chapters have been newly released
 def func_find_daily_chaps():
     global not_read
     global manga_imgs
@@ -359,18 +358,22 @@ def func_find_daily_chaps():
         url_counter += 1
 
 
+# Function to download cover image of all manga chapters released | method used to override that a spider is crawling
 def func_find_imgs_manga_active():
     for x in range(0, no_of_manga):
         req = Request(manga_imgs[x], headers={'User-Agent': 'Mozilla/5.0'})
 
-        # if no update pop up no update
         name = str(x) + ".jpg"
         f = open(name, "wb")
         f.write(urlopen(req).read())
         f.close()
 
 
+# Function which gets all details, images, image names, etc.
 def func_get_stuff():
+    global chapters
+    global chapt
+
     func_find_daily_chaps()
 
     for item in not_read:
@@ -381,53 +384,48 @@ def func_get_stuff():
 
     func_find_imgs_manga_active()
 
-    global chapters
-    global chapt
-
+    # The "s" is added to show a split between each manga
     for item in not_read:
         if item != "s":
             chapters.append(item)
 
+    # To get all the new chapters into an array
     for x in range(0, len(chapters)):
         if " " not in chapters[x]:
             global chapt
             chapt.append(chapters[x])
 
 
-    # print(chapt) #list of all recent chapters
-    # print(chapter_links)#list of all links to chapters in same order as chapt
-
-
+# Creates the layout for each grid/manga
 class BabyGrids(FloatLayout):
-    def __init__(self, title, name_pic):
+    def __init__(self, ch_details, pic_name):
         super(BabyGrids, self).__init__()
         global chapt
         global chapter_links
         global url_counter
 
-        img = Image(source=name_pic, allow_stretch=True, keep_ratio=False, pos_hint={'x': 0, 'top': 1})
+        img = Image(source=pic_name, allow_stretch=True, keep_ratio=False, pos_hint={'x': 0, 'top': 1})
         self.add_widget(img)
 
-        self.add_widget(Button(text=title[0], pos_hint={'x': 0, 'top': 1}, size_hint=(1, 0.25), font_size='16sp',
+        self.add_widget(Button(text=ch_details[0], pos_hint={'x': 0, 'top': 1}, size_hint=(1, 0.25), font_size='16sp',
                                background_color=(0, 0, 0, 0.3)))
 
         cha1 = []
         cha2 = []
 
-        for item in title:
+        # cha1 will contain values without 's' and '\n' in the format of [name, ch_no, time, ch_no, time, ...]
+        for item in ch_details:
             if item != "\n":
                 cha1.append(item)
 
+        # cha2 will contain just the chapter numbers that have been released for EACH chapter
         for x in range(0, len(cha1)):
             if x % 2 != 0:
                 cha2.append(cha1[x])
 
-        print(cha1)
-        print(cha2)
-
         for x in reversed(range(len(cha2))):
             a = 1 - ((x + 1) * 0.25)
-            btn = Button(id=chapter_links[0], text=chapt[0], pos_hint={'x': a, 'y': 0}, size_hint=(0.25, 0.15),
+            btn = Button(text=chapt[0], pos_hint={'x': a, 'y': 0}, size_hint=(0.25, 0.15),
                          background_color=(1, 1, 1, 0.9))
             self.add_widget(btn)
             # partial returns a new function with both arguments
@@ -442,6 +440,7 @@ class BabyGrids(FloatLayout):
         func_create_batch_files(chapter_links[index])
 
 
+# Creates the whole GridLayout for each manga
 class MainGrid(GridLayout):
     button_list = [Button(disabled=True), Button(disabled=True), Button(disabled=True), Button(disabled=True),
                    Button(text="Run Manga Search!", font_size=20), Button(disabled=True), Button(disabled=True),
