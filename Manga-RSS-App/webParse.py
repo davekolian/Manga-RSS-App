@@ -76,8 +76,16 @@ def func_find_daily_chaps():
         imgs_srcs = tree.xpath('//div[@class="manga-info-pic"]/img/@src')
         links = tree.xpath('//div[@class="row"]/span/a/@href')
 
-        start = 0
-        count = 1
+        start = -1
+
+        if " " not in manga:
+            manga = str(manga) + " "
+
+        manga_clean = str(manga).replace("\\n", "")
+        manga_clean = manga_clean.replace("'", "")
+        manga_clean = manga_clean.replace("[", "")
+        manga_clean = manga_clean.replace("]", "")
+        manga_clean = manga_clean.replace('"', "")
 
         chap_clean = []
 
@@ -92,12 +100,8 @@ def func_find_daily_chaps():
         # Cleans and organizes the data to be in a cleaner form
         if views[0] == '0':
             start = 0
-            count = 2
         elif views[1] == '0':
             start = 1
-            count = 2
-        else:
-            start = -1
 
         for x in range(start, len(views) // 2, 1):
             views.pop(x)
@@ -112,19 +116,19 @@ def func_find_daily_chaps():
             if "day" in views[x] or "days" in views[x]:
                 if int(str(views[x][0:1])) < 2:
                     not_read.append("s")
-                    not_read.append(manga[0])
+                    not_read.append(manga_clean)
                     manga_imgs.append(imgs_srcs[0])
                     break
             elif "hour" in views[x] or "hours" in views[x]:
                 if int(str(views[x][0:2])) < 24:
                     not_read.append("s")
-                    not_read.append(manga[0])
+                    not_read.append(manga_clean)
                     manga_imgs.append(imgs_srcs[0])
                     break
             elif "mins" in views[x] or "min" in views[x] or "minutes" in views[x] or "minute" in views[x]:
                 if int(str(views[x][0:1])) < 60:
                     not_read.append("s")
-                    not_read.append(manga[0])
+                    not_read.append(manga_clean)
                     manga_imgs.append(imgs_srcs[0])
                     break
 
@@ -176,6 +180,9 @@ def func_find_daily_chaps():
         manga_clean = manga_clean.replace("[", "")
         manga_clean = manga_clean.replace("]", "")
         manga_clean = manga_clean.replace('"', "")
+
+        if " " not in manga_clean:
+            manga_clean = manga_clean + " "
 
         chap = tree.xpath('//span[@class="text-muted text-sm"]/text()')
 
@@ -294,6 +301,15 @@ def func_find_daily_chaps():
 
         chap_clean = []
 
+        if " " not in manga:
+            manga = str(manga) + " "
+
+        manga_clean = str(manga).replace("\\n", "")
+        manga_clean = manga_clean.replace("'", "")
+        manga_clean = manga_clean.replace("[", "")
+        manga_clean = manga_clean.replace("]", "")
+        manga_clean = manga_clean.replace('"', "")
+
         for x in range(0, len(chap)):
             if "Chapter" in chap[x]:
                 start_chapter = chap[x].find("Chapter")
@@ -325,19 +341,19 @@ def func_find_daily_chaps():
             if "day" in dates[x] or "days" in dates[x]:
                 if int(str(dates[x][0:1])) < 2:
                     not_read.append("s")
-                    not_read.append(manga[0])
+                    not_read.append(manga_clean)
                     manga_imgs.append(imgs_srcs[0])
                     break
             elif "hour" in dates[x] or "hours" in dates[x]:
                 if int(str(dates[x][0:2])) < 24:
                     not_read.append("s")
-                    not_read.append(manga[0])
+                    not_read.append(manga_clean)
                     manga_imgs.append(imgs_srcs[0])
                     break
             elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
                 if int(str(dates[x][0:1])) < 60:
                     not_read.append("s")
-                    not_read.append(manga[0])
+                    not_read.append(manga_clean)
                     manga_imgs.append(imgs_srcs[0])
                     break
 
@@ -551,6 +567,8 @@ if __name__ == '__main__':
 # Bug #1: App doesnt start with a batch file
 # Bug #2: No Loading Screen, so users think it crashed (Done more or less, UI still unresponsive but cleaner.)
 # Bug #3: If more than 4 updates layout gets messy
+# Bug #4: Manga name came in the place of Chapter number. CAUSE: no space in the manga name (algorithm used) [Fixed]
+# Bug #5: Text for some manga goes out of bound (eg. The Great Mage Returns After 4000 years)
 # Load the manga more effeciently
 # Change which browser opens the manga
 # Be able to check which manga has been read (in same day/through-out)
