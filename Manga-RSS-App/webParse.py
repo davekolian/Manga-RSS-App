@@ -63,7 +63,10 @@ def func_find_daily_chaps():
                 'https://mangakakalot.com/read-ox3yk158504833790',
                 'https://mangakakalot.com/read-zs6sp158504840280',
                 'https://mangakakalot.com/read-uz2ai158504852768',
-                'https://mangakakalot.com/manga/ow923334']
+                'https://mangakakalot.com/manga/ow923334',
+                'https://mangakakalot.com/read-ep8pm158504835723',
+                'https://mangakakalot.com/manga/rj922755',
+                'https://mangakakalot.com/read-ro4rv158504853379']
 
     while url_counter < len(url_list):
         page = requests.get(url_list[url_counter])
@@ -426,7 +429,19 @@ class BabyGrids(FloatLayout):
         img = Image(source=pic_name, allow_stretch=True, keep_ratio=False, pos_hint={'x': 0, 'top': 1})
         self.add_widget(img)
 
-        self.add_widget(Button(text=ch_details[0], pos_hint={'x': 0, 'top': 1}, size_hint=(1, 0.25), font_size='16sp',
+        ch_name = str(ch_details[0])
+        ch_name_words = ch_name.split()
+        if len(ch_name_words) >= 6 and 35 < len(ch_name) < 50:
+            mid = int(len(ch_name_words) / 2)
+            ch_name_words[mid:mid] = "\n"
+
+        if len(ch_name) > 50:
+            for x in range(5, len(ch_name_words), 5):
+                ch_name_words[x:x] = "\n"
+
+        ch_name = " ".join(ch_name_words)
+
+        self.add_widget(Button(text=ch_name, pos_hint={'x': 0, 'top': 1}, size_hint=(1, 0.25), font_size='16sp',
                                background_color=(0, 0, 0, 0.3)))
 
         cha1 = []
@@ -512,6 +527,17 @@ class MainGrid(GridLayout):
 
             name_chapter_time = []
 
+        if y == 7:
+            all_links_btn = Button(text="Open all chapters!", font_size=20)
+            self.add_widget(all_links_btn)
+            all_links_btn.bind(on_press=self.all_links_func)
+
+    def all_links_func(self, event):
+        link = ""
+        for x in range(no_of_manga):
+            link = link + " " + chapter_links[x]
+
+        func_create_batch_files(link)
 
 # Enables us to scroll the content
 class ScrollBarView(ScrollView):
@@ -572,3 +598,5 @@ if __name__ == '__main__':
 # Load the manga more effeciently
 # Change which browser opens the manga
 # Be able to check which manga has been read (in same day/through-out)
+# Need to be able to add manga to the list in a better way
+# Try and use .kv / Builder.load
