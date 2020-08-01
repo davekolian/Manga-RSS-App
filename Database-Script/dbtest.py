@@ -15,20 +15,7 @@ chapters = []  # list of all links to chapters in same order as chapt
 url_counter = 0
 
 
-connection = mysql.connect(host="sql7.freemysqlhosting.net", database="sql7358070", user="sql7358070",
-                           password="2iyy8UBTtE",)
-# db = MySQLdb.connect("sql7.freemysqlhosting.net", "sql7358070", "2iyy8UBTtE", "sql7358070")
 
-
-sql = "SELECT * FROM mangarssapp"
-# insert_sql = """INSERT INTO mangarssapp (rownum, manga_name, manga_chapters, manga_img_link) \
-#               VALUES (%s,%s,%s,%s)"""
-# update_sql = """UPDATE mangarssapp SET manga_name='bye' WHERE rownum=3"""
-#delete_sql = """DELETE FROM mangarssapp WHERE rownum=1"""
-id = 3
-test = "name"
-# recordTuple = (id, "hi", "wee", "wewre")
-cursor = connection.cursor()
 
 def func_create_batch_files(link):
     f = open("open_manga.bat", "w")
@@ -415,41 +402,83 @@ counter = 0
 db_counter = 0
 mn = ""
 mc = ""
-ml = ""
+mil = ""
+mcl = ""
 
 for x in range(len(not_read)):
     if "day" in not_read[x] or "hour" in not_read[x] or "min" in not_read[x]:
         not_read[x] = chapter_links[counter]
         counter += 1
 
-# print(not_read)
+print(not_read)
 # print(manga_imgs)
 # print(chapter_links)
 
 new_list = []
 
+
+def update_database(id, name, chapters, img_link, chapter_link):
+    connection = mysql.connect(host="sql7.freemysqlhosting.net", database="sql7358070", user="sql7358070",
+                               password="2iyy8UBTtE", )
+    # db = MySQLdb.connect("sql7.freemysqlhosting.net", "sql7358070", "2iyy8UBTtE", "sql7358070")
+
+    sql = "SELECT * FROM mangarssapp"
+    insert_sql = """INSERT INTO mangarssapp (rownum, manga_name, manga_chapters, manga_img_link, manga_chs_link) \
+                   VALUES (%s,%s,%s,%s)"""
+    # update_sql = """UPDATE mangarssapp SET manga_name='bye' WHERE rownum=3"""
+    # delete_sql = """DELETE FROM mangarssapp WHERE rownum=1"""
+    id = 3
+    test = "name"
+    recordTuple = (id, name, chapters, img_link, chapter_link)
+    cursor = connection.cursor()
+    try:
+        cursor.execute(insert_sql, recordTuple)
+        connection.commit()
+        # cursor.execute(update_sql)
+        # connection.commit()
+        # cursor.execute(delete_sql)
+        # connection.commit()
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+        print(result)
+
+    except mysql.Error as error:
+        print(error)
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("MySQL connection is closed!")
+
+
 for x in range(1, len(not_read)):
+    if not_read[x] != "s":
+        new_list.append(not_read[x])
 
+    else:
+        if len(new_list) > 2:
+            mc = mc + str(new_list[1::2])
 
+        if len(new_list) > 2:
+            mcl = mcl + str(new_list[2::2])
 
-"""
-try:
-    # cursor.execute(insert_sql, recordTuple)
-    # connection.commit()
-    # cursor.execute(update_sql)
-    # connection.commit()
-    # cursor.execute(delete_sql)
-    # connection.commit()
-    cursor.execute(sql)
-    result = cursor.fetchall()
+        mc = mc.replace("[", "")
+        mc = mc.replace("]", "")
+        mc = mc.replace("'", "")
+        mc = mc.replace(" ", "")
 
-    print(result)
+        mcl = mcl.replace("[", "")
+        mcl = mcl.replace("]", "")
+        mcl = mcl.replace("'", "")
+        mcl = mcl.replace(",", "")
 
-except mysql.Error as error:
-    print(error)
-finally:
-    if connection.is_connected():
-        cursor.close()
-        connection.close()
-        print("MySQL connection is closed!")
-"""
+        mn = new_list[0]
+
+        # update_database(db_counter, mn, mc, mil, mcl)
+        db_counter += 1
+        mcl = ""
+        mc = ""
+        new_list.clear()
+        x += 1
+
