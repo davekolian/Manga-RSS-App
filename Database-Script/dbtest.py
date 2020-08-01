@@ -1,9 +1,8 @@
-import mysql.connector as mysql #import MySqldb
+import mysql.connector as mysql
+#import MySqldb
 from lxml import html
 import requests
 from urllib.request import Request, urlopen
-
-import os
 
 not_read = []
 no_of_manga = 0
@@ -13,17 +12,6 @@ loading = 1
 chapt = []  # list of all recent chapters
 chapters = []  # list of all links to chapters in same order as chapt
 url_counter = 0
-
-
-
-
-def func_create_batch_files(link):
-    f = open("open_manga.bat", "w")
-    code = "start firefox.exe " + link
-    f.write(code)
-    f.close()
-
-    os.system("open_manga.bat")
 
 
 # Function which scrapes the websites to find which chapters have been newly released
@@ -399,7 +387,7 @@ func_get_stuff()
 
 
 counter = 0
-db_counter = 0
+db_counter = 1
 mn = ""
 mc = ""
 mil = ""
@@ -410,21 +398,22 @@ for x in range(len(not_read)):
         not_read[x] = chapter_links[counter]
         counter += 1
 
-print(not_read)
+# print(not_read)
 # print(manga_imgs)
 # print(chapter_links)
+# print(manga_imgs)
 
 new_list = []
 
 
 def update_database(id, name, chapters, img_link, chapter_link):
     connection = mysql.connect(host="sql7.freemysqlhosting.net", database="sql7358070", user="sql7358070",
-                               password="2iyy8UBTtE", )
+                               password="2iyy8UBTtE")
     # db = MySQLdb.connect("sql7.freemysqlhosting.net", "sql7358070", "2iyy8UBTtE", "sql7358070")
 
     sql = "SELECT * FROM mangarssapp"
     insert_sql = """INSERT INTO mangarssapp (rownum, manga_name, manga_chapters, manga_img_link, manga_chs_link) \
-                   VALUES (%s,%s,%s,%s)"""
+                   VALUES (%s, %s, %s, %s, %s)"""
     # update_sql = """UPDATE mangarssapp SET manga_name='bye' WHERE rownum=3"""
     # delete_sql = """DELETE FROM mangarssapp WHERE rownum=1"""
     id = 3
@@ -474,9 +463,12 @@ for x in range(1, len(not_read)):
         mcl = mcl.replace(",", "")
 
         mn = new_list[0]
+        mil = str(manga_imgs[db_counter-1])
 
-        # update_database(db_counter, mn, mc, mil, mcl)
+        update_database(db_counter, mn, mc, mil, mcl)
+        # print(db_counter)
         db_counter += 1
+
         mcl = ""
         mc = ""
         new_list.clear()
