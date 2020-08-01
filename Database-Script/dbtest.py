@@ -2,7 +2,18 @@ import mysql.connector as mysql #import MySqldb
 from lxml import html
 import requests
 from urllib.request import Request, urlopen
-import Database.webParse as wp
+
+import os
+
+not_read = []
+no_of_manga = 0
+manga_imgs = []
+chapter_links = []
+loading = 1
+chapt = []  # list of all recent chapters
+chapters = []  # list of all links to chapters in same order as chapt
+url_counter = 0
+
 
 connection = mysql.connect(host="sql7.freemysqlhosting.net", database="sql7358070", user="sql7358070",
                            password="2iyy8UBTtE",)
@@ -18,7 +29,6 @@ id = 3
 test = "name"
 # recordTuple = (id, "hi", "wee", "wewre")
 cursor = connection.cursor()
-
 
 def func_create_batch_files(link):
     f = open("open_manga.bat", "w")
@@ -396,6 +406,31 @@ def func_get_stuff():
         if " " not in chapters[x]:
             global chapt
             chapt.append(chapters[x])
+
+func_get_stuff()
+# print(not_read) # same as chapters w/o the 's'
+
+
+counter = 0
+db_counter = 0
+mn = ""
+mc = ""
+ml = ""
+
+for x in range(len(not_read)):
+    if "day" in not_read[x] or "hour" in not_read[x] or "min" in not_read[x]:
+        not_read[x] = chapter_links[counter]
+        counter += 1
+
+# print(not_read)
+# print(manga_imgs)
+# print(chapter_links)
+
+new_list = []
+
+for x in range(1, len(not_read)):
+
+
 
 """
 try:
