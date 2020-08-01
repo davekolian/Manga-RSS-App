@@ -2,7 +2,7 @@ import mysql.connector as mysql
 
 from lxml import html
 import requests
-from urllib.request import Request, urlopen
+import time
 
 not_read = []
 no_of_manga = 0
@@ -346,17 +346,6 @@ def func_find_daily_chaps():
         url_counter += 1
 
 
-# Function to download cover image of all manga chapters released | method used to override that a spider is crawling
-def func_find_imgs_manga_active():
-    for x in range(0, no_of_manga):
-        req = Request(manga_imgs[x], headers={'User-Agent': 'Mozilla/5.0'})
-
-        name = str(x) + ".jpg"
-        f = open(name, "wb")
-        f.write(urlopen(req).read())
-        f.close()
-
-
 # Function which gets all details, images, image names, etc.
 def func_get_stuff():
     global chapters
@@ -370,8 +359,6 @@ def func_get_stuff():
             print("\n")
             global no_of_manga
             no_of_manga += 1
-
-    func_find_imgs_manga_active()
 
     # The "s" is added to show a split between each manga
     for item in not_read:
@@ -390,15 +377,31 @@ def func_get_stuff():
             img_counter += 1
 
 
-func_get_stuff()
-# print(not_read) # same as chapters w/o the 's'
-
 mn = ""
 mc = ""
 mil = ""
 mcl = ""
 new_list = []
 db_counter = 1
+
+
+def clear_database():
+    connection = mysql.connect(host="sql7.freemysqlhosting.net", database="sql7358070", user="sql7358070",
+                               password="2iyy8UBTtE")
+
+    sql = "TRUNCATE TABLE mangarssapp"
+
+    cursor = connection.cursor()
+    try:
+        cursor.execute(sql)
+        connection.commit()
+
+    except mysql.Error as error:
+        print(error)
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
 
 
 def update_database(id, name, chapters, img_link, chapter_link):
@@ -427,39 +430,63 @@ def update_database(id, name, chapters, img_link, chapter_link):
             # print("MySQL connection is closed!")
 
 
-for x in range(1, len(not_read)):
-    if not_read[x] != "s":
-        new_list.append(not_read[x])
+while 1:
+    func_get_stuff()
+    print("Get the details")
+    clear_database()
+    print("Cleared")
+    for x in range(1, len(not_read)):
+        if not_read[x] != "s":
+            new_list.append(not_read[x])
 
-    else:
-        if len(new_list) > 2:
-            mc = mc + str(new_list[1::2])
+        else:
+            if len(new_list) > 2:
+                mc = mc + str(new_list[1::2])
 
-        if len(new_list) > 2:
-            mcl = mcl + str(new_list[2::2])
+            if len(new_list) > 2:
+                mcl = mcl + str(new_list[2::2])
 
-        mc = mc.replace("[", "")
-        mc = mc.replace("]", "")
-        mc = mc.replace("'", "")
-        mc = mc.replace(" ", "")
+            mc = mc.replace("[", "")
+            mc = mc.replace("]", "")
+            mc = mc.replace("'", "")
+            mc = mc.replace(" ", "")
 
-        mcl = mcl.replace("[", "")
-        mcl = mcl.replace("]", "")
-        mcl = mcl.replace("'", "")
-        mcl = mcl.replace(",", "")
+            mcl = mcl.replace("[", "")
+            mcl = mcl.replace("]", "")
+            mcl = mcl.replace("'", "")
+            mcl = mcl.replace(",", "")
 
-        mn = new_list[0]
-        mil = str(manga_imgs[db_counter-1])
+            mn = new_list[0]
+            mil = str(manga_imgs[db_counter-1])
 
-        update_database(db_counter, mn, mc, mil, mcl)
-        # print(db_counter)
-        db_counter += 1
+            update_database(db_counter, mn, mc, mil, mcl)
+            # print(db_counter)
+            db_counter += 1
 
-        mcl = ""
-        mc = ""
-        new_list.clear()
-        x += 1
+            mcl = ""
+            mc = ""
+            new_list.clear()
+            x += 1
+    print("Added")
+    print("Sleep")
 
+    not_read = []
+    no_of_manga = 0
+    manga_imgs = []
+    chapter_links = []
+    loading = 1
+    chapt = []  # list of all recent chapters
+    chapters = []  # list of all links to chapters in same order as chapt
+    url_counter = 0
+    img_counter = 0
+    mn = ""
+    mc = ""
+    mil = ""
+    mcl = ""
+    new_list = []
+    db_counter = 1
+
+    time.sleep(30 * 60)
 
 #######################################################
 #                    Learning                         #
