@@ -9,6 +9,7 @@ from urllib.request import Request, urlopen
 import kivy
 kivy.require('1.11.0')
 
+
 from kivy.config import Config
 # Sets Window to: not be resizable, size of 850x1000, not close when 'ESC' key is clicked
 Config.set('graphics', 'resizable', False)
