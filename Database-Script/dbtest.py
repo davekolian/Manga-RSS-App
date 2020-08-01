@@ -1,5 +1,5 @@
 import mysql.connector as mysql
-#import MySqldb
+
 from lxml import html
 import requests
 from urllib.request import Request, urlopen
@@ -12,6 +12,7 @@ loading = 1
 chapt = []  # list of all recent chapters
 chapters = []  # list of all links to chapters in same order as chapt
 url_counter = 0
+img_counter = 0
 
 
 # Function which scrapes the websites to find which chapters have been newly released
@@ -360,6 +361,7 @@ def func_find_imgs_manga_active():
 def func_get_stuff():
     global chapters
     global chapt
+    global img_counter
 
     func_find_daily_chaps()
 
@@ -382,55 +384,39 @@ def func_get_stuff():
             global chapt
             chapt.append(chapters[x])
 
+    for x in range(len(not_read)):
+        if "day" in not_read[x] or "hour" in not_read[x] or "min" in not_read[x]:
+            not_read[x] = chapter_links[img_counter]
+            img_counter += 1
+
+
 func_get_stuff()
 # print(not_read) # same as chapters w/o the 's'
 
-
-counter = 0
-db_counter = 1
 mn = ""
 mc = ""
 mil = ""
 mcl = ""
-
-for x in range(len(not_read)):
-    if "day" in not_read[x] or "hour" in not_read[x] or "min" in not_read[x]:
-        not_read[x] = chapter_links[counter]
-        counter += 1
-
-# print(not_read)
-# print(manga_imgs)
-# print(chapter_links)
-# print(manga_imgs)
-
 new_list = []
+db_counter = 1
 
 
 def update_database(id, name, chapters, img_link, chapter_link):
     connection = mysql.connect(host="sql7.freemysqlhosting.net", database="sql7358070", user="sql7358070",
                                password="2iyy8UBTtE")
-    # db = MySQLdb.connect("sql7.freemysqlhosting.net", "sql7358070", "2iyy8UBTtE", "sql7358070")
 
     sql = "SELECT * FROM mangarssapp"
     insert_sql = """INSERT INTO mangarssapp (rownum, manga_name, manga_chapters, manga_img_link, manga_chs_link) \
                    VALUES (%s, %s, %s, %s, %s)"""
-    # update_sql = """UPDATE mangarssapp SET manga_name='bye' WHERE rownum=3"""
-    # delete_sql = """DELETE FROM mangarssapp WHERE rownum=1"""
-    id = 3
-    test = "name"
-    recordTuple = (id, name, chapters, img_link, chapter_link)
+
+    record_tuple = (id, name, chapters, img_link, chapter_link)
     cursor = connection.cursor()
     try:
-        cursor.execute(insert_sql, recordTuple)
+        cursor.execute(insert_sql, record_tuple)
         connection.commit()
-        # cursor.execute(update_sql)
-        # connection.commit()
-        # cursor.execute(delete_sql)
-        # connection.commit()
         cursor.execute(sql)
-        result = cursor.fetchall()
-
-        print(result)
+        # result = cursor.fetchall()
+        # print(result)
 
     except mysql.Error as error:
         print(error)
@@ -438,7 +424,7 @@ def update_database(id, name, chapters, img_link, chapter_link):
         if connection.is_connected():
             cursor.close()
             connection.close()
-            print("MySQL connection is closed!")
+            # print("MySQL connection is closed!")
 
 
 for x in range(1, len(not_read)):
@@ -474,3 +460,14 @@ for x in range(1, len(not_read)):
         new_list.clear()
         x += 1
 
+
+#######################################################
+#                    Learning                         #
+#######################################################
+
+# import MySqldb
+# db = MySQLdb.connect("sql7.freemysqlhosting.net", "sql7358070", "2iyy8UBTtE", "sql7358070")
+# update_sql = """UPDATE mangarssapp SET manga_name='bye' WHERE rownum=3"""
+# delete_sql = """DELETE FROM mangarssapp WHERE rownum=1"""
+# cursor.execute(update_sql)
+# connection.commit()
