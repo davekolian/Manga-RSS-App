@@ -15,7 +15,6 @@ chapter_links = []
 loading = 1
 chapt = []  # list of all recent chapters
 chapters = []  # list of all links to chapters in same order as chapt
-url_counter = 0
 img_counter = 0
 
 
@@ -25,18 +24,23 @@ def func_find_daily_chaps():
     global manga_imgs
     global chapter_links
 
-
-
     # Mangakakalot
     url_counter = 0
-    url_list = ['https://mangakakalot.com/read-lm7ib158504847850',
-                'https://mangakakalot.com/read-ox3yk158504833790',
-                'https://mangakakalot.com/read-zs6sp158504840280',
-                'https://mangakakalot.com/read-uz2ai158504852768',
-                'https://mangakakalot.com/manga/ow923334',
-                'https://mangakakalot.com/read-ep8pm158504835723',
-                'https://mangakakalot.com/manga/rj922755',
-                'https://mangakakalot.com/read-ro4rv158504853379']
+    url_list = ['https://mangakakalot.com/read-lm7ib158504847850', 'https://mangakakalot.com/read-ox3yk158504833790',
+                'https://mangakakalot.com/read-zs6sp158504840280', 'https://mangakakalot.com/read-uz2ai158504852768',
+                'https://mangakakalot.com/manga/ow923334', 'https://mangakakalot.com/read-ep8pm158504835723',
+                'https://mangakakalot.com/manga/rj922755', 'https://mangakakalot.com/read-ro4rv158504853379',
+                'https://mangakakalot.com/read-ja7yn158504838124', 'https://mangakakalot.com/read-jc2wf158504842343',
+                'https://mangakakalot.com/read-rp1kv158504840628', 'https://mangakakalot.com/read-ie2ho158504839970',
+                'https://mangakakalot.com/read-wx1xd158504840874', 'https://mangakakalot.com/read-me2zp158504851057',
+                'https://mangakakalot.com/read-od1pe158504845657', 'https://mangakakalot.com/read-ku0ah158504845479',
+                'https://mangakakalot.com/read-yp6cp158504846116', 'https://mangakakalot.com/read-ol2fi158504849602',
+                'https://mangakakalot.com/read-sz0gg158504854945', 'https://mangakakalot.com/read-dl7bc158504854888',
+                'https://mangakakalot.com/read-yv2vd158504858458', 'https://mangakakalot.com/read-fv5mg158504856152',
+                'https://mangakakalot.com/read-ml8nb158504854664', 'https://mangakakalot.com/read-yy5mh158504885431',
+                'https://mangakakalot.com/read-ek1hu158504836793', 'https://mangakakalot.com/read-rg7xp158504833047',
+                'https://mangakakalot.com/read-ts3gp158504833220', 'https://mangakakalot.com/read-ny9yj158504835342',
+                'https://mangakakalot.com/read-zg1oh158504842553', 'https://mangakakalot.com/read-vg0sa158504844980']
 
     while url_counter < len(url_list):
         page = requests.get(url_list[url_counter])
@@ -141,7 +145,8 @@ def func_find_daily_chaps():
                 'https://zeroscans.com/comics/55416-record-of-the-war-god',
                 'https://zeroscans.com/comics/133460-yong-heng-zhi-zun',
                 'https://reaperscans.com/comics/915623-god-of-blackfield',
-                'https://reaperscans.com/comics/140270-the-great-mage-returns-after-4000-years']
+                'https://reaperscans.com/comics/140270-the-great-mage-returns-after-4000-years',
+                'https://reaperscans.com/comics/616418-kill-the-hero']
 
     while url_counter < len(url_list):
         page = requests.get(url_list[url_counter])
@@ -259,7 +264,20 @@ def func_find_daily_chaps():
                 'https://manganelo.com/manga/black_clover', 'https://manganelo.com/manga/uaxz925974686',
                 'https://manganelo.com/manga/dnha19771568647794', 'https://manganelo.com/manga/doulou_dalu_manga',
                 'https://manganelo.com/manga/pn918005', 'https://manganelo.com/manga/ad921253',
-                'https://manganelo.com/manga/dz919342', 'https://manganelo.com/manga/wu_dong_qian_kun']
+                'https://manganelo.com/manga/dz919342', 'https://manganelo.com/manga/wu_dong_qian_kun',
+                'https://manganelo.com/manga/fe922634', 'https://manganelo.com/manga/ob922808',
+                'https://manganelo.com/manga/the_wrong_way_to_use_healing_magic',
+                'https://manganelo.com/manga/lv999_no_murabito', 'https://manganelo.com/manga/tn922327',
+                'https://manganelo.com/manga/ha918532',
+                'https://manganelo.com/manga/douluo_dalu_3_the_legend_of_the_dragon_king',
+                'https://manganelo.com/manga/bl921472', 'https://manganelo.com/manga/tn921283',
+                'https://manganelo.com/manga/legend_of_phoenix',
+                'https://manganelo.com/manga/mushoku_tensei_isekai_ittara_honki_dasu',
+                'https://manganelo.com/manga/the_legendary_moonlight_sculptor',
+                'https://manganelo.com/manga/douluo_dalu_ii_jueshui_tangmen', 'https://manganelo.com/manga/dz919342',
+                'https://manganelo.com/manga/ijhr296321559609648', 'https://manganelo.com/manga/kk921357',
+                'https://manganelo.com/manga/the_magic_chef_of_ice_and_fire', 'https://manganelo.com/manga/eg919734',
+                'https://manganelo.com/manga/read_doupo_cangqiong_manga']
 
     while url_counter < len(url_list):
 
@@ -477,7 +495,6 @@ while 1:
     loading = 1
     chapt = []  # list of all recent chapters
     chapters = []  # list of all links to chapters in same order as chapt
-    url_counter = 0
     img_counter = 0
     mn = ""
     mc = ""
