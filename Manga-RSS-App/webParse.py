@@ -165,6 +165,19 @@ class MainGrid(GridLayout):
 
             self.add_widget(BabyGrids(chapter_name, the_chapters, img_name))
 
+        if x + 1 == no_of_manga:
+            all_links_btn = Button(text="Open all chapters!", font_size=20)
+            self.add_widget(all_links_btn)
+            all_links_btn.bind(on_press=self.all_links_func)
+
+    # Function to open all chapters in one Firefox Browser
+    def all_links_func(self, event):
+        link = ""
+        for x in range(no_of_manga):
+            link = link + " " + chapter_links[x]
+
+        func_create_batch_files(link)
+
         # Adding button_list to create layout
         # for x in range(9):
             # self.add_widget(self.button_list[x])
@@ -206,7 +219,7 @@ class MainGrid(GridLayout):
 
             name_chapter_time = []
 
-        if y == 7:
+        if y == no_of_manga - 1:
             all_links_btn = Button(text="Open all chapters!", font_size=20)
             self.add_widget(all_links_btn)
             all_links_btn.bind(on_press=self.all_links_func)
@@ -241,6 +254,7 @@ def remove_images():
     App.get_running_app().stop()
 
 
+# Main App
 class WebParseApp(App):
     def build(self):
         connect_to_database()
@@ -273,11 +287,11 @@ if __name__ == '__main__':
 # i can check whatever i have not read and start counting from today
 # how do i save what i have not read
 # Bug #1: App doesnt start with a batch file
-# Bug #2: No Loading Screen, so users think it crashed (Done more or less, UI still unresponsive but cleaner.)
+# Bug #2: No Loading Screen, so users think it crashed [Fixed] WITH the help of remote MySQL database.
 # Bug #3: If more than 4 updates layout gets messy
 # Bug #4: Manga name came in the place of Chapter number. CAUSE: no space in the manga name (algorithm used) [Fixed]
-# Bug #5: Text for some manga goes out of bound (eg. The Great Mage Returns After 4000 years)
-# Load the manga more effeciently
+# Bug #5: Text for some manga goes out of bound [Fixed]
+# Load the manga more effeciently [Done] WITH the help of remote MySQL database.
 # Change which browser opens the manga
 # Be able to check which manga has been read (in same day/through-out)
 # Need to be able to add manga to the list in a better way
