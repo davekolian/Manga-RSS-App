@@ -1,8 +1,12 @@
-import mysql.connector as mysql
+#####################################################################
+#                All rights reserved to davekolian                  #
+#####################################################################
 
+import mysql.connector as mysql
 from lxml import html
 import requests
 import time
+
 
 not_read = []
 no_of_manga = 0
@@ -385,6 +389,7 @@ new_list = []
 db_counter = 1
 
 
+# Function which connects to my database and clears the table
 def clear_database():
     connection = mysql.connect(host="sql7.freemysqlhosting.net", database="sql7358070", user="sql7358070",
                                password="2iyy8UBTtE")
@@ -404,11 +409,11 @@ def clear_database():
             connection.close()
 
 
+# Function which connects to my database and updates it
 def update_database(id, name, chapters, img_link, chapter_link):
     connection = mysql.connect(host="sql7.freemysqlhosting.net", database="sql7358070", user="sql7358070",
                                password="2iyy8UBTtE")
 
-    sql = "SELECT * FROM mangarssapp"
     insert_sql = """INSERT INTO mangarssapp (rownum, manga_name, manga_chapters, manga_img_link, manga_chs_link) \
                    VALUES (%s, %s, %s, %s, %s)"""
 
@@ -417,9 +422,6 @@ def update_database(id, name, chapters, img_link, chapter_link):
     try:
         cursor.execute(insert_sql, record_tuple)
         connection.commit()
-        cursor.execute(sql)
-        # result = cursor.fetchall()
-        # print(result)
 
     except mysql.Error as error:
         print(error)
@@ -430,11 +432,10 @@ def update_database(id, name, chapters, img_link, chapter_link):
             # print("MySQL connection is closed!")
 
 
+# Main core of the loop to make the program run every 50 mins
 while 1:
     func_get_stuff()
-    print("Get the details")
     clear_database()
-    print("Cleared")
     for x in range(1, len(not_read)):
         if not_read[x] != "s":
             new_list.append(not_read[x])
@@ -467,9 +468,8 @@ while 1:
             mc = ""
             new_list.clear()
             x += 1
-    print("Added")
-    print("Sleep")
 
+    # Resetting all variables to default
     not_read = []
     no_of_manga = 0
     manga_imgs = []
@@ -485,8 +485,10 @@ while 1:
     mcl = ""
     new_list = []
     db_counter = 1
+    # End of Resetting
 
-    time.sleep(30 * 60)
+    # Make the app sleep for 50 mins before restarting
+    time.sleep(50 * 60)
 
 #######################################################
 #                    Learning                         #
