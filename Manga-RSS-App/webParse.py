@@ -9,6 +9,7 @@ from urllib.request import Request, urlopen
 import kivy
 kivy.require('1.11.0')
 
+import time
 
 from kivy.config import Config
 # Sets Window to: not be resizable, size of 850x1000, not close when 'ESC' key is clicked
@@ -28,6 +29,8 @@ from kivy.uix.image import Image
 from kivy.core.window import Window
 from kivy.clock import mainthread
 from functools import partial
+
+import mysql.connector as mysql
 
 # Global Variables
 not_read = []
@@ -49,7 +52,7 @@ def func_create_batch_files(link):
 
     os.system("open_manga.bat")
 
-
+"""
 # Function which scrapes the websites to find which chapters have been newly released
 def func_find_daily_chaps():
     global not_read
@@ -417,20 +420,56 @@ def func_get_stuff():
         if " " not in chapters[x]:
             global chapt
             chapt.append(chapters[x])
+"""
+
+def func_find_imgs_manga_active(img, x):
+    req = Request(img, headers={'User-Agent': 'Mozilla/5.0'})
+
+    name = str(x) + ".jpg"
+    f = open(name, "wb")
+    f.write(urlopen(req).read())
+    f.close()
+
+result = ""
+
+
+def connect_to_database():
+    connection = mysql.connect(host="sql7.freemysqlhosting.net", database="sql7358070", user="sql7358070",
+                               password="2iyy8UBTtE")
+    cursor = connection.cursor()
+
+    sql = "SELECT * FROM mangarssapp"
+
+    try:
+        cursor.execute(sql)
+        # connection.commit()
+        global result
+        result = cursor.fetchall()
+        if result != "":
+            global no_of_manga
+            no_of_manga = len(result)
+
+        # print(result)
+    except mysql.Error as error:
+        print(error)
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
 
 
 # Creates the layout for each grid/manga
 class BabyGrids(FloatLayout):
-    def __init__(self, ch_details, pic_name):
+    def __init__(self, chapter_name, the_chapters, img_name):
         super(BabyGrids, self).__init__()
         global chapt
         global chapter_links
         global url_counter
 
-        img = Image(source=pic_name, allow_stretch=True, keep_ratio=False, pos_hint={'x': 0, 'top': 1})
+        img = Image(source=img_name, allow_stretch=True, keep_ratio=False, pos_hint={'x': 0, 'top': 1})
         self.add_widget(img)
 
-        ch_name = str(ch_details[0])
+        ch_name = str(chapter_name)
         ch_name_words = ch_name.split()
         if len(ch_name_words) >= 6 and 35 < len(ch_name) < 50:
             mid = int(len(ch_name_words) / 2)
@@ -449,25 +488,24 @@ class BabyGrids(FloatLayout):
         cha2 = []
 
         # cha1 will contain values without 's' and '\n' in the format of [name, ch_no, time, ch_no, time, ...]
-        for item in ch_details:
-            if item != "\n":
+        ch_spl = ""
+        if "," in the_chapters:
+            les_words2 = str(the_chapters).split(",")
+            for item in les_words2:
                 cha1.append(item)
+        else:
+            cha1.append(the_chapters)
 
-        # cha2 will contain just the chapter numbers that have been released for EACH chapter
-        for x in range(0, len(cha1)):
-            if x % 2 != 0:
-                cha2.append(cha1[x])
-
-        for x in reversed(range(len(cha2))):
+        for x in reversed(range(len(cha1))):
             a = 1 - ((x + 1) * 0.25)
-            btn = Button(text=chapt[0], pos_hint={'x': a, 'y': 0}, size_hint=(0.25, 0.15),
+            y = len(cha1) - x - 1
+            btn = Button(text=cha1[y], pos_hint={'x': a, 'y': 0}, size_hint=(0.25, 0.15),
                          background_color=(1, 1, 1, 0.9))
             self.add_widget(btn)
             # partial returns a new function with both arguments
             btn.bind(on_press=partial(self.open_chapter, url_counter))
             a -= 0.25
             url_counter += 1
-            chapt.pop(0)
 
     # comment below is used to suppress the 'function may be static' error
     # noinspection PyMethodMayBeStatic
@@ -477,9 +515,9 @@ class BabyGrids(FloatLayout):
 
 # Creates the whole GridLayout for each manga
 class MainGrid(GridLayout):
-    button_list = [Button(disabled=True), Button(disabled=True), Button(disabled=True), Button(disabled=True),
-                   Button(text="Run Manga Search!", font_size=20), Button(disabled=True), Button(disabled=True),
-                   Button(disabled=True), Button(disabled=True)]
+    # button_list = [Button(disabled=True), Button(disabled=True), Button(disabled=True), Button(disabled=True),
+    #               Button(text="Run Manga Search!", font_size=20), Button(disabled=True), Button(disabled=True),
+    #               Button(disabled=True), Button(disabled=True)]
 
     def __init__(self):
         # Initialized a GridLayout where there is a max of 3 columns and we force each row to be a default size of 400px
@@ -487,13 +525,32 @@ class MainGrid(GridLayout):
                                        height=self.minimum_height, size_hint=(1, None))
         self.bind(minimum_height=self.setter('height'))
 
+        for x in range(no_of_manga):
+            the_links = result[x][-1]
+            if " " in the_links:
+                les_words = the_links.split()
+                for item in les_words:
+                    chapter_links.append(item)
+            else:
+                chapter_links.append(the_links)
+
+        for x in range(no_of_manga):
+            img_link = result[x][-2]
+            chapter_name = result[x][1]
+            the_chapters = result[x][2]
+            func_find_imgs_manga_active(img_link, x)
+
+            img_name = str(x) + ".jpg"
+
+            self.add_widget(BabyGrids(chapter_name, the_chapters, img_name))
+
         # Adding button_list to create layout
-        for x in range(9):
-            self.add_widget(self.button_list[x])
+        # for x in range(9):
+            # self.add_widget(self.button_list[x])
 
         # Binding the only clickable button to function
-        self.button_list[4].bind(on_press=self.update_btn_text)
-
+        # self.button_list[4].bind(on_press=self.update_btn_text)
+"""
     def update_btn_text(self, event):
         self.button_list[4].text = "Please wait!"
         self.button_list[4].font_size = 30
@@ -539,6 +596,8 @@ class MainGrid(GridLayout):
             link = link + " " + chapter_links[x]
 
         func_create_batch_files(link)
+"""
+
 
 # Enables us to scroll the content
 class ScrollBarView(ScrollView):
@@ -563,6 +622,7 @@ def remove_images():
 
 class WebParseApp(App):
     def build(self):
+        connect_to_database()
         return ScrollBarView()
 
     # Calls function to remove all the pictures downloaded when 'X' is clicked

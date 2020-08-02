@@ -487,8 +487,8 @@ while 1:
     db_counter = 1
     # End of Resetting
 
-    # Make the app sleep for 50 mins before restarting
-    time.sleep(50 * 60)
+    # Make the app sleep for 30 mins before restarting
+    time.sleep(30 * 60)
 
 #######################################################
 #                    Learning                         #
