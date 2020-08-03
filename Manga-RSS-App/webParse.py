@@ -37,11 +37,14 @@ no_of_manga = 0
 chapter_links = []
 url_counter = 0
 result = ""
+pwd = "D:\Documents\GitHub\Manga-RSS-App\Manga-RSS-App"
+# pwd is hardcoded to the directory of the webParse.py file
 
 
 # Function which creates a batch file to open the manga chapter in my browser of choice
 def func_create_batch_files(link):
-    f = open("open_manga.bat", "w")
+    file_name = pwd + "\open_manga.bat"
+    f = open(file_name, "w")
     code = "start firefox.exe " + link
     f.write(code)
     f.close()
@@ -50,11 +53,13 @@ def func_create_batch_files(link):
 
 
 # Function to download cover image of all manga chapters released | method used to override that a spider is crawling
-def func_find_imgs_manga_active(img, x):
-    req = Request(img, headers={'User-Agent': 'Mozilla/5.0'})
+def func_find_imgs_manga_active(img_link, x):
+    req = Request(img_link, headers={'User-Agent': 'Mozilla/5.0'})
 
     name = str(x) + ".jpg"
-    f = open(name, "wb")
+    file_name = pwd + "\\" + name
+    print(file_name)
+    f = open(file_name, "wb")
     f.write(urlopen(req).read())
     f.close()
 
@@ -254,7 +259,7 @@ class ScrollBarView(ScrollView):
 # Function which removes pictures if downloaded
 def remove_images():
     for x in range(no_of_manga):
-        filename = str(x) + ".jpg"
+        filename = pwd + "\\" + str(x) + ".jpg"
         if os.path.exists(filename):
             os.remove(filename)
 
@@ -296,7 +301,7 @@ if __name__ == '__main__':
 
 # i can check whatever i have not read and start counting from today
 # how do i save what i have not read
-# Bug #1: App doesnt start with a batch file
+# Bug #1: App doesnt start with a batch file [Fixed] WITH hardcoding the cwd of the webParse.py before each file
 # Bug #2: No Loading Screen, so users think it crashed [Fixed] WITH the help of remote MySQL database.
 # Bug #3: If more than 4 updates layout gets messy [Fixed]
 # Bug #4: Manga name came in the place of Chapter number. CAUSE: no space in the manga name (algorithm used) [Fixed]
