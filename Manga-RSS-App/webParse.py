@@ -2,14 +2,14 @@
 #                All rights reserved to davekolian                  #
 #####################################################################
 
-from lxml import html
-import requests
+# from lxml import html
+# import requests
 from urllib.request import Request, urlopen
 
 import kivy
 kivy.require('1.11.0')
 
-import time
+# import time
 
 from kivy.config import Config
 # Sets Window to: not be resizable, size of 850x1000, not close when 'ESC' key is clicked
@@ -27,7 +27,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.core.window import Window
-from kivy.clock import mainthread
+# from kivy.clock import mainthread
 from functools import partial
 
 import mysql.connector as mysql
@@ -119,14 +119,23 @@ class BabyGrids(FloatLayout):
 
         for x in reversed(range(len(cha1))):
             a = 1 - ((x + 1) * 0.25)
+            if a < 0:
+                a += int(x / 4)
+            b = int(x / 4) * (3 / 20)
             y = len(cha1) - x - 1
-            btn = Button(text=cha1[y], pos_hint={'x': a, 'y': 0}, size_hint=(0.25, 0.15),
+            # print("Chapter: " + cha1[y])
+            # print(str(a) + " " + str(y))
+
+            btn = Button(text=cha1[y], pos_hint={'x': a, 'y': b}, size_hint=(0.25, 0.15),
                          background_color=(1, 1, 1, 0.9))
             self.add_widget(btn)
             # partial returns a new function with both arguments
             btn.bind(on_press=partial(self.open_chapter, url_counter))
             a -= 0.25
             url_counter += 1
+
+
+
 
     # comment below is used to suppress the 'function may be static' error
     # noinspection PyMethodMayBeStatic
@@ -237,7 +246,8 @@ class MainGrid(GridLayout):
 class ScrollBarView(ScrollView):
     def __init__(self, **kwargs):
         # Created ScrollView which allows us to scroll only in the y direction and set it using a scroll bar
-        super(ScrollBarView, self).__init__(do_scroll_x="False", do_scroll_y="True", size=self.size, scroll_type=['bars'])
+        super(ScrollBarView, self).__init__(do_scroll_x="False", do_scroll_y="True", size=self.size,
+                                            scroll_type=['bars', 'content'])
         self.add_widget(MainGrid())
 
 
@@ -288,7 +298,7 @@ if __name__ == '__main__':
 # how do i save what i have not read
 # Bug #1: App doesnt start with a batch file
 # Bug #2: No Loading Screen, so users think it crashed [Fixed] WITH the help of remote MySQL database.
-# Bug #3: If more than 4 updates layout gets messy
+# Bug #3: If more than 4 updates layout gets messy [Fixed]
 # Bug #4: Manga name came in the place of Chapter number. CAUSE: no space in the manga name (algorithm used) [Fixed]
 # Bug #5: Text for some manga goes out of bound [Fixed]
 # Load the manga more effeciently [Done] WITH the help of remote MySQL database.
