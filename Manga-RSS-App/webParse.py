@@ -258,9 +258,10 @@ def remove_images():
         filename = pwd + "\\" + str(x) + ".jpg"
         if os.path.exists(filename):
             os.remove(filename)
-
-    if os.path.exists(filename):
-        os.remove(filename)
+    
+    manga_filename = pwd + "\\" + "open_manga.bat"
+    if os.path.exists(manga_filename):
+        os.remove(manga_filename)
 
     App.get_running_app().stop()
 
