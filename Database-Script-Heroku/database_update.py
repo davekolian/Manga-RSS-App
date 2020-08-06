@@ -73,7 +73,7 @@ def func_find_daily_chaps():
                 chap_clean.append(str(chap[x][start_chapter:end_line]).replace("Chapter ", ""))
             else:
                 chap_clean.append(str(chap[x][start_chapter:]).replace("Chapter ", ""))
-
+        """
         # Cleans and organizes the data to be in a cleaner form
         if views[0] == '0':
             start = 0
@@ -88,42 +88,43 @@ def func_find_daily_chaps():
                 views.pop(x)
                 chap.pop(x)
         # End of the cleaning
+        """
 
-        for x in range(0, len(views)):
-            if "day" in views[x] or "days" in views[x]:
-                if int(str(views[x][0:1])) < 2:
+        for x in range(0, len(times)):
+            if "day" in times[x] or "days" in times[x]:
+                if int(str(times[x][0:1])) < 2:
                     not_read.append("s")
                     not_read.append(manga_clean)
                     manga_imgs.append(imgs_srcs[0])
                     break
-            elif "hour" in views[x] or "hours" in views[x]:
-                if int(str(views[x][0:2])) < 24:
+            elif "hour" in times[x] or "hours" in times[x]:
+                if int(str(times[x][0:2])) < 24:
                     not_read.append("s")
                     not_read.append(manga_clean)
                     manga_imgs.append(imgs_srcs[0])
                     break
-            elif "mins" in views[x] or "min" in views[x] or "minutes" in views[x] or "minute" in views[x]:
-                if int(str(views[x][0:1])) < 60:
+            elif "mins" in times[x] or "min" in times[x] or "minutes" in times[x] or "minute" in times[x]:
+                if int(str(times[x][0:1])) < 60:
                     not_read.append("s")
                     not_read.append(manga_clean)
                     manga_imgs.append(imgs_srcs[0])
                     break
 
-        for x in range(0, len(views)):
-            if "day" in views[x] or "days" in views[x]:
-                if int(str(views[x][0:1])) < 2:
+        for x in range(0, len(times)):
+            if "day" in times[x] or "days" in times[x]:
+                if int(str(times[x][0:1])) < 2:
                     not_read.append(chap_clean[x])
-                    not_read.append(views[x])
+                    not_read.append(times[x])
                     chapter_links.append(links[x])
-            elif "hour" in views[x] or "hours" in views[x]:
-                if int(str(views[x][0:2])) < 24:
+            elif "hour" in times[x] or "hours" in times[x]:
+                if int(str(times[x][0:2])) < 24:
                     not_read.append(chap_clean[x])
-                    not_read.append(views[x])
+                    not_read.append(times[x])
                     chapter_links.append(links[x])
-            elif "mins" in views[x] or "min" in views[x] or "minutes" in views[x] or "minute" in views[x]:
-                if int(str(views[x][0:1])) < 60:
+            elif "mins" in times[x] or "min" in times[x] or "minutes" in times[x] or "minute" in times[x]:
+                if int(str(times[x][0:1])) < 60:
                     not_read.append(chap_clean[x])
-                    not_read.append(views[x])
+                    not_read.append(times[x])
                     chapter_links.append(links[x])
 
         url_counter += 1

@@ -138,9 +138,6 @@ class BabyGrids(FloatLayout):
             a -= 0.25
             url_counter += 1
 
-
-
-
     # comment below is used to suppress the 'function may be static' error
     # noinspection PyMethodMayBeStatic
     def open_chapter(self, index, instance):
