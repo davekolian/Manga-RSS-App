@@ -27,7 +27,7 @@ def func_find_daily_chaps():
     # Mangakakalot
     url_counter = 0
     url_list = ['https://mangakakalot.com/read-lm7ib158504847850', 'https://mangakakalot.com/read-ox3yk158504833790',
-                'https://mangakakalot.com/read-zs6sp158504840280', 'https://mangakakalot.com/read-uz2ai158504852768',
+                'https://mangakakalot.com/read-zs6sp158504840280',
                 'https://mangakakalot.com/manga/ow923334', 'https://mangakakalot.com/read-ep8pm158504835723',
                 'https://mangakakalot.com/manga/rj922755', 'https://mangakakalot.com/read-ro4rv158504853379',
                 'https://mangakakalot.com/read-ja7yn158504838124', 'https://mangakakalot.com/read-jc2wf158504842343',
@@ -277,7 +277,7 @@ def func_find_daily_chaps():
                 'https://manganelo.com/manga/douluo_dalu_ii_jueshui_tangmen', 'https://manganelo.com/manga/dz919342',
                 'https://manganelo.com/manga/ijhr296321559609648', 'https://manganelo.com/manga/kk921357',
                 'https://manganelo.com/manga/the_magic_chef_of_ice_and_fire', 'https://manganelo.com/manga/eg919734',
-                'https://manganelo.com/manga/read_doupo_cangqiong_manga']
+                'https://manganelo.com/manga/read_doupo_cangqiong_manga', 'https://manganelo.com/manga/ln918826']
 
     while url_counter < len(url_list):
 
@@ -373,14 +373,20 @@ def func_get_stuff():
     global chapters
     global chapt
     global img_counter
+    global no_of_manga
+    global not_read
 
     func_find_daily_chaps()
 
+    not_read.append("s")
+
     for item in not_read:
         if str(item) == "s":
-            print("\n")
             global no_of_manga
             no_of_manga += 1
+
+    # Added this line because there are two more 's' than the number of manga
+    no_of_manga -= 2
 
     # The "s" is added to show a split between each manga
     for item in not_read:
@@ -394,7 +400,8 @@ def func_get_stuff():
             chapt.append(chapters[x])
 
     for x in range(len(not_read)):
-        if "day" in not_read[x] or "hour" in not_read[x] or "min" in not_read[x]:
+        if "day ago" in not_read[x] or "hour ago" in not_read[x] or "min ago" in not_read[x] or \
+                "days ago" in not_read[x] or "hours ago" in not_read[x] or "mins ago" in not_read[x]:
             not_read[x] = chapter_links[img_counter]
             img_counter += 1
 
@@ -450,20 +457,23 @@ def update_database(id, name, chapters, img_link, chapter_link):
             # print("MySQL connection is closed!")
 
 
-# Main core of the loop to make the program run every 50 mins
+# Main core of the loop to make the program run every 30 mins
 while 1:
     func_get_stuff()
     clear_database()
+    print(not_read)
     for x in range(1, len(not_read)):
-        if not_read[x] != "s":
+        if not_read[x] != 's':
             new_list.append(not_read[x])
-
+        # 's' at the end of the manga so we process the data for ONE manga and update
         else:
             if len(new_list) > 2:
                 mc = mc + str(new_list[1::2])
 
             if len(new_list) > 2:
                 mcl = mcl + str(new_list[2::2])
+
+            print(new_list)
 
             mc = mc.replace("[", "")
             mc = mc.replace("]", "")

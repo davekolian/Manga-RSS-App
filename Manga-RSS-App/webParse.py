@@ -49,7 +49,7 @@ def func_create_batch_files(link):
     f.write(code)
     f.close()
 
-    os.system("open_manga.bat")
+    os.system(file_name)
 
 
 # Function to download cover image of all manga chapters released | method used to override that a spider is crawling
@@ -58,7 +58,6 @@ def func_find_imgs_manga_active(img_link, x):
 
     name = str(x) + ".jpg"
     file_name = pwd + "\\" + name
-    print(file_name)
     f = open(file_name, "wb")
     f.write(urlopen(req).read())
     f.close()
@@ -263,8 +262,8 @@ def remove_images():
         if os.path.exists(filename):
             os.remove(filename)
 
-    if os.path.exists("open_manga.bat"):
-        os.remove("open_manga.bat")
+    if os.path.exists(filename):
+        os.remove(filename)
 
     App.get_running_app().stop()
 
@@ -306,6 +305,7 @@ if __name__ == '__main__':
 # Bug #3: If more than 4 updates layout gets messy [Fixed]
 # Bug #4: Manga name came in the place of Chapter number. CAUSE: no space in the manga name (algorithm used) [Fixed]
 # Bug #5: Text for some manga goes out of bound [Fixed]
+# Bug #6: [Not certain] Make a fix if more than 8/12 chapters get updated in a go
 # Load the manga more effeciently [Done] WITH the help of remote MySQL database.
 # Change which browser opens the manga
 # Be able to check which manga has been read (in same day/through-out)
