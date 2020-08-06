@@ -461,7 +461,6 @@ def update_database(id, name, chapters, img_link, chapter_link):
 while 1:
     func_get_stuff()
     clear_database()
-    print(not_read)
     for x in range(1, len(not_read)):
         if not_read[x] != 's':
             new_list.append(not_read[x])
@@ -472,8 +471,6 @@ while 1:
 
             if len(new_list) > 2:
                 mcl = mcl + str(new_list[2::2])
-
-            print(new_list)
 
             mc = mc.replace("[", "")
             mc = mc.replace("]", "")
