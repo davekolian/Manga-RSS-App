@@ -65,8 +65,8 @@ def func_find_imgs_manga_active(img_link, x):
 
 # Function to connect to my database and read the tuples in the table
 def connect_to_database():
-    connection = mysql.connect(host="sql7.freemysqlhosting.net", database="sql7358070", user="sql7358070",
-                               password="2iyy8UBTtE")
+    connection = mysql.connect(host="sql7.freemysqlhosting.net", database="sql7359480", user="sql7359480",
+                               password="KJk8F3MUYD")
     cursor = connection.cursor()
 
     sql = "SELECT * FROM mangarssapp"
