@@ -27,7 +27,7 @@ def func_find_daily_chaps():
     # Mangakakalot
     url_counter = 0
     url_list = ['https://mangakakalot.com/read-lm7ib158504847850', 'https://mangakakalot.com/read-ox3yk158504833790',
-                'https://mangakakalot.com/read-zs6sp158504840280',
+                'https://mangakakalot.com/read-zs6sp158504840280', 'https://mangakakalot.com/read-ul6pf158504868718',
                 'https://mangakakalot.com/manga/ow923334', 'https://mangakakalot.com/read-ep8pm158504835723',
                 'https://mangakakalot.com/manga/rj922755', 'https://mangakakalot.com/read-ro4rv158504853379',
                 'https://mangakakalot.com/read-ja7yn158504838124', 'https://mangakakalot.com/read-jc2wf158504842343',
@@ -70,9 +70,11 @@ def func_find_daily_chaps():
             start_chapter = chap[x].find("Chapter")
             if ":" in chap[x]:
                 end_line = chap[x].find(":")
-                chap_clean.append(str(chap[x][start_chapter:end_line]).replace("Chapter ", ""))
+                chap_clean.append(
+                    str(chap[x][start_chapter:end_line]).replace("Chapter ", ""))
             else:
-                chap_clean.append(str(chap[x][start_chapter:]).replace("Chapter ", ""))
+                chap_clean.append(
+                    str(chap[x][start_chapter:]).replace("Chapter ", ""))
         """
         # Cleans and organizes the data to be in a cleaner form
         if views[0] == '0':
@@ -174,9 +176,11 @@ def func_find_daily_chaps():
             start_chapter = chap[x].find("Chapter")
             if ":" in chap[x]:
                 end_line = chap[x].find(":")
-                chap_clean.append(str(chap[x][start_chapter:end_line]).replace("Chapter ", ""))
+                chap_clean.append(
+                    str(chap[x][start_chapter:end_line]).replace("Chapter ", ""))
             else:
-                chap_clean.append(str(chap[x][start_chapter:]).replace("Chapter ", ""))
+                chap_clean.append(
+                    str(chap[x][start_chapter:]).replace("Chapter ", ""))
 
         for x in range(0, len(chap_clean)):
             if " " in chap_clean[x]:
@@ -196,13 +200,16 @@ def func_find_daily_chaps():
                     not_read.append("s")
                     not_read.append(manga_clean)
                     if "leviatan" in url_list[url_counter]:
-                        imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://leviatanscans.com")
+                        imgs_srcs = str(imgs_srcs[0]).replace(
+                            "background-image:url(", "https://leviatanscans.com")
                         imgs_srcs = imgs_srcs.replace(")", "")
                     elif "reaper" in url_list[url_counter]:
-                        imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://reaperscans.com")
+                        imgs_srcs = str(imgs_srcs[0]).replace(
+                            "background-image:url(", "https://reaperscans.com")
                         imgs_srcs = imgs_srcs.replace(")", "")
                     else:
-                        imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://zeroscans.com")
+                        imgs_srcs = str(imgs_srcs[0]).replace(
+                            "background-image:url(", "https://zeroscans.com")
                         imgs_srcs = imgs_srcs.replace(")", "")
                     manga_imgs.append(imgs_srcs)
                     break
@@ -211,13 +218,16 @@ def func_find_daily_chaps():
                     not_read.append("s")
                     not_read.append(manga_clean)
                     if "leviatan" in url_list[url_counter]:
-                        imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://leviatanscans.com")
+                        imgs_srcs = str(imgs_srcs[0]).replace(
+                            "background-image:url(", "https://leviatanscans.com")
                         imgs_srcs = imgs_srcs.replace(")", "")
                     elif "reaper" in url_list[url_counter]:
-                        imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://reaperscans.com")
+                        imgs_srcs = str(imgs_srcs[0]).replace(
+                            "background-image:url(", "https://reaperscans.com")
                         imgs_srcs = imgs_srcs.replace(")", "")
                     else:
-                        imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://zeroscans.com")
+                        imgs_srcs = str(imgs_srcs[0]).replace(
+                            "background-image:url(", "https://zeroscans.com")
                         imgs_srcs = imgs_srcs.replace(")", "")
                     manga_imgs.append(imgs_srcs)
                     break
@@ -226,13 +236,16 @@ def func_find_daily_chaps():
                     not_read.append("s")
                     not_read.append(manga_clean)
                     if "leviatan" in url_list[url_counter]:
-                        imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://leviatanscans.com")
+                        imgs_srcs = str(imgs_srcs[0]).replace(
+                            "background-image:url(", "https://leviatanscans.com")
                         imgs_srcs = imgs_srcs.replace(")", "")
                     elif "reaper" in url_list[url_counter]:
-                        imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://reaperscans.com")
+                        imgs_srcs = str(imgs_srcs[0]).replace(
+                            "background-image:url(", "https://reaperscans.com")
                         imgs_srcs = imgs_srcs.replace(")", "")
                     else:
-                        imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://zeroscans.com")
+                        imgs_srcs = str(imgs_srcs[0]).replace(
+                            "background-image:url(", "https://zeroscans.com")
                         imgs_srcs = imgs_srcs.replace(")", "")
                     manga_imgs.append(imgs_srcs)
                     break
@@ -269,10 +282,10 @@ def func_find_daily_chaps():
                 'https://manganelo.com/manga/fe922634', 'https://manganelo.com/manga/ob922808',
                 'https://manganelo.com/manga/the_wrong_way_to_use_healing_magic',
                 'https://manganelo.com/manga/lv999_no_murabito', 'https://manganelo.com/manga/tn922327',
-                'https://manganelo.com/manga/ha918532',
+                'https://manganelo.com/manga/ha918532', 'https://manganelo.com/manga/ff919945',
                 'https://manganelo.com/manga/douluo_dalu_3_the_legend_of_the_dragon_king',
                 'https://manganelo.com/manga/bl921472', 'https://manganelo.com/manga/tn921283',
-                'https://manganelo.com/manga/legend_of_phoenix',
+                'https://manganelo.com/manga/legend_of_phoenix', 'https://manganelo.com/manga/qg918612',
                 'https://manganelo.com/manga/mushoku_tensei_isekai_ittara_honki_dasu',
                 'https://manganelo.com/manga/the_legendary_moonlight_sculptor',
                 'https://manganelo.com/manga/douluo_dalu_ii_jueshui_tangmen', 'https://manganelo.com/manga/dz919342',
@@ -308,20 +321,23 @@ def func_find_daily_chaps():
 
                 if ":" in chap[x]:
                     end_line = chap[x].find(":")
-                    chap_no = str(chap[x][start_chapter:end_line]).replace("Chapter", "")
+                    chap_no = str(chap[x][start_chapter:end_line]).replace(
+                        "Chapter", "")
                     if " " in chap_no:
                         chap_clean.append(chap_no.replace(" ", ""))
                     else:
                         chap_clean.append("SC")
                 elif " -" in chap[x]:
                     end_line = chap[x].find(" -")
-                    chap_no = str(chap[x][start_chapter:end_line]).replace("Chapter", "")
+                    chap_no = str(chap[x][start_chapter:end_line]).replace(
+                        "Chapter", "")
                     if " " in chap_no:
                         chap_clean.append(chap_no.replace(" ", ""))
                     else:
                         chap_clean.append("SC")
                 else:
-                    chap_no = str(chap[x][start_chapter:]).replace("Chapter", "")
+                    chap_no = str(chap[x][start_chapter:]
+                                  ).replace("Chapter", "")
                     if " " in chap_no:
                         chap_clean.append(chap_no.replace(" ", ""))
                     else:
@@ -417,8 +433,8 @@ db_counter = 1
 
 # Function which connects to my database and clears the table
 def clear_database():
-    connection = mysql.connect(host="sql7.freemysqlhosting.net", database="sql7358070", user="sql7358070",
-                               password="2iyy8UBTtE")
+    connection = mysql.connect(host="sql7.freemysqlhosting.net", database="sql7359480", user="sql7359480",
+                               password="KJk8F3MUYD")
 
     sql = "TRUNCATE TABLE mangarssapp"
 
@@ -437,8 +453,8 @@ def clear_database():
 
 # Function which connects to my database and updates it
 def update_database(id, name, chapters, img_link, chapter_link):
-    connection = mysql.connect(host="sql7.freemysqlhosting.net", database="sql7358070", user="sql7358070",
-                               password="2iyy8UBTtE")
+    connection = mysql.connect(host="sql7.freemysqlhosting.net", database="sql7359480", user="sql7359480",
+                               password="KJk8F3MUYD")
 
     insert_sql = """INSERT INTO mangarssapp (rownum, manga_name, manga_chapters, manga_img_link, manga_chs_link) \
                    VALUES (%s, %s, %s, %s, %s)"""
