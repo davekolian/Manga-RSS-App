@@ -425,6 +425,10 @@ def func_get_stuff():
                 "minutes ago" in not_read[x] or "minute ago" in not_read[x]:
             not_read[x] = chapter_links[img_counter]
             img_counter += 1
+        if "“" in not_read[x]:
+            not_read[x] = str(not_read[x]).replace("“", "\"")
+        if "”" in not_read[x]:
+            not_read[x] = str(not_read[x]).replace("”", "\"")
 
 
 mn = ""
