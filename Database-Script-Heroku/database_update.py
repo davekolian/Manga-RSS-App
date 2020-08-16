@@ -40,7 +40,9 @@ def func_find_daily_chaps():
                 'https://mangakakalot.com/read-ml8nb158504854664', 'https://mangakakalot.com/read-yy5mh158504885431',
                 'https://mangakakalot.com/read-ek1hu158504836793', 'https://mangakakalot.com/read-rg7xp158504833047',
                 'https://mangakakalot.com/read-ts3gp158504833220', 'https://mangakakalot.com/read-ny9yj158504835342',
-                'https://mangakakalot.com/read-zg1oh158504842553', 'https://mangakakalot.com/read-vg0sa158504844980']
+                'https://mangakakalot.com/read-zg1oh158504842553', 'https://mangakakalot.com/read-vg0sa158504844980',
+                'https://mangakakalot.com/read-oh1gv158504907893', 'https://mangakakalot.com/read-gj8eg158504836414',
+                'https://mangakakalot.com/read-jb3vb158504854796', 'https://mangakakalot.com/chapter/wo923110/chapter_16']
 
     while url_counter < len(url_list):
         page = requests.get(url_list[url_counter])
@@ -144,7 +146,6 @@ def func_find_daily_chaps():
                 'https://leviatanscans.com/comics/11268-survival-story-of-a-sword-king-in-a-fantasy-world',
                 'https://leviatanscans.com/comics/337225-the-rebirth-of-the-demon-god',
                 'https://leviatanscans.com/comics/524614-rebirth-of-an-8-circled-mage/',
-                'https://zeroscans.com/comics/204586-omniscient-readers-point-of-view',
                 'https://zeroscans.com/comics/55416-record-of-the-war-god',
                 'https://zeroscans.com/comics/133460-yong-heng-zhi-zun',
                 'https://reaperscans.com/comics/915623-god-of-blackfield',
@@ -291,7 +292,9 @@ def func_find_daily_chaps():
                 'https://manganelo.com/manga/douluo_dalu_ii_jueshui_tangmen', 'https://manganelo.com/manga/dz919342',
                 'https://manganelo.com/manga/ijhr296321559609648', 'https://manganelo.com/manga/kk921357',
                 'https://manganelo.com/manga/the_magic_chef_of_ice_and_fire', 'https://manganelo.com/manga/eg919734',
-                'https://manganelo.com/manga/read_doupo_cangqiong_manga', 'https://manganelo.com/manga/ln918826']
+                'https://manganelo.com/manga/read_doupo_cangqiong_manga', 'https://manganelo.com/manga/ln918826',
+                'https://manganelo.com/manga/bb922866', 'https://manganelo.com/manga/pe922745',
+                'https://manganelo.com/manga/yrlq217991556843654']
 
     while url_counter < len(url_list):
 
@@ -418,7 +421,8 @@ def func_get_stuff():
 
     for x in range(len(not_read)):
         if "day ago" in not_read[x] or "hour ago" in not_read[x] or "min ago" in not_read[x] or \
-                "days ago" in not_read[x] or "hours ago" in not_read[x] or "mins ago" in not_read[x]:
+                "days ago" in not_read[x] or "hours ago" in not_read[x] or "mins ago" in not_read[x] or \
+                "minutes ago" in not_read[x] or "minute ago" in not_read[x]:
             not_read[x] = chapter_links[img_counter]
             img_counter += 1
 
