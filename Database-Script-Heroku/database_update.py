@@ -43,7 +43,10 @@ def func_find_daily_chaps():
                 'https://mangakakalot.com/read-zg1oh158504842553', 'https://mangakakalot.com/read-vg0sa158504844980',
                 'https://mangakakalot.com/read-oh1gv158504907893', 'https://mangakakalot.com/read-gj8eg158504836414',
                 'https://mangakakalot.com/read-jb3vb158504854796', 'https://mangakakalot.com/manga/wo923110',
-                'https://mangakakalot.com/read-jm4cz158504894339']
+                'https://mangakakalot.com/read-jm4cz158504894339', 'https://mangakakalot.com/read-tv7mr158504845382',
+                'https://mangakakalot.com/read-oe6uc158504836571', 'https://mangakakalot.com/read-mo5of158504931270',
+                'https://mangakakalot.com/manga/ur923338', 'https://mangakakalot.com/read-kh6ab158504854282',
+                'https://mangakakalot.com/read-ex1hg158504833817']
 
     while url_counter < len(url_list):
         page = requests.get(url_list[url_counter])
@@ -295,7 +298,7 @@ def func_find_daily_chaps():
                 'https://manganelo.com/manga/the_magic_chef_of_ice_and_fire', 'https://manganelo.com/manga/eg919734',
                 'https://manganelo.com/manga/read_doupo_cangqiong_manga', 'https://manganelo.com/manga/ln918826',
                 'https://manganelo.com/manga/bb922866', 'https://manganelo.com/manga/pe922745',
-                'https://manganelo.com/manga/yrlq217991556843654']
+                'https://manganelo.com/manga/yrlq217991556843654', 'https://manganelo.com/manga/the_great_ruler']
 
     while url_counter < len(url_list):
 
