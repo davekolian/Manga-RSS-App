@@ -46,7 +46,8 @@ def func_find_daily_chaps():
                 'https://mangakakalot.com/read-jm4cz158504894339', 'https://mangakakalot.com/read-tv7mr158504845382',
                 'https://mangakakalot.com/read-oe6uc158504836571', 'https://mangakakalot.com/read-mo5of158504931270',
                 'https://mangakakalot.com/manga/ur923338', 'https://mangakakalot.com/read-kh6ab158504854282',
-                'https://mangakakalot.com/read-ex1hg158504833817']
+                'https://mangakakalot.com/read-ex1hg158504833817', 'https://mangakakalot.com/read-rc4ti158504848110',
+                'https://mangakakalot.com/read-cq3sf158504857171']
 
     while url_counter < len(url_list):
         page = requests.get(url_list[url_counter])
@@ -141,13 +142,8 @@ def func_find_daily_chaps():
 
     url_counter = 0
     url_list = ['https://leviatanscans.com/comics/i-am-the-sorcerer-king/',
-                'https://leviatanscans.com/comics/chronicles-of-heavenly-demon',
-                'https://leviatanscans.com/comics/157887-a-returners-magic-should-be-special/',
-                'https://leviatanscans.com/comics/866673-the-descent-of-the-demonic-master',
                 'https://leviatanscans.com/comics/209074-slave-b',
                 'https://leviatanscans.com/comics/656006-auto-hunting',
-                'https://leviatanscans.com/comics/246282-medical-return',
-                'https://leviatanscans.com/comics/11268-survival-story-of-a-sword-king-in-a-fantasy-world',
                 'https://leviatanscans.com/comics/337225-the-rebirth-of-the-demon-god',
                 'https://leviatanscans.com/comics/524614-rebirth-of-an-8-circled-mage/',
                 'https://zeroscans.com/comics/55416-record-of-the-war-god',
@@ -298,7 +294,10 @@ def func_find_daily_chaps():
                 'https://manganelo.com/manga/the_magic_chef_of_ice_and_fire', 'https://manganelo.com/manga/eg919734',
                 'https://manganelo.com/manga/read_doupo_cangqiong_manga', 'https://manganelo.com/manga/ln918826',
                 'https://manganelo.com/manga/bb922866', 'https://manganelo.com/manga/pe922745',
-                'https://manganelo.com/manga/yrlq217991556843654', 'https://manganelo.com/manga/the_great_ruler']
+                'https://manganelo.com/manga/yrlq217991556843654', 'https://manganelo.com/manga/the_great_ruler',
+                'https://manganelo.com/manga/be922652', 'https://manganelo.com/manga/ra921707',
+                'https://manganelo.com/manga/ix921032', 'https://manganelo.com/manga/ir920623',
+                'https://manganelo.com/manga/fk918347', 'https://manganelo.com/manga/zu917722']
 
     while url_counter < len(url_list):
 
