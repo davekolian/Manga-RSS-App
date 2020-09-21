@@ -146,6 +146,7 @@ def func_find_daily_chaps():
                 'https://leviatanscans.com/comics/656006-auto-hunting',
                 'https://leviatanscans.com/comics/337225-the-rebirth-of-the-demon-god',
                 'https://leviatanscans.com/comics/524614-rebirth-of-an-8-circled-mage/',
+                'https://leviatanscans.com/comics/68254-legend-of-the-northern-blade',
                 'https://zeroscans.com/comics/55416-record-of-the-war-god',
                 'https://zeroscans.com/comics/133460-yong-heng-zhi-zun',
                 'https://reaperscans.com/comics/915623-god-of-blackfield',
@@ -280,7 +281,7 @@ def func_find_daily_chaps():
                 'https://manganelo.com/manga/dnha19771568647794', 'https://manganelo.com/manga/doulou_dalu_manga',
                 'https://manganelo.com/manga/pn918005', 'https://manganelo.com/manga/ad921253',
                 'https://manganelo.com/manga/dz919342', 'https://manganelo.com/manga/wu_dong_qian_kun',
-                'https://manganelo.com/manga/fe922634', 'https://manganelo.com/manga/ob922808',
+                'https://manganelo.com/manga/fe922634',
                 'https://manganelo.com/manga/the_wrong_way_to_use_healing_magic',
                 'https://manganelo.com/manga/lv999_no_murabito', 'https://manganelo.com/manga/tn922327',
                 'https://manganelo.com/manga/ha918532', 'https://manganelo.com/manga/ff919945',
@@ -297,7 +298,8 @@ def func_find_daily_chaps():
                 'https://manganelo.com/manga/yrlq217991556843654', 'https://manganelo.com/manga/the_great_ruler',
                 'https://manganelo.com/manga/be922652', 'https://manganelo.com/manga/ra921707',
                 'https://manganelo.com/manga/ix921032', 'https://manganelo.com/manga/ir920623',
-                'https://manganelo.com/manga/fk918347', 'https://manganelo.com/manga/zu917722']
+                'https://manganelo.com/manga/fk918347', 'https://manganelo.com/manga/zu917722',
+                'https://manganelo.com/manga/sm917699']
 
     while url_counter < len(url_list):
 
