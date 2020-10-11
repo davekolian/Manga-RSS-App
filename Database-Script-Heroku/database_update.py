@@ -28,7 +28,7 @@ def func_find_daily_chaps():
     url_counter = 0
     url_list = ['https://mangakakalot.com/read-lm7ib158504847850', 'https://mangakakalot.com/read-ox3yk158504833790',
                 'https://mangakakalot.com/read-zs6sp158504840280', 'https://mangakakalot.com/read-ul6pf158504868718',
-                'https://mangakakalot.com/manga/ow923334', 'https://mangakakalot.com/read-ep8pm158504835723',
+                'https://mangakakalot.com/manga/fv923005', 'https://mangakakalot.com/read-ep8pm158504835723',
                 'https://mangakakalot.com/manga/rj922755', 'https://mangakakalot.com/read-ro4rv158504853379',
                 'https://mangakakalot.com/read-ja7yn158504838124', 'https://mangakakalot.com/read-jc2wf158504842343',
                 'https://mangakakalot.com/read-rp1kv158504840628', 'https://mangakakalot.com/read-ie2ho158504839970',
@@ -47,7 +47,8 @@ def func_find_daily_chaps():
                 'https://mangakakalot.com/read-oe6uc158504836571', 'https://mangakakalot.com/read-mo5of158504931270',
                 'https://mangakakalot.com/manga/ur923338', 'https://mangakakalot.com/read-kh6ab158504854282',
                 'https://mangakakalot.com/read-ex1hg158504833817', 'https://mangakakalot.com/read-rc4ti158504848110',
-                'https://mangakakalot.com/read-cq3sf158504857171']
+                'https://mangakakalot.com/read-cq3sf158504857171', 'https://mangakakalot.com/manga/kg923596',
+                'https://mangakakalot.com/manga/zm924455']
 
     while url_counter < len(url_list):
         page = requests.get(url_list[url_counter])
@@ -281,13 +282,13 @@ def func_find_daily_chaps():
                 'https://manganelo.com/manga/dnha19771568647794', 'https://manganelo.com/manga/doulou_dalu_manga',
                 'https://manganelo.com/manga/pn918005', 'https://manganelo.com/manga/ad921253',
                 'https://manganelo.com/manga/dz919342', 'https://manganelo.com/manga/wu_dong_qian_kun',
-                'https://manganelo.com/manga/fe922634',
+                'https://manganelo.com/manga/fe922634', 'https://manganelo.com/manga/jm923526',
                 'https://manganelo.com/manga/the_wrong_way_to_use_healing_magic',
                 'https://manganelo.com/manga/lv999_no_murabito', 'https://manganelo.com/manga/tn922327',
                 'https://manganelo.com/manga/ha918532', 'https://manganelo.com/manga/ff919945',
                 'https://manganelo.com/manga/douluo_dalu_3_the_legend_of_the_dragon_king',
                 'https://manganelo.com/manga/bl921472', 'https://manganelo.com/manga/tn921283',
-                'https://manganelo.com/manga/legend_of_phoenix', 'https://manganelo.com/manga/qg918612',
+                'https://manganelo.com/manga/legend_of_phoenix', 'https://manganelo.com/manga/spirit_sword_sovereign',
                 'https://manganelo.com/manga/mushoku_tensei_isekai_ittara_honki_dasu',
                 'https://manganelo.com/manga/the_legendary_moonlight_sculptor',
                 'https://manganelo.com/manga/douluo_dalu_ii_jueshui_tangmen', 'https://manganelo.com/manga/dz919342',
@@ -299,7 +300,8 @@ def func_find_daily_chaps():
                 'https://manganelo.com/manga/be922652', 'https://manganelo.com/manga/ra921707',
                 'https://manganelo.com/manga/ix921032', 'https://manganelo.com/manga/ir920623',
                 'https://manganelo.com/manga/fk918347', 'https://manganelo.com/manga/zu917722',
-                'https://manganelo.com/manga/sm917699']
+                'https://manganelo.com/manga/sm917699', 'https://manganelo.com/manga/wo923110',
+                'https://manganelo.com/manga/rj922755', 'https://manganelo.com/manga/tv922828',]
 
     while url_counter < len(url_list):
 
