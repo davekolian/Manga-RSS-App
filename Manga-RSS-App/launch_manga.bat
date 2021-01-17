@@ -1,2 +1,2 @@
-D:\Documents\GitHub\Manga-RSS-App\virt_env\Scripts\python.exe webParse.py
+D:\Documents\GitHub\Manga-RSS-App\virt-env\Scripts\python.exe webParse.py
 exit
