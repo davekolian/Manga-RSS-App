@@ -23,6 +23,7 @@ def func_find_daily_chaps():
     global not_read
     global manga_imgs
     global chapter_links
+    global not_read_dict
     document_count = 1
 
     # Mangakakalot
@@ -96,7 +97,7 @@ def func_find_daily_chaps():
 
         for x in range(0, len(times)):
             if "day" in times[x] or "days" in times[x]:
-                if int(str(times[x][0:1])) < 4:
+                if int(str(times[x][0:1])) < 2:
                     not_read.append("s")
                     not_read.append(document_count)
                     document_count += 1
@@ -122,7 +123,7 @@ def func_find_daily_chaps():
 
         for x in range(0, len(times)):
             if "day" in times[x] or "days" in times[x]:
-                if int(str(times[x][0:1])) < 4:
+                if int(str(times[x][0:1])) < 2:
                     list_of_chaps.append(chap_clean[x])
                     list_of_chap_links.append(links[x])
             elif "hour" in times[x] or "hours" in times[x]:
@@ -151,8 +152,7 @@ def func_find_daily_chaps():
         not_read = []
         url_counter += 1
 
-     # Leviatan|Zero Scans|Reaper Scans
-
+    # Leviatan|Zero Scans|Reaper Scans
     url_counter = 0
     url_list = ['https://leviatanscans.com/comics/i-am-the-sorcerer-king/',
                 'https://leviatanscans.com/comics/209074-slave-b',
@@ -185,6 +185,8 @@ def func_find_daily_chaps():
         manga_clean = manga_clean.replace("[", "")
         manga_clean = manga_clean.replace("]", "")
         manga_clean = manga_clean.replace('"', "")
+
+        print()
 
         if " " not in manga_clean:
             manga_clean = manga_clean + " "
@@ -222,6 +224,8 @@ def func_find_daily_chaps():
             if "day" in dates[x] or "days" in dates[x]:
                 if int(str(dates[x][1:2])) < 2:
                     not_read.append("s")
+                    not_read.append(document_count)
+                    document_count += 1
                     not_read.append(manga_clean)
                     if "leviatan" in url_list[url_counter]:
                         imgs_srcs = str(imgs_srcs[0]).replace(
@@ -240,6 +244,8 @@ def func_find_daily_chaps():
             elif "hour" in dates[x] or "hours" in dates[x]:
                 if int(str(dates[x][1:2])) < 24:
                     not_read.append("s")
+                    not_read.append(document_count)
+                    document_count += 1
                     not_read.append(manga_clean)
                     if "leviatan" in url_list[url_counter]:
                         imgs_srcs = str(imgs_srcs[0]).replace(
@@ -258,6 +264,8 @@ def func_find_daily_chaps():
             elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
                 if int(str(dates[x][0:2])) < 60:
                     not_read.append("s")
+                    not_read.append(document_count)
+                    document_count += 1
                     not_read.append(manga_clean)
                     if "leviatan" in url_list[url_counter]:
                         imgs_srcs = str(imgs_srcs[0]).replace(
@@ -273,24 +281,39 @@ def func_find_daily_chaps():
                         imgs_srcs = imgs_srcs.replace(")", "")
                     manga_imgs.append(imgs_srcs)
                     break
+
+        list_of_chaps = []
+        list_of_chap_links = []
 
         for x in range(0, len(dates)):
             if "day" in dates[x] or "days" in dates[x]:
                 if int(str(dates[x][1:2])) < 2:
-                    not_read.append(chap_clean[x])
-                    not_read.append(dates[x])
-                    chapter_links.append(links[x])
+                    list_of_chaps.append(chap_clean[x])
+                    list_of_chap_links.append(links[x])
             elif "hour" in dates[x] or "hours" in dates[x]:
                 if int(str(dates[x][1:2])) < 24:
-                    not_read.append(chap_clean[x])
-                    not_read.append(dates[x])
-                    chapter_links.append(links[x])
+                    list_of_chaps.append(chap_clean[x])
+                    list_of_chap_links.append(links[x])
             elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
                 if int(str(dates[x][0:2])) < 60:
-                    not_read.append(chap_clean[x])
-                    not_read.append(dates[x])
-                    chapter_links.append(links[x])
+                    list_of_chaps.append(chap_clean[x])
+                    list_of_chap_links.append(links[x])
 
+        if list_of_chaps:
+            not_read.extend([list_of_chaps, list_of_chap_links])
+
+        if not_read:
+            new_document = {
+                'record_id': not_read[1],
+                'manga_name': not_read[2],
+                'manga_chapters': not_read[3],
+                'img_link_bg': imgs_srcs,
+                'chapter_links': not_read[4]
+            }
+
+            not_read_dict.append(new_document)
+
+        not_read = []
         url_counter += 1
 
     # Manganelo
@@ -381,83 +404,61 @@ def func_find_daily_chaps():
             if "day" in dates[x] or "days" in dates[x]:
                 if int(str(dates[x][0:1])) < 2:
                     not_read.append("s")
+                    not_read.append(document_count)
+                    document_count += 1
                     not_read.append(manga_clean)
                     manga_imgs.append(imgs_srcs[0])
                     break
             elif "hour" in dates[x] or "hours" in dates[x]:
                 if int(str(dates[x][0:2])) < 24:
                     not_read.append("s")
+                    not_read.append(document_count)
+                    document_count += 1
                     not_read.append(manga_clean)
                     manga_imgs.append(imgs_srcs[0])
                     break
             elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
                 if int(str(dates[x][0:1])) < 60:
                     not_read.append("s")
+                    not_read.append(document_count)
+                    document_count += 1
                     not_read.append(manga_clean)
                     manga_imgs.append(imgs_srcs[0])
                     break
 
+        list_of_chaps = []
+        list_of_chap_links = []
+
         for x in range(0, len(dates)):
             if "day" in dates[x] or "days" in dates[x]:
                 if int(str(dates[x][0:1])) < 2:
-                    not_read.append(chap_clean[x])
-                    not_read.append(dates[x])
-                    chapter_links.append(links[x])
+                    list_of_chaps.append(chap_clean[x])
+                    list_of_chap_links.append(links[x])
             elif "hour" in dates[x] or "hours" in dates[x]:
                 if int(str(dates[x][0:2])) < 24:
-                    not_read.append(chap_clean[x])
-                    not_read.append(dates[x])
-                    chapter_links.append(links[x])
+                    list_of_chaps.append(chap_clean[x])
+                    list_of_chap_links.append(links[x])
             elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
                 if int(str(dates[x][0:2])) < 60:
-                    not_read.append(chap_clean[x])
-                    not_read.append(dates[x])
-                    chapter_links.append(links[x])
+                    list_of_chaps.append(chap_clean[x])
+                    list_of_chap_links.append(links[x])
 
+        if list_of_chaps:
+            not_read.extend([list_of_chaps, list_of_chap_links])
+
+        if not_read:
+            new_document = {
+                'record_id': not_read[1],
+                'manga_name': not_read[2],
+                'manga_chapters': not_read[3],
+                'img_link_bg': imgs_srcs[0],
+                'chapter_links': not_read[4]
+            }
+
+            not_read_dict.append(new_document)
+
+        not_read = []
         url_counter += 1
-
-
-# Function which gets all details, images, image names, etc.
-def func_get_stuff():
-    global chapters
-    global chapt
-    global img_counter
-    global no_of_manga
-    global not_read
-
-    func_find_daily_chaps()
-
-    not_read.append("s")
-
-    for item in not_read:
-        if str(item) == "s":
-            global no_of_manga
-            no_of_manga += 1
-
-    # Added this line because there are two more 's' than the number of manga
-    no_of_manga -= 2
-
-    # The "s" is added to show a split between each manga
-    for item in not_read:
-        if item != "s":
-            chapters.append(item)
-
-    # To get all the new chapters into an array
-    for x in range(0, len(chapters)):
-        if " " not in chapters[x]:
-            global chapt
-            chapt.append(chapters[x])
-
-    for x in range(len(not_read)):
-        if "day ago" in not_read[x] or "hour ago" in not_read[x] or "min ago" in not_read[x] or \
-                "days ago" in not_read[x] or "hours ago" in not_read[x] or "mins ago" in not_read[x] or \
-                "minutes ago" in not_read[x] or "minute ago" in not_read[x]:
-            not_read[x] = chapter_links[img_counter]
-            img_counter += 1
-        if "“" in not_read[x]:
-            not_read[x] = str(not_read[x]).replace("“", "\"")
-        if "”" in not_read[x]:
-            not_read[x] = str(not_read[x]).replace("”", "\"")
 
 
 mn = ""
@@ -485,9 +486,10 @@ def update_database(id, name, chapters, img_link, chapter_link):
 
 # Main core of the loop to make the program run every 30 mins
 while 1:
-    func_get_stuff()
+    # func_get_stuff()
+    func_find_daily_chaps()
+    print(not_read_dict)
     # clear_database()
-    # print(not_read)
     for x in range(1, len(not_read)):
         if not_read[x] != 's':
             new_list.append(not_read[x])
