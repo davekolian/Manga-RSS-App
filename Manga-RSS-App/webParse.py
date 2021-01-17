@@ -7,11 +7,13 @@
 from urllib.request import Request, urlopen
 
 import kivy
+
 kivy.require('1.11.0')
 
 # import time
 
 from kivy.config import Config
+
 # Sets Window to: not be resizable, size of 850x1000, not close when 'ESC' key is clicked
 Config.set('graphics', 'resizable', False)
 Config.set('graphics', 'height', 1000)
@@ -30,14 +32,17 @@ from kivy.core.window import Window
 # from kivy.clock import mainthread
 from functools import partial
 
-import mysql.connector as mysql
+# import mysql.connector as mysql
+import pymongo
 
 # Global Variables
 no_of_manga = 0
 chapter_links = []
 url_counter = 0
-result = ""
+result = []
 pwd = "D:\Documents\GitHub\Manga-RSS-App\Manga-RSS-App"
+
+
 # pwd is hardcoded to the directory of the webParse.py file
 
 
@@ -53,11 +58,10 @@ def func_create_batch_files(link):
 
 
 # Function to download cover image of all manga chapters released | method used to override that a spider is crawling
-def func_find_imgs_manga_active(img_link, x):
+def func_find_imgs_manga_active(img_link, img_name):
     req = Request(img_link, headers={'User-Agent': 'Mozilla/5.0'})
 
-    name = str(x) + ".jpg"
-    file_name = pwd + "\\" + name
+    file_name = pwd + "\\" + img_name
     f = open(file_name, "wb")
     f.write(urlopen(req).read())
     f.close()
@@ -65,83 +69,59 @@ def func_find_imgs_manga_active(img_link, x):
 
 # Function to connect to my database and read the tuples in the table
 def connect_to_database():
-    connection = mysql.connect(host="sql7.freemysqlhosting.net", database="sql7359480", user="sql7359480",
-                               password="KJk8F3MUYD")
-    cursor = connection.cursor()
+    global result
+    global no_of_manga
 
-    sql = "SELECT * FROM mangarssapp"
+    client = pymongo.MongoClient(
+        "mongodb+srv://dbOutside:bs62uTozRGLE84sQ@maincluster.idq3f.mongodb.net/manga_app?retryWrites=true&w=majority")
 
-    try:
-        cursor.execute(sql)
-        # connection.commit()
-        global result
-        result = cursor.fetchall()
-        if result != "":
-            global no_of_manga
-            no_of_manga = len(result)
+    my_database = client.get_database("manga_app")
+    my_collection = my_database.get_collection("manga_app_records")
 
-        # print(result)
-    except mysql.Error as error:
-        print(error)
-    finally:
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
+    result = list(my_collection.find({}))
+    no_of_manga = my_collection.count_documents({})
 
 
 # Creates the layout for each grid/manga
 class BabyGrids(FloatLayout):
-    def __init__(self, chapter_name, the_chapters, img_name):
+    def __init__(self, manga_name, img_name, lst_chapters_nos, lst_chapters_links):
         super(BabyGrids, self).__init__()
-        global url_counter
-        cha1 = []
 
         img = Image(source=img_name, allow_stretch=True, keep_ratio=False, pos_hint={'x': 0, 'top': 1})
         self.add_widget(img)
 
-        ch_name = str(chapter_name)
-        ch_name_words = ch_name.split()
-        if len(ch_name_words) >= 6 and 35 < len(ch_name) < 50:
-            mid = int(len(ch_name_words) / 2)
-            ch_name_words[mid:mid] = "\n"
+        list_words_in_name = manga_name.split()
+        if len(list_words_in_name) >= 6 and 35 < len(manga_name) < 50:
+            mid = int(len(list_words_in_name) / 2)
+            list_words_in_name[mid:mid] = "\n"
+        if len(manga_name) > 50:
+            for x in range(5, len(list_words_in_name), 5):
+                list_words_in_name[x:x] = "\n"
 
-        if len(ch_name) > 50:
-            for x in range(5, len(ch_name_words), 5):
-                ch_name_words[x:x] = "\n"
+        manga_name = " ".join(list_words_in_name)
 
-        ch_name = " ".join(ch_name_words)
-
-        self.add_widget(Button(text=ch_name, pos_hint={'x': 0, 'top': 1}, size_hint=(1, 0.25), font_size='16sp',
+        self.add_widget(Button(text=manga_name, pos_hint={'x': 0, 'top': 1}, size_hint=(1, 0.25), font_size='16sp',
                                background_color=(0, 0, 0, 0.3)))
 
-        if "," in the_chapters:
-            les_words2 = str(the_chapters).split(",")
-            for item in les_words2:
-                cha1.append(item)
-        else:
-            cha1.append(the_chapters)
-
-        for x in reversed(range(len(cha1))):
+        for x in reversed(range(len(lst_chapters_nos))):
             a = 1 - ((x + 1) * 0.25)
             if a < 0:
                 a += int(x / 4)
             b = int(x / 4) * (3 / 20)
-            y = len(cha1) - x - 1
-            # print("Chapter: " + cha1[y])
-            # print(str(a) + " " + str(y))
+            y = len(lst_chapters_nos) - x - 1
 
-            btn = Button(text=cha1[y], pos_hint={'x': a, 'y': b}, size_hint=(0.25, 0.15),
+            btn = Button(text=lst_chapters_nos[y], pos_hint={'x': a, 'y': b}, size_hint=(0.25, 0.15),
                          background_color=(1, 1, 1, 0.9))
             self.add_widget(btn)
             # partial returns a new function with both arguments
-            btn.bind(on_press=partial(self.open_chapter, url_counter))
+            # it's the same as open_chapter(lst_chapters_links[y]])
+            btn.bind(on_press=partial(self.open_chapter, lst_chapters_links[y]))
             a -= 0.25
-            url_counter += 1
 
     # comment below is used to suppress the 'function may be static' error
     # noinspection PyMethodMayBeStatic
-    def open_chapter(self, index, instance):
-        func_create_batch_files(chapter_links[index])
+    def open_chapter(self, links, instance):
+        func_create_batch_files(links)
 
 
 # Creates the whole GridLayout for each manga
@@ -156,91 +136,30 @@ class MainGrid(GridLayout):
                                        height=self.minimum_height, size_hint=(1, None))
         self.bind(minimum_height=self.setter('height'))
 
-        for x in range(no_of_manga):
-            the_links = result[x][-1]
-            if " " in the_links:
-                les_words = the_links.split()
-                for item in les_words:
-                    chapter_links.append(item)
-            else:
-                chapter_links.append(the_links)
+        for document in result:
+            manga_name = document.get("manga_name")
+            img_name = str(document.get("record_id")) + ".jpg"
+            lst_chapters_nos = document.get("manga_chapters")
+            lst_chapters_links = document.get("chapter_links")
 
-        for x in range(no_of_manga):
-            img_link = result[x][-2]
-            chapter_name = result[x][1]
-            the_chapters = result[x][2]
-            func_find_imgs_manga_active(img_link, x)
+            func_find_imgs_manga_active(document.get("img_link_bg"), img_name)
 
-            img_name = str(x) + ".jpg"
+            self.add_widget(BabyGrids(manga_name, img_name, lst_chapters_nos, lst_chapters_links))
 
-            self.add_widget(BabyGrids(chapter_name, the_chapters, img_name))
-
-        if x + 1 == no_of_manga:
-            all_links_btn = Button(text="Open all chapters!", font_size=20)
-            self.add_widget(all_links_btn)
-            all_links_btn.bind(on_press=self.all_links_func)
+        all_links_btn = Button(text="Open all chapters!", font_size=20)
+        self.add_widget(all_links_btn)
+        all_links_btn.bind(on_press=self.all_links_func)
 
     # Function to open all chapters in one Firefox Browser
     def all_links_func(self, event):
-        link = ""
-        for x in range(no_of_manga):
-            link = link + " " + chapter_links[x]
+        links = ""
 
-        func_create_batch_files(link)
+        for document in result:
+            list_of_chapter_links = document.get("chapter_links")
+            for link in list_of_chapter_links:
+                links = links + " " + link
 
-        # Adding button_list to create layout
-        # for x in range(9):
-            # self.add_widget(self.button_list[x])
-
-        # Binding the only clickable button to function
-        # self.button_list[4].bind(on_press=self.update_btn_text)
-"""
-    def update_btn_text(self, event):
-        self.button_list[4].text = "Please wait!"
-        self.button_list[4].font_size = 30
-        self.update_layout()
-
-    @mainthread
-    def update_layout(self):
-        func_get_stuff()
-
-        for x in range(9):
-            self.remove_widget(self.button_list[x])
-
-        name_chapter_time = []
-        x = 0
-
-        for y in range(0, no_of_manga):
-            if not_read[x] == "s":
-                x += 1
-
-            while not_read[x] != "s":
-                name_chapter_time.append(not_read[x])
-                name_chapter_time.append("\n")
-                if x + 1 < len(not_read):
-                    x += 1
-                else:
-                    break
-
-            name2 = str(y) + ".jpg"
-            img = Image(source=name2, allow_stretch=True, keep_ratio=False)
-
-            self.add_widget(BabyGrids(name_chapter_time, name2))
-
-            name_chapter_time = []
-
-        if y == no_of_manga - 1:
-            all_links_btn = Button(text="Open all chapters!", font_size=20)
-            self.add_widget(all_links_btn)
-            all_links_btn.bind(on_press=self.all_links_func)
-
-    def all_links_func(self, event):
-        link = ""
-        for x in range(no_of_manga):
-            link = link + " " + chapter_links[x]
-
-        func_create_batch_files(link)
-"""
+        func_create_batch_files(links)
 
 
 # Enables us to scroll the content
@@ -254,11 +173,11 @@ class ScrollBarView(ScrollView):
 
 # Function which removes pictures if downloaded
 def remove_images():
-    for x in range(no_of_manga):
+    for x in range(1, no_of_manga + 1):
         filename = pwd + "\\" + str(x) + ".jpg"
         if os.path.exists(filename):
             os.remove(filename)
-    
+
     manga_filename = pwd + "\\" + "open_manga.bat"
     if os.path.exists(manga_filename):
         os.remove(manga_filename)
@@ -276,7 +195,6 @@ class WebParseApp(App):
     # comment below is used to suppress the 'function may be static' error
     # noinspection PyMethodMayBeStatic
     def on_request_close(self):
-
         remove_images()
 
     # comment below is used to suppress the 'function may be static' error
@@ -294,7 +212,6 @@ class WebParseApp(App):
 
 if __name__ == '__main__':
     WebParseApp().run()
-
 
 # i can check whatever i have not read and start counting from today
 # how do i save what i have not read

@@ -419,6 +419,9 @@ def clear_and_update_database():
     # Inserts many documents (containing new manga releases)
     my_collection.insert_many(not_read_dict)
 
+    # Close the connection to the database
+    client.close()
+
 
 # Main core of the loop to make the program run every 30 mins
 while 1:
