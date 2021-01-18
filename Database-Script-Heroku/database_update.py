@@ -7,12 +7,12 @@ from lxml import html
 import requests
 import time
 
-not_read_dict = []
+lst_not_read_dicts = []
 
 
 # Function which scrapes the websites to find which chapters have been newly released
 def func_find_daily_chaps():
-    global not_read_dict
+    global lst_not_read_dicts
     not_read = []
     document_count = 1
 
@@ -137,7 +137,7 @@ def func_find_daily_chaps():
                 'chapter_links': not_read[4]
             }
 
-            not_read_dict.append(new_document)
+            lst_not_read_dicts.append(new_document)
 
         not_read = []
         url_counter += 1
@@ -278,7 +278,7 @@ def func_find_daily_chaps():
                 'chapter_links': not_read[4]
             }
 
-            not_read_dict.append(new_document)
+            lst_not_read_dicts.append(new_document)
 
         not_read = []
         url_counter += 1
@@ -400,7 +400,7 @@ def func_find_daily_chaps():
                 'chapter_links': not_read[4]
             }
 
-            not_read_dict.append(new_document)
+            lst_not_read_dicts.append(new_document)
 
         not_read = []
         url_counter += 1
@@ -418,20 +418,23 @@ def clear_and_update_database():
     my_collection.delete_many({})
 
     # Inserts many documents (containing new manga releases)
-    my_collection.insert_many(not_read_dict)
+    my_collection.insert_many(lst_not_read_dicts)
 
     # Close the connection to the database
     client.close()
 
 
-# Main core of the loop to make the program run every 30 mins
+# Main core of the loop to make the program run every x mins
 while 1:
     func_find_daily_chaps()
-    # print(not_read_dict)
+    # print(lst_not_read_dicts)
     clear_and_update_database()
 
-    # Make the app sleep for 30 mins before restarting
-    time.sleep(30 * 60)
+    # Clears the list for next iteration
+    lst_not_read_dicts = []
+
+    # Make the app sleep for x mins before restarting
+    time.sleep(2 * 60)
 
 #######################################################
 #                    Learning                         #
