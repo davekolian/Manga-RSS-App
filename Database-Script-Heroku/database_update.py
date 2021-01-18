@@ -425,16 +425,28 @@ def clear_and_update_database():
 
 
 # Main core of the loop to make the program run every x mins
-while 1:
-    func_find_daily_chaps()
-    # print(lst_not_read_dicts)
-    clear_and_update_database()
+def main_loop():
+    while 1:
+        global lst_not_read_dicts
 
-    # Clears the list for next iteration
-    lst_not_read_dicts = []
+        try:
+            func_find_daily_chaps()
+            # print(lst_not_read_dicts)
+            clear_and_update_database()
 
-    # Make the app sleep for x mins before restarting
-    time.sleep(5 * 60)
+            # Clears the list for next iteration
+            lst_not_read_dicts = []
+
+            # Make the app sleep for x mins before restarting
+            time.sleep(10 * 60)
+        except:
+            # using bare 'except' since majority error could be traffic problems with websites or MongoDB
+            time.sleep(5 * 60)
+            main_loop()
+
+
+if __name__ == "__main__":
+    main_loop()
 
 #######################################################
 #                    Learning                         #
