@@ -434,7 +434,7 @@ while 1:
     lst_not_read_dicts = []
 
     # Make the app sleep for x mins before restarting
-    time.sleep(2 * 60)
+    time.sleep(5 * 60)
 
 #######################################################
 #                    Learning                         #
