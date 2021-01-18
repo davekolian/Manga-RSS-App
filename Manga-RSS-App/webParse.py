@@ -79,6 +79,8 @@ def connect_to_database():
     result = list(my_collection.find({}))
     no_of_manga = my_collection.count_documents({})
 
+    client.close()
+
 
 # Creates the layout for each grid/manga
 class BabyGrids(FloatLayout):

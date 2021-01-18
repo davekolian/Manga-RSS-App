@@ -38,7 +38,7 @@ def func_find_daily_chaps():
                 'https://mangakakalot.com/read-nz2fb158504821825', 'https://mangakakalot.com/read-of5ex158504840587',
                 'https://mangakakalot.com/manga/sw922557', 'https://mangakakalot.com/manga/xo924628',
                 'https://mangakakalot.com/manga/fe922634', 'https://mangakakalot.com/manga/lo924793',
-                'https://mangakakalot.com/read-rl4cd158504850497']
+                'https://mangakakalot.com/read-rl4cd158504850497', 'https://mangakakalot.com/read-iq9la158504835986']
 
     while url_counter < len(url_list):
         page = requests.get(url_list[url_counter])
@@ -313,7 +313,8 @@ def func_find_daily_chaps():
                 'https://manganelo.com/manga/do918903', 'https://manganelo.com/manga/nidoume_no_jinsei_wo_isekai_de',
                 'https://manganelo.com/manga/ku920038', 'https://manganelo.com/manga/aq920543',
                 'https://manganelo.com/manga/pg920736', 'https://manganelo.com/manga/rx922672',
-                'https://manganelo.com/manga/tn921283']
+                'https://manganelo.com/manga/tn921283', 'https://manganelo.com/manga/lo924793',
+                'https://manganelo.com/manga/lg924896']
 
     while url_counter < len(url_list):
 
@@ -480,4 +481,3 @@ while 1:
 # delete, delete_one(filter_dict) or delete_many(filter_dict)
 # print(list(table.find({'manga_name': 'dummy name'})))
 # table.delete_many({'manga_name': 'dummy name'})
-
