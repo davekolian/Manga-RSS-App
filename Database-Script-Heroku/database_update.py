@@ -38,7 +38,8 @@ def func_find_daily_chaps():
                 'https://mangakakalot.com/read-nz2fb158504821825', 'https://mangakakalot.com/read-of5ex158504840587',
                 'https://mangakakalot.com/manga/sw922557', 'https://mangakakalot.com/manga/xo924628',
                 'https://mangakakalot.com/manga/fe922634', 'https://mangakakalot.com/manga/lo924793',
-                'https://mangakakalot.com/read-rl4cd158504850497', 'https://mangakakalot.com/read-iq9la158504835986']
+                'https://mangakakalot.com/read-rl4cd158504850497', 'https://mangakakalot.com/read-iq9la158504835986',
+                'https://mangakakalot.com/manga/gz922893']
 
     while url_counter < len(url_list):
         page = requests.get(url_list[url_counter])
