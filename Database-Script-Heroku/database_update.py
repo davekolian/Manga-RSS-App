@@ -38,7 +38,8 @@ def func_find_daily_chaps():
                 'https://mangakakalot.com/read-kh6ab158504854282', 'https://mangakakalot.com/read-rc4ti158504848110',
                 'https://mangakakalot.com/read-of5ex158504840587', 'https://mangakakalot.com/read-iq9la158504835986',
                 'https://mangakakalot.com/manga/xo924628', 'https://mangakakalot.com/manga/gz922893',
-                'https://mangakakalot.com/manga/fe922634', 'https://mangakakalot.com/manga/lo924793']
+                'https://mangakakalot.com/manga/fe922634', 'https://mangakakalot.com/manga/lo924793',
+                'https://mangakakalot.com/manga/lg924896']
 
     while url_counter < len(url_list):
         page = requests.get(url_list[url_counter])
@@ -301,7 +302,7 @@ def func_find_daily_chaps():
                 'https://manganelo.com/manga/ijhr296321559609648', 'https://manganelo.com/manga/lo924793',
                 'https://manganelo.com/manga/the_magic_chef_of_ice_and_fire', 'https://manganelo.com/manga/eg919734',
                 'https://manganelo.com/manga/bb922866', 'https://manganelo.com/manga/pe922745',
-                'https://manganelo.com/manga/yrlq217991556843654', 'https://manganelo.com/manga/lg924896',
+                'https://manganelo.com/manga/yrlq217991556843654', 'https://manganelo.com/manga/aq920543',
                 'https://manganelo.com/manga/be922652', 'https://manganelo.com/manga/ra921707',
                 'https://manganelo.com/manga/ix921032', 'https://manganelo.com/manga/ir920623',
                 'https://manganelo.com/manga/fk918347', 'https://manganelo.com/manga/zu917722',
@@ -309,7 +310,7 @@ def func_find_daily_chaps():
                 'https://manganelo.com/manga/rj922755', 'https://manganelo.com/manga/tv922828',
                 'https://manganelo.com/manga/pd924480', 'https://manganelo.com/manga/martial_peak',
                 'https://manganelo.com/manga/do918903', 'https://manganelo.com/manga/nidoume_no_jinsei_wo_isekai_de',
-                'https://manganelo.com/manga/ku920038', 'https://manganelo.com/manga/aq920543']
+                'https://manganelo.com/manga/ku920038']
 
     while url_counter < len(url_list):
 
