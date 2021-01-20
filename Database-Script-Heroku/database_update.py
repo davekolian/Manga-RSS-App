@@ -412,111 +412,111 @@ def func_find_daily_chaps():
         url_counter += 1
 
     # ManhuaPlus
-    url_counter = 0
-    url_list = ['https://manhuaplus.com/manga/almighty-master/', 'https://manhuaplus.com/manga/global-martial-arts/',
-                'https://manhuaplus.com/manga/the-great-ruler/', 'https://manhuaplus.com/manga/the-strongest-god-king/',
-                'https://manhuaplus.com/manga/rebirth-of-the-urban-immortal-cultivator/',
-                'https://manhuaplus.com/manga/demon-magic-emperor/', 'https://manhuaplus.com/manga/apotheosis/',
-                'https://manhuaplus.com/manga/battle-through-the-heavens/',
-                'https://manhuaplus.com/manga/peerless-battle-spirit/', 'https://manhuaplus.com/manga/versatile-mage/',
-                'https://manhuaplus.com/manga/tales-of-demons-and-gods/',
-                'https://manhuaplus.com/manga/lit-the-supreme-being/',
-                'https://manhuaplus.com/manga/rebirth-city-deity/']
-
-    session = HTMLSession()
-
-    while url_counter < len(url_list):
-        r = session.get(url_list[url_counter])
-        r.html.render()
-
-        manga = r.html.xpath('//div[@class="post-title"]/h1/text()')
-        chap = r.html.xpath('//li[@class="wp-manga-chapter"]/a/text()')
-        dates = r.html.xpath('//span[@class="chapter-release-date"]/i/text()')
-        imgs_srcs = r.html.xpath('//div[@class="summary_image"]/a/img/@data-src')
-        links = r.html.xpath('//li[@class="wp-manga-chapter"]/a/@href')
-
-        if len(manga) >= 2:
-            manga_clean = str(manga[1])[7:-20]
-        else:
-            manga_clean = str(manga)[30:-22]
-            # Done just for Lit The Supreme Being which was buggy
-
-        if " " not in manga_clean:
-            manga_clean += " "
-
-        chap_clean = []
-
-        for x in range(0, len(chap)):
-            chap[x] = str(chap[x])[10:-8]
-            start_chapter = chap[x].find("Chapter")
-            if ":" in chap[x]:
-                end_line = chap[x].find(":")
-                chap_clean.append(str(chap[x][start_chapter + 8:end_line]))
-            elif " -" in chap[x]:
-                end_line = chap[x].find(" -")
-                chap_clean.append(str(chap[x][start_chapter + 8:end_line]))
-            else:
-                chap_clean.append(str(chap[x][start_chapter + 8:]))
-
-        for x in range(0, len(dates)):
-            if "day" in dates[x] or "days" in dates[x]:
-                if int(str(dates[x][0:1])) < 2:
-                    not_read.append("s")
-                    not_read.append(document_count)
-                    document_count += 1
-                    not_read.append(manga_clean)
-                    break
-            elif "hour" in dates[x] or "hours" in dates[x]:
-                if int(str(dates[x][0:2])) < 24:
-                    not_read.append("s")
-                    not_read.append(document_count)
-                    document_count += 1
-                    not_read.append(manga_clean)
-                    break
-            elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
-                if int(str(dates[x][0:1])) < 60:
-                    not_read.append("s")
-                    not_read.append(document_count)
-                    document_count += 1
-                    not_read.append(manga_clean)
-                    break
-
-        list_of_chaps = []
-        list_of_chap_links = []
-
-        for x in range(0, len(dates)):
-            if "day" in dates[x] or "days" in dates[x]:
-                if int(str(dates[x][0:1])) < 2:
-                    list_of_chaps.append(chap_clean[x])
-                    list_of_chap_links.append(links[x])
-            elif "hour" in dates[x] or "hours" in dates[x]:
-                if int(str(dates[x][0:2])) < 24:
-                    list_of_chaps.append(chap_clean[x])
-                    list_of_chap_links.append(links[x])
-            elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
-                if int(str(dates[x][0:2])) < 60:
-                    list_of_chaps.append(chap_clean[x])
-                    list_of_chap_links.append(links[x])
-
-        if list_of_chaps:
-            not_read.extend([list_of_chaps, list_of_chap_links])
-
-        if not_read:
-            new_document = {
-                'record_id': not_read[1],
-                'manga_name': not_read[2],
-                'manga_chapters': not_read[3],
-                'img_link_bg': imgs_srcs[0],
-                'chapter_links': not_read[4]
-            }
-
-            lst_not_read_dicts.append(new_document)
-
-
-        print(manga_clean)
-        print(chap_clean)
-        not_read = []
-        url_counter += 1
+    # url_counter = 0
+    # url_list = ['https://manhuaplus.com/manga/almighty-master/', 'https://manhuaplus.com/manga/global-martial-arts/',
+    #             'https://manhuaplus.com/manga/the-great-ruler/', 'https://manhuaplus.com/manga/the-strongest-god-king/',
+    #             'https://manhuaplus.com/manga/rebirth-of-the-urban-immortal-cultivator/',
+    #             'https://manhuaplus.com/manga/demon-magic-emperor/', 'https://manhuaplus.com/manga/apotheosis/',
+    #             'https://manhuaplus.com/manga/battle-through-the-heavens/',
+    #             'https://manhuaplus.com/manga/peerless-battle-spirit/', 'https://manhuaplus.com/manga/versatile-mage/',
+    #             'https://manhuaplus.com/manga/tales-of-demons-and-gods/',
+    #             'https://manhuaplus.com/manga/lit-the-supreme-being/',
+    #             'https://manhuaplus.com/manga/rebirth-city-deity/']
+    #
+    # session = HTMLSession()
+    #
+    # while url_counter < len(url_list):
+    #     r = session.get(url_list[url_counter])
+    #     r.html.render()
+    #
+    #     manga = r.html.xpath('//div[@class="post-title"]/h1/text()')
+    #     chap = r.html.xpath('//li[@class="wp-manga-chapter"]/a/text()')
+    #     dates = r.html.xpath('//span[@class="chapter-release-date"]/i/text()')
+    #     imgs_srcs = r.html.xpath('//div[@class="summary_image"]/a/img/@data-src')
+    #     links = r.html.xpath('//li[@class="wp-manga-chapter"]/a/@href')
+    #
+    #     if len(manga) >= 2:
+    #         manga_clean = str(manga[1])[7:-20]
+    #     else:
+    #         manga_clean = str(manga)[30:-22]
+    #         # Done just for Lit The Supreme Being which was buggy
+    #
+    #     if " " not in manga_clean:
+    #         manga_clean += " "
+    #
+    #     chap_clean = []
+    #
+    #     for x in range(0, len(chap)):
+    #         chap[x] = str(chap[x])[10:-8]
+    #         start_chapter = chap[x].find("Chapter")
+    #         if ":" in chap[x]:
+    #             end_line = chap[x].find(":")
+    #             chap_clean.append(str(chap[x][start_chapter + 8:end_line]))
+    #         elif " -" in chap[x]:
+    #             end_line = chap[x].find(" -")
+    #             chap_clean.append(str(chap[x][start_chapter + 8:end_line]))
+    #         else:
+    #             chap_clean.append(str(chap[x][start_chapter + 8:]))
+    #
+    #     for x in range(0, len(dates)):
+    #         if "day" in dates[x] or "days" in dates[x]:
+    #             if int(str(dates[x][0:1])) < 2:
+    #                 not_read.append("s")
+    #                 not_read.append(document_count)
+    #                 document_count += 1
+    #                 not_read.append(manga_clean)
+    #                 break
+    #         elif "hour" in dates[x] or "hours" in dates[x]:
+    #             if int(str(dates[x][0:2])) < 24:
+    #                 not_read.append("s")
+    #                 not_read.append(document_count)
+    #                 document_count += 1
+    #                 not_read.append(manga_clean)
+    #                 break
+    #         elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
+    #             if int(str(dates[x][0:1])) < 60:
+    #                 not_read.append("s")
+    #                 not_read.append(document_count)
+    #                 document_count += 1
+    #                 not_read.append(manga_clean)
+    #                 break
+    #
+    #     list_of_chaps = []
+    #     list_of_chap_links = []
+    #
+    #     for x in range(0, len(dates)):
+    #         if "day" in dates[x] or "days" in dates[x]:
+    #             if int(str(dates[x][0:1])) < 2:
+    #                 list_of_chaps.append(chap_clean[x])
+    #                 list_of_chap_links.append(links[x])
+    #         elif "hour" in dates[x] or "hours" in dates[x]:
+    #             if int(str(dates[x][0:2])) < 24:
+    #                 list_of_chaps.append(chap_clean[x])
+    #                 list_of_chap_links.append(links[x])
+    #         elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
+    #             if int(str(dates[x][0:2])) < 60:
+    #                 list_of_chaps.append(chap_clean[x])
+    #                 list_of_chap_links.append(links[x])
+    #
+    #     if list_of_chaps:
+    #         not_read.extend([list_of_chaps, list_of_chap_links])
+    #
+    #     if not_read:
+    #         new_document = {
+    #             'record_id': not_read[1],
+    #             'manga_name': not_read[2],
+    #             'manga_chapters': not_read[3],
+    #             'img_link_bg': imgs_srcs[0],
+    #             'chapter_links': not_read[4]
+    #         }
+    #
+    #         lst_not_read_dicts.append(new_document)
+    #
+    #
+    #     print(manga_clean)
+    #     print(chap_clean)
+    #     not_read = []
+    #     url_counter += 1
 
 
 # Function which connects to my database, clears the collection, and updates with new list of of documents
