@@ -140,6 +140,9 @@ def func_find_daily_chaps():
 
             lst_not_read_dicts.append(new_document)
 
+
+        print(manga_clean)
+        print(chap_clean)
         not_read = []
         url_counter += 1
 
@@ -281,6 +284,9 @@ def func_find_daily_chaps():
 
             lst_not_read_dicts.append(new_document)
 
+
+        print(manga_clean)
+        print(chap_clean)
         not_read = []
         url_counter += 1
 
@@ -310,7 +316,8 @@ def func_find_daily_chaps():
                 'https://manganelo.com/manga/rj922755', 'https://manganelo.com/manga/tv922828',
                 'https://manganelo.com/manga/pd924480', 'https://manganelo.com/manga/martial_peak',
                 'https://manganelo.com/manga/do918903', 'https://manganelo.com/manga/nidoume_no_jinsei_wo_isekai_de',
-                'https://manganelo.com/manga/ku920038']
+                'https://manganelo.com/manga/ku920038', 'https://manganelo.com/manga/mq918999',
+                'https://manganelo.com/manga/lj919175']
 
     while url_counter < len(url_list):
 
@@ -398,6 +405,9 @@ def func_find_daily_chaps():
 
             lst_not_read_dicts.append(new_document)
 
+
+        print(manga_clean)
+        print(chap_clean)
         not_read = []
         url_counter += 1
 
@@ -502,6 +512,9 @@ def func_find_daily_chaps():
 
             lst_not_read_dicts.append(new_document)
 
+
+        print(manga_clean)
+        print(chap_clean)
         not_read = []
         url_counter += 1
 
