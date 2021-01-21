@@ -140,9 +140,6 @@ def func_find_daily_chaps():
 
             lst_not_read_dicts.append(new_document)
 
-
-        print(manga_clean)
-        print(chap_clean)
         not_read = []
         url_counter += 1
 
@@ -284,9 +281,6 @@ def func_find_daily_chaps():
 
             lst_not_read_dicts.append(new_document)
 
-
-        print(manga_clean)
-        print(chap_clean)
         not_read = []
         url_counter += 1
 
@@ -405,9 +399,6 @@ def func_find_daily_chaps():
 
             lst_not_read_dicts.append(new_document)
 
-
-        print(manga_clean)
-        print(chap_clean)
         not_read = []
         url_counter += 1
 
@@ -512,9 +503,6 @@ def func_find_daily_chaps():
 
             lst_not_read_dicts.append(new_document)
 
-
-        print(manga_clean)
-        print(chap_clean)
         not_read = []
         url_counter += 1
 
@@ -544,7 +532,7 @@ def main_loop():
 
         try:
             func_find_daily_chaps()
-            print(lst_not_read_dicts)
+            # print(lst_not_read_dicts)
             clear_and_update_database()
 
             # Clears the list for next iteration
