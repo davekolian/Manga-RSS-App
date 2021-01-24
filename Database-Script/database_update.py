@@ -533,13 +533,18 @@ def main_loop():
         global lst_not_read_dicts
 
         try:
+            # Creating a File Log System
+            current_time = str(datetime.datetime.now())
+            output_console = "[" + current_time + "] " + "Starting the search for mangas!"
+            log = open("log.txt", "w")
+            log.write(output_console)
+            log.close()
+
             func_find_daily_chaps()
 
             current_time = str(datetime.datetime.now())
             output_console = "[" + current_time + "] " + str(lst_not_read_dicts)
             # print(output_console)
-
-            # Creating a File Log System
             log = open("log.txt", "w")
             log.write(output_console)
             log.close()
@@ -563,6 +568,14 @@ def main_loop():
         finally:
             # Make the app sleep for x mins before restarting
             time.sleep(10 * 60)
+
+            # Adding when the sleep timer is over
+            current_time = str(datetime.datetime.now())
+            output_console = "[" + current_time + "] " + "Restarting the loop!"
+
+            log = open("log.txt", "w")
+            log.write(output_console)
+            log.close()
 
 
 if __name__ == "__main__":
