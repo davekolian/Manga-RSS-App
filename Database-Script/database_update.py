@@ -535,7 +535,7 @@ def main_loop():
         try:
             # Creating a File Log System
             current_time = str(datetime.datetime.now())
-            output_console = "[" + current_time + "] " + "Starting the search for mangas!"
+            output_console = "[" + current_time + "] " + "Starting the search for mangas!\n"
             log = open("log.txt", "a")
             log.write(output_console)
             log.close()
@@ -543,7 +543,7 @@ def main_loop():
             func_find_daily_chaps()
 
             current_time = str(datetime.datetime.now())
-            output_console = "[" + current_time + "] " + str(lst_not_read_dicts)
+            output_console = "[" + current_time + "] " + str(lst_not_read_dicts) + "\n"
             # print(output_console)
             log = open("log.txt", "a")
             log.write(output_console)
@@ -557,7 +557,7 @@ def main_loop():
             # using bare 'except' since majority error could be traffic problems with websites or MongoDB
             # Adding an exceptions on the log file
             current_time = str(datetime.datetime.now())
-            output_console = "[" + current_time + "] " + "Exception has occured!"
+            output_console = "[" + current_time + "] " + "Exception has occured!\n"
 
             log = open("log.txt", "a")
             log.write(output_console)
@@ -571,7 +571,7 @@ def main_loop():
 
             # Adding when the sleep timer is over
             current_time = str(datetime.datetime.now())
-            output_console = "[" + current_time + "] " + "Restarting the loop!"
+            output_console = "[" + current_time + "] " + "Restarting the loop!\n"
 
             log = open("log.txt", "a")
             log.write(output_console)
