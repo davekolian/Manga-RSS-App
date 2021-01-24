@@ -536,7 +536,7 @@ def main_loop():
             # Creating a File Log System
             current_time = str(datetime.datetime.now())
             output_console = "[" + current_time + "] " + "Starting the search for mangas!"
-            log = open("log.txt", "w")
+            log = open("log.txt", "a")
             log.write(output_console)
             log.close()
 
@@ -545,7 +545,7 @@ def main_loop():
             current_time = str(datetime.datetime.now())
             output_console = "[" + current_time + "] " + str(lst_not_read_dicts)
             # print(output_console)
-            log = open("log.txt", "w")
+            log = open("log.txt", "a")
             log.write(output_console)
             log.close()
 
@@ -559,7 +559,7 @@ def main_loop():
             current_time = str(datetime.datetime.now())
             output_console = "[" + current_time + "] " + "Exception has occured!"
 
-            log = open("log.txt", "w")
+            log = open("log.txt", "a")
             log.write(output_console)
             log.close()
 
@@ -573,7 +573,7 @@ def main_loop():
             current_time = str(datetime.datetime.now())
             output_console = "[" + current_time + "] " + "Restarting the loop!"
 
-            log = open("log.txt", "w")
+            log = open("log.txt", "a")
             log.write(output_console)
             log.close()
 
