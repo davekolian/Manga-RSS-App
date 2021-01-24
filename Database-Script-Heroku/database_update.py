@@ -7,6 +7,7 @@ from lxml import html
 import requests
 import time
 from requests_html import HTMLSession
+import datetime
 
 lst_not_read_dicts = []
 
@@ -39,7 +40,8 @@ def func_find_daily_chaps():
                 'https://mangakakalot.com/read-of5ex158504840587', 'https://mangakakalot.com/read-iq9la158504835986',
                 'https://mangakakalot.com/manga/xo924628', 'https://mangakakalot.com/manga/gz922893',
                 'https://mangakakalot.com/manga/fe922634', 'https://mangakakalot.com/manga/lo924793',
-                'https://mangakakalot.com/manga/lg924896']
+                'https://mangakakalot.com/manga/lg924896', 'https://mangakakalot.com/manga/yl923871',
+                'https://mangakakalot.com/read-iw9rf158504883256', 'https://mangakakalot.com/read-bo1jc158504861718']
 
     while url_counter < len(url_list):
         page = requests.get(url_list[url_counter])
@@ -311,7 +313,7 @@ def func_find_daily_chaps():
                 'https://manganelo.com/manga/pd924480', 'https://manganelo.com/manga/martial_peak',
                 'https://manganelo.com/manga/do918903', 'https://manganelo.com/manga/nidoume_no_jinsei_wo_isekai_de',
                 'https://manganelo.com/manga/ku920038', 'https://manganelo.com/manga/mq918999',
-                'https://manganelo.com/manga/lj919175']
+                'https://manganelo.com/manga/lj919175', 'https://manganelo.com/manga/dr_frost']
 
     while url_counter < len(url_list):
 
@@ -527,23 +529,24 @@ def clear_and_update_database():
 
 # Main core of the loop to make the program run every x mins
 def main_loop():
-    while 1:
+    while True:
         global lst_not_read_dicts
 
         try:
             func_find_daily_chaps()
-            # print(lst_not_read_dicts)
+            current_time = str(datetime.datetime.now())
+            print("[" + current_time + "]", lst_not_read_dicts)
             clear_and_update_database()
 
             # Clears the list for next iteration
             lst_not_read_dicts = []
-
-            # Make the app sleep for x mins before restarting
-            time.sleep(10 * 60)
         except:
             # using bare 'except' since majority error could be traffic problems with websites or MongoDB
             time.sleep(5 * 60)
             main_loop()
+        finally:
+            # Make the app sleep for x mins before restarting
+            time.sleep(10 * 60)
 
 
 if __name__ == "__main__":
