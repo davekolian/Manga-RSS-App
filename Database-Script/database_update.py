@@ -534,14 +534,30 @@ def main_loop():
 
         try:
             func_find_daily_chaps()
+
             current_time = str(datetime.datetime.now())
-            print("[" + current_time + "]", lst_not_read_dicts)
+            output_console = "[" + current_time + "] " + str(lst_not_read_dicts)
+            # print(output_console)
+
+            # Creating a File Log System
+            log = open("log.txt", "w")
+            log.write(output_console)
+            log.close()
+
             clear_and_update_database()
 
             # Clears the list for next iteration
             lst_not_read_dicts = []
         except:
             # using bare 'except' since majority error could be traffic problems with websites or MongoDB
+            # Adding an exceptions on the log file
+            current_time = str(datetime.datetime.now())
+            output_console = "[" + current_time + "] " + "Exception has occured!"
+
+            log = open("log.txt", "w")
+            log.write(output_console)
+            log.close()
+
             time.sleep(5 * 60)
             main_loop()
         finally:
