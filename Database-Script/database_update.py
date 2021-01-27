@@ -301,7 +301,7 @@ def func_find_daily_chaps():
                 'https://manganelo.com/manga/legend_of_phoenix', 'https://manganelo.com/manga/spirit_sword_sovereign',
                 'https://manganelo.com/manga/mushoku_tensei_isekai_ittara_honki_dasu',
                 'https://manganelo.com/manga/the_legendary_moonlight_sculptor', 'https://manganelo.com/manga/tn921283',
-                'https://manganelo.com/manga/ijhr296321559609648', 'https://manganelo.com/manga/lo924793',
+                'https://manganelo.com/manga/ijhr296321559609648', 'https://manganelo.com/manga/si923815',
                 'https://manganelo.com/manga/the_magic_chef_of_ice_and_fire', 'https://manganelo.com/manga/eg919734',
                 'https://manganelo.com/manga/bb922866', 'https://manganelo.com/manga/pe922745',
                 'https://manganelo.com/manga/yrlq217991556843654', 'https://manganelo.com/manga/aq920543',
@@ -553,11 +553,11 @@ def main_loop():
 
             # Clears the list for next iteration
             lst_not_read_dicts = []
-        except:
+        except Exception as ex:
             # using bare 'except' since majority error could be traffic problems with websites or MongoDB
             # Adding an exceptions on the log file
             current_time = str(datetime.datetime.now())
-            output_console = "[" + current_time + "] " + "Exception has occured!\n"
+            output_console = "[" + current_time + "] " + "Exception has occured: " + str(ex.args) + " !\n"
 
             log = open("log.txt", "a")
             log.write(output_console)
