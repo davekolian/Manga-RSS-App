@@ -554,8 +554,7 @@ def main_loop():
             # Clears the list for next iteration
             lst_not_read_dicts = []
         except Exception as ex:
-            # using bare 'except' since majority error could be traffic problems with websites or MongoDB
-            # Adding an exceptions on the log file
+            # Adding (an) exception(s) on the log file
             current_time = str(datetime.datetime.now())
             output_console = "[" + current_time + "] " + "Exception has occured: " + str(ex.args) + " !\n"
 
