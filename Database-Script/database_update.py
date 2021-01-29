@@ -13,7 +13,7 @@ lst_not_read_dicts = []
 
 
 # Function which scrapes the websites to find which chapters have been newly released
-def func_find_daily_chaps():
+def func_find_daily_chaps(session):
     global lst_not_read_dicts
     not_read = []
     document_count = 1
@@ -417,8 +417,6 @@ def func_find_daily_chaps():
                 'https://manhuaplus.com/manga/lit-the-supreme-being/',
                 'https://manhuaplus.com/manga/rebirth-city-deity/']
 
-    session = HTMLSession()
-
     while url_counter < len(url_list):
         r = session.get(url_list[url_counter])
         r.html.render()
@@ -530,6 +528,8 @@ def clear_and_update_database():
 
 # Main core of the loop to make the program run every x mins
 def main_loop():
+    session = HTMLSession()
+
     while True:
         global lst_not_read_dicts
 
@@ -541,7 +541,7 @@ def main_loop():
             log.write(output_console)
             log.close()
 
-            func_find_daily_chaps()
+            func_find_daily_chaps(session)
 
             current_time = str(datetime.datetime.now())
             output_console = "[" + current_time + "] " + str(lst_not_read_dicts) + "\n"
