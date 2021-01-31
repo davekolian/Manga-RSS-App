@@ -9,6 +9,7 @@ import time
 from requests_html import HTMLSession
 import datetime
 import sys
+from configparser import ConfigParser
 
 lst_not_read_dicts = []
 
@@ -511,11 +512,17 @@ def func_find_daily_chaps(session1):
 
 # Function which connects to my database, clears the collection, and updates with new list of of documents
 def clear_and_update_database():
+    # Setting up Config Parser for more security, thanks to @bugnounty
+    conf_parser = ConfigParser()
+    conf_parser.read('db_config.ini')
+    connection_url = conf_parser.get('server', 'connection_url')
+    db_name = conf_parser.get('server', 'db_name')
+    col_name = conf_parser.get('server', 'col_name')
+
     # Connect to the MongoDB Database
-    client = pymongo.MongoClient(
-        "mongodb+srv://dbOutside:bs62uTozRGLE84sQ@maincluster.idq3f.mongodb.net/manga_app?retryWrites=true&w=majority")
-    my_database = client.get_database("manga_app")
-    my_collection = my_database.get_collection("manga_app_records")
+    client = pymongo.MongoClient(connection_url)
+    my_database = client.get_database(db_name)
+    my_collection = my_database.get_collection(col_name)
 
     # Clears the Collection
     my_collection.delete_many({})
@@ -587,19 +594,10 @@ if __name__ == "__main__":
 #######################################################
 #                    Learning                         #
 #######################################################
-
-# import MySqldb
-# db = MySQLdb.connect("sql7.freemysqlhosting.net", "sql7358070", "2iyy8UBTtE", "sql7358070")
-# update_sql = """UPDATE mangarssapp SET manga_name='bye' WHERE rownum=3"""
-# delete_sql = """DELETE FROM mangarssapp WHERE rownum=1"""
-# cursor.execute(update_sql)
-# connection.commit()
-
 # MongoDB stuff:
 # import pymongo
 
-# client = pymongo.MongoClient("mongodb+srv://dbMain:2G9eS0uUgSaFhzX7@maincluster.idq3f.mongodb.net/manga_app
-# ?retryWrites=true&w=majority")
+# client = pymongo.MongoClient("connection_url")
 
 # db = client.get_database('manga_app')
 
