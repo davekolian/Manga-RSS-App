@@ -528,7 +528,7 @@ def clear_and_update_database():
 
 
 # Main core of the loop to make the program run every x mins
-def main_loop(session):
+def main_loop(session2):
     while True:
         global lst_not_read_dicts
 
@@ -540,7 +540,7 @@ def main_loop(session):
             log.write(output_console)
             log.close()
 
-            func_find_daily_chaps(session)
+            func_find_daily_chaps(session2)
 
             current_time = str(datetime.datetime.now())
             output_console = "[" + current_time + "] " + str(lst_not_read_dicts) + "\n"
@@ -566,7 +566,7 @@ def main_loop(session):
             log.close()
 
             time.sleep(5 * 60)
-            main_loop(session)
+            main_loop(session2)
         finally:
             # Make the app sleep for x mins before restarting
             time.sleep(10 * 60)
