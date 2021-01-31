@@ -214,15 +214,12 @@ if __name__ == '__main__':
     WebParseApp().run()
 
 # i can check whatever i have not read and start counting from today
-# how do i save what i have not read
-# Bug #1: App doesnt start with a batch file [Fixed] WITH hardcoding the cwd of the webParse.py before each file
-# Bug #2: No Loading Screen, so users think it crashed [Fixed] WITH the help of remote MySQL database.
-# Bug #3: If more than 4 updates layout gets messy [Fixed]
-# Bug #4: Manga name came in the place of Chapter number. CAUSE: no space in the manga name (algorithm used) [Fixed]
-# Bug #5: Text for some manga goes out of bound [Fixed]
+# Log-in system so that users can users can use
+# New system to allow for mangas to stay if not read
+# Bug #1: No Loading Screen, so users think it crashed
+# Bug #2: Text for some manga goes out of bound
 # Bug #6: [Not certain] Make a fix if more than 8/12 chapters get updated in a go
-# Load the manga more effeciently [Done] WITH the help of remote MySQL database.
+# Load the manga more effeciently
 # Change which browser opens the manga
 # Be able to check which manga has been read (in same day/through-out)
-# Need to be able to add manga to the list in a better way
 # Try and use .kv / Builder.load

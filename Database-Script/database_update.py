@@ -8,12 +8,13 @@ import requests
 import time
 from requests_html import HTMLSession
 import datetime
+import sys
 
 lst_not_read_dicts = []
 
 
 # Function which scrapes the websites to find which chapters have been newly released
-def func_find_daily_chaps(session):
+def func_find_daily_chaps(session1):
     global lst_not_read_dicts
     not_read = []
     document_count = 1
@@ -418,7 +419,7 @@ def func_find_daily_chaps(session):
                 'https://manhuaplus.com/manga/rebirth-city-deity/']
 
     while url_counter < len(url_list):
-        r = session.get(url_list[url_counter])
+        r = session1.get(url_list[url_counter])
         r.html.render()
 
         manga = r.html.xpath('//div[@class="post-title"]/h1/text()')
@@ -527,9 +528,7 @@ def clear_and_update_database():
 
 
 # Main core of the loop to make the program run every x mins
-def main_loop():
-    session = HTMLSession()
-
+def main_loop(session):
     while True:
         global lst_not_read_dicts
 
@@ -555,16 +554,19 @@ def main_loop():
             # Clears the list for next iteration
             lst_not_read_dicts = []
         except Exception as ex:
+            exception_type, exception_object, exception_traceback = sys.exc_info()
+            line_no = exception_traceback.tb_lineno
             # Adding (an) exception(s) on the log file
             current_time = str(datetime.datetime.now())
-            output_console = "[" + current_time + "] " + "Exception has occured: " + str(ex.args) + " !\n"
+            output_console = "[" + current_time + "] " + "Exception has occured: " + line_no + " - " + str(
+                ex.args) + " !\n"
 
             log = open("log.txt", "a")
             log.write(output_console)
             log.close()
 
             time.sleep(5 * 60)
-            main_loop()
+            main_loop(session)
         finally:
             # Make the app sleep for x mins before restarting
             time.sleep(10 * 60)
@@ -579,7 +581,8 @@ def main_loop():
 
 
 if __name__ == "__main__":
-    main_loop()
+    session = HTMLSession()
+    main_loop(session)
 
 #######################################################
 #                    Learning                         #
