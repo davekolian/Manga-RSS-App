@@ -3,12 +3,13 @@
 #####################################################################
 
 from urllib.request import Request, urlopen
-
+import os
+import pymongo
+import tempfile
+import shutil
 import kivy
 
 kivy.require('1.11.0')
-
-# import time
 
 from kivy.config import Config
 
@@ -17,8 +18,6 @@ Config.set('graphics', 'resizable', False)
 Config.set('graphics', 'height', 1000)
 Config.set('graphics', 'width', 850)
 Config.set('kivy', 'exit_on_escape', 0)
-
-import os
 
 from kivy.app import App
 from kivy.uix.button import Button
@@ -30,18 +29,12 @@ from kivy.core.window import Window
 # from kivy.clock import mainthread
 from functools import partial
 
-# import mysql.connector as mysql
-import pymongo
-
 # Global Variables
 no_of_manga = 0
 chapter_links = []
 url_counter = 0
 result = []
-pwd = "D:\Documents\GitHub\Manga-RSS-App\Manga-RSS-App"
-
-
-# pwd is hardcoded to the directory of the webParse.py file
+pwd = tempfile.mkdtemp()
 
 
 # Function which creates a batch file to open the manga chapter in my browser of choice
@@ -87,7 +80,9 @@ class BabyGrids(FloatLayout):
     def __init__(self, manga_name, img_name, lst_chapters_nos, lst_chapters_links):
         super(BabyGrids, self).__init__()
 
-        img = Image(source=img_name, allow_stretch=True, keep_ratio=False, pos_hint={'x': 0, 'top': 1})
+        tmp_img_name = pwd + "\\" + img_name
+
+        img = Image(source=tmp_img_name, allow_stretch=True, keep_ratio=False, pos_hint={'x': 0, 'top': 1})
         self.add_widget(img)
 
         list_words_in_name = manga_name.split()
@@ -172,15 +167,17 @@ class ScrollBarView(ScrollView):
 
 
 # Function which removes pictures if downloaded
-def remove_images():
+def remove_tempfiles():
     for x in range(1, no_of_manga + 1):
         filename = pwd + "\\" + str(x) + ".jpg"
         if os.path.exists(filename):
             os.remove(filename)
 
-    manga_filename = pwd + "\\" + "open_manga.bat"
+    manga_filename = pwd  + "\open_manga.bat"
     if os.path.exists(manga_filename):
         os.remove(manga_filename)
+
+    shutil.rmtree(pwd)
 
     App.get_running_app().stop()
 
@@ -195,14 +192,14 @@ class WebParseApp(App):
     # comment below is used to suppress the 'function may be static' error
     # noinspection PyMethodMayBeStatic
     def on_request_close(self):
-        remove_images()
+        remove_tempfiles()
 
     # comment below is used to suppress the 'function may be static' error
     # noinspection PyMethodMayBeStatic
     def on_keyboard_down(self, keyboard, keycode, text, modifiers):
         # keyboard returns the ASCII value in DEC of the key pressed
         if keyboard == 27:
-            remove_images()
+            remove_tempfiles()
 
     # Binds the Window to a function which checks if a key is pressed
     Window.bind(on_key_down=on_keyboard_down)

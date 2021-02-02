@@ -169,7 +169,8 @@ def func_find_daily_chaps(session1):
                 'https://reaperscans.com/comics/241725-limit-breaker',
                 'https://reaperscans.com/comics/748666-mercenary-enrollment',
                 'https://reaperscans.com/comics/542398-sss-class-suicide-hunter',
-                'https://reaperscans.com/comics/709388-superhuman-era']
+                'https://reaperscans.com/comics/709388-superhuman-era',
+                'https://reaperscans.com/comics/340324-the-tutorial-is-too-hard']
 
     while url_counter < len(url_list):
         page = requests.get(url_list[url_counter])
