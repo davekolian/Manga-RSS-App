@@ -14,6 +14,7 @@ kivy.require('1.11.0')
 from kivy.config import Config
 
 # Sets Window to: not be resizable, size of 850x1000, not close when 'ESC' key is clicked
+Config.set('graphics', 'multisamples', 0)
 Config.set('graphics', 'resizable', False)
 Config.set('graphics', 'height', 1000)
 Config.set('graphics', 'width', 850)
