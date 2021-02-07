@@ -99,20 +99,41 @@ class BabyGrids(FloatLayout):
         self.add_widget(Button(text=manga_name, pos_hint={'x': 0, 'top': 1}, size_hint=(1, 0.25), font_size='16sp',
                                background_color=(0, 0, 0, 0.3)))
 
-        for x in reversed(range(len(lst_chapters_nos))):
-            a = 1 - ((x + 1) * 0.25)
-            if a < 0:
-                a += int(x / 4)
-            b = int(x / 4) * (3 / 20)
-            y = len(lst_chapters_nos) - x - 1
+        if len(lst_chapters_nos) <= 20:
+            for x in reversed(range(len(lst_chapters_nos))):
+                a = 1 - ((x + 1) * 0.25)
+                if a < 0:
+                    a += int(x / 4)
+                b = int(x / 4) * (3 / 20)
+                y = len(lst_chapters_nos) - x - 1
 
-            btn = Button(text=lst_chapters_nos[y], pos_hint={'x': a, 'y': b}, size_hint=(0.25, 0.15),
+                btn = Button(text=lst_chapters_nos[y], pos_hint={'x': a, 'y': b}, size_hint=(0.25, 0.15),
+                             background_color=(1, 1, 1, 0.9))
+                self.add_widget(btn)
+                # partial returns a new function with both arguments
+                # it's the same as open_chapter(lst_chapters_links[y]])
+                btn.bind(on_press=partial(self.open_chapter, lst_chapters_links[y]))
+                a -= 0.25
+        else:
+            # First button labelled '0'
+            first = len(lst_chapters_nos) - 1
+            btn = Button(text=lst_chapters_nos[first], pos_hint={'x': 0.75, 'y': 0}, size_hint=(0.25, 0.15),
                          background_color=(1, 1, 1, 0.9))
             self.add_widget(btn)
             # partial returns a new function with both arguments
             # it's the same as open_chapter(lst_chapters_links[y]])
-            btn.bind(on_press=partial(self.open_chapter, lst_chapters_links[y]))
-            a -= 0.25
+            btn.bind(on_press=partial(self.open_chapter, lst_chapters_links[first]))
+
+            # Second button for the other 20+ links, labelled '...'
+            other_links = [lst_chapters_links[i] for i in range(len(lst_chapters_nos) - 2, -1, -1)]
+            str_links = ' '.join(other_links)
+
+            btn = Button(text="...", pos_hint={'x': 0.5, 'y': 0}, size_hint=(0.25, 0.15),
+                         background_color=(1, 1, 1, 0.9))
+            self.add_widget(btn)
+            # partial returns a new function with both arguments
+            # it's the same as open_chapter(lst_chapters_links[y]])
+            btn.bind(on_press=partial(self.open_chapter, str_links))
 
     # comment below is used to suppress the 'function may be static' error
     # noinspection PyMethodMayBeStatic
@@ -215,9 +236,9 @@ if __name__ == '__main__':
 # Log-in system so that users can users can use
 # New system to allow for mangas to stay if not read
 # Bug #1: No Loading Screen, so users think it crashed
-# Bug #2: Text for some manga goes out of bound
-# Bug #6: [Not certain] Make a fix if more than 8/12 chapters get updated in a go
-# Load the manga more effeciently
+# Bug #2: Text for some manga goes out of bound [Temporarily fixed]
+# Bug #6: Make a fix if more than 20 chapters get updated in a go [Temporarily fixed]
+# Load the manga more efficiently
 # Change which browser opens the manga
 # Be able to check which manga has been read (in same day/through-out)
 # Try and use .kv / Builder.load
