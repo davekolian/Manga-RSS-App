@@ -164,14 +164,14 @@ def func_find_daily_chaps(session1):
                 'https://zeroscans.com/comics/188504-second-life-ranker',
                 'https://zeroscans.com/comics/21941-taming-master',
                 'https://zeroscans.com/comics/585998-the-undefeatable-swordsman',
-                'https://reaperscans.com/comics/915623-god-of-blackfield',
-                'https://reaperscans.com/comics/140270-the-great-mage-returns-after-4000-years',
-                'https://reaperscans.com/comics/616418-kill-the-hero',
-                'https://reaperscans.com/comics/241725-limit-breaker',
-                'https://reaperscans.com/comics/748666-mercenary-enrollment',
-                'https://reaperscans.com/comics/542398-sss-class-suicide-hunter',
-                'https://reaperscans.com/comics/709388-superhuman-era',
-                'https://reaperscans.com/comics/340324-the-tutorial-is-too-hard']
+                'https://reaperscans.com/comics/27937-god-of-blackfield',
+                'https://reaperscans.com/comics/316621-the-great-mage-returns-after-4000-years',
+                'https://reaperscans.com/comics/917294-kill-the-hero',
+                'https://reaperscans.com/comics/563929-limit-breaker',
+                'https://reaperscans.com/comics/535459-mercenary-enrollment',
+                'https://reaperscans.com/comics/335355-sss-class-suicide-hunter',
+                'https://reaperscans.com/comics/147221-superhuman-era',
+                'https://reaperscans.com/comics/364640-the-tutorial-is-too-hard']
 
     while url_counter < len(url_list):
         page = requests.get(url_list[url_counter])
