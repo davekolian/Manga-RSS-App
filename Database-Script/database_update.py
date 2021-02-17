@@ -45,10 +45,7 @@ def func_find_daily_chaps(session1):
                 'https://mangakakalot.com/manga/lg924896', 'https://mangakakalot.com/manga/yl923871',
                 'https://mangakakalot.com/read-iw9rf158504883256', 'https://mangakakalot.com/read-bo1jc158504861718',
                 'https://mangakakalot.com/manga/py923734', 'https://mangakakalot.com/manga/ni924461',
-                'https://mangakakalot.com/manga/xl923012', 'https://mangakakalot.com/manga/rm922554',
-                'https://mangakakalot.com/manga/eo924794', 'https://mangakakalot.com/manga/vi924713',
-                'https://mangakakalot.com/manga/ph925080', 'https://mangakakalot.com/manga/rf925407',
-                'https://mangakakalot.com/read-ts7tt158504943623']
+                'https://mangakakalot.com/manga/xl923012', 'https://mangakakalot.com/read-ts7tt158504943623']
 
     while url_counter < len(url_list):
         page = requests.get(url_list[url_counter])
@@ -166,15 +163,15 @@ def func_find_daily_chaps(session1):
                 'https://zeroscans.com/comics/325051-bowblade-spirit',
                 'https://zeroscans.com/comics/188504-second-life-ranker',
                 'https://zeroscans.com/comics/21941-taming-master',
-                'https://zeroscans.com/comics/585998-the-undefeatable-swordsman']
-                # 'https://reaperscans.com/comics/27937-god-of-blackfield',
-                # 'https://reaperscans.com/comics/316621-the-great-mage-returns-after-4000-years',
-                # 'https://reaperscans.com/comics/917294-kill-the-hero',
-                # 'https://reaperscans.com/comics/563929-limit-breaker',
-                # 'https://reaperscans.com/comics/535459-mercenary-enrollment',
-                # 'https://reaperscans.com/comics/335355-sss-class-suicide-hunter',
-                # 'https://reaperscans.com/comics/147221-superhuman-era',
-                # 'https://reaperscans.com/comics/364640-the-tutorial-is-too-hard']
+                'https://zeroscans.com/comics/585998-the-undefeatable-swordsman',
+                'https://reaperscans.com/comics/27937-god-of-blackfield',
+                'https://reaperscans.com/comics/316621-the-great-mage-returns-after-4000-years',
+                'https://reaperscans.com/comics/917294-kill-the-hero',
+                'https://reaperscans.com/comics/563929-limit-breaker',
+                'https://reaperscans.com/comics/535459-mercenary-enrollment',
+                'https://reaperscans.com/comics/335355-sss-class-suicide-hunter',
+                'https://reaperscans.com/comics/147221-superhuman-era',
+                'https://reaperscans.com/comics/364640-the-tutorial-is-too-hard']
 
     while url_counter < len(url_list):
         page = requests.get(url_list[url_counter])
@@ -321,8 +318,7 @@ def func_find_daily_chaps(session1):
                 'https://manganelo.com/manga/pd924480', 'https://manganelo.com/manga/martial_peak',
                 'https://manganelo.com/manga/do918903', 'https://manganelo.com/manga/nidoume_no_jinsei_wo_isekai_de',
                 'https://manganelo.com/manga/ku920038', 'https://manganelo.com/manga/mq918999',
-                'https://manganelo.com/manga/lj919175', 'https://manganelo.com/manga/dr_frost',
-                'https://manganelo.com/manga/dq922693', 'https://manganelo.com/manga/go922760']
+                'https://manganelo.com/manga/lj919175', 'https://manganelo.com/manga/dr_frost']
 
     while url_counter < len(url_list):
 
