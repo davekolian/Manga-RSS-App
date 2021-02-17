@@ -1,7 +1,7 @@
 #####################################################################
 #                All rights reserved to davekolian                  #
 #####################################################################
-
+from configparser import ConfigParser
 from urllib.request import Request, urlopen
 import os
 import pymongo
@@ -64,11 +64,22 @@ def connect_to_database():
     global result
     global no_of_manga
 
-    client = pymongo.MongoClient(
-        "mongodb+srv://dbOutside:bs62uTozRGLE84sQ@maincluster.idq3f.mongodb.net/manga_app?retryWrites=true&w=majority")
+    # client = pymongo.MongoClient(
+    #     "mongodb+srv://dbOutside:bs62uTozRGLE84sQ@maincluster.idq3f.mongodb.net/manga_app?retryWrites=true&w=majority")
+    #
+    # my_database = client.get_database("manga_app")
+    # my_collection = my_database.get_collection("manga_app_records")
 
-    my_database = client.get_database("manga_app")
-    my_collection = my_database.get_collection("manga_app_records")
+    conf_parser = ConfigParser()
+    conf_parser.read('../Database-Script/db_config.ini')
+    connection_url = conf_parser.get('server', 'connection_url')
+    db_name = conf_parser.get('server', 'db_name')
+    col_name = conf_parser.get('server', 'col_name')
+
+    # Connect to the MongoDB Database
+    client = pymongo.MongoClient(connection_url)
+    my_database = client.get_database(db_name)
+    my_collection = my_database.get_collection(col_name)
 
     result = list(my_collection.find({}))
     no_of_manga = my_collection.count_documents({})
