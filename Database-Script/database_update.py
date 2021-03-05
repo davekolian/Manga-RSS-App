@@ -171,22 +171,22 @@ def func_find_daily_chaps(session1):
 
         # Preparing image links to upload to DB
         if "leviatan" in url_list[url_counter]:
-            if "leviatanscans.com" in imgs_srcs:
-                imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://leviatanscans.com")
-            else:
+            if "leviatanscans.com" in str(imgs_srcs[0]):
                 imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "")
+            else:
+                imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://leviatanscans.com")
             imgs_srcs = imgs_srcs.replace(")", "")
         elif "reaper" in url_list[url_counter]:
-            if "reaperscans.com" in imgs_srcs:
-                imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://reaperscans.com")
-            else:
+            if "reaperscans.com" in str(imgs_srcs[0]):
                 imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "")
+            else:
+                imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://reaperscans.com")
             imgs_srcs = imgs_srcs.replace(")", "")
         else:
-            if "zeroscans.com" in imgs_srcs:
-                imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://zeroscans.com")
-            else:
+            if "zeroscans.com" in str(imgs_srcs[0]):
                 imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "")
+            else:
+                imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://zeroscans.com")
             imgs_srcs = imgs_srcs.replace(")", "")
 
         # Cleaning the manga's name

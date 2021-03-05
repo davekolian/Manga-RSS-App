@@ -170,7 +170,7 @@ class MainGrid(GridLayout):
             lst_chapters_nos = document.get("manga_chapters")
             lst_chapters_links = document.get("chapter_links")
 
-            # func_find_imgs_manga_active(document.get("img_link_bg"), img_name)
+            func_find_imgs_manga_active(document.get("img_link_bg"), img_name)
 
             self.add_widget(BabyGrids(manga_name, img_name, lst_chapters_nos, lst_chapters_links))
 
@@ -249,6 +249,7 @@ if __name__ == '__main__':
 # Bug #1: No Loading Screen, so users think it crashed
 # Bug #2: Text for some manga goes out of bound [Temporarily fixed]
 # Bug #6: Make a fix if more than 20 chapters get updated in a go [Temporarily fixed]
+# Async reading from different websites
 # Load the manga more efficiently
 # Change which browser opens the manga
 # Be able to check which manga has been read (in same day/through-out)
