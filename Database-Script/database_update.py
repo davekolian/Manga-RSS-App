@@ -57,9 +57,6 @@ def func_find_daily_chaps(session1):
         imgs_srcs = tree.xpath('//div[@class="manga-info-pic"]/img/@src')
         links = tree.xpath('//div[@class="row"]/span/a/@href')
 
-        print(manga)
-        print(chap)
-
         manga_clean = str(manga)[2:-2]
         times = [times[i] for i in range(1, len(times), 2)]
 
@@ -184,9 +181,6 @@ def func_find_daily_chaps(session1):
         dates = tree.xpath('//a[@class="item-company text-muted h-1x"]/text()')
         imgs_srcs = tree.xpath('//a[@class="media-content"]/@style')
         links = tree.xpath('//a[@class="item-author text-color "]/@href')
-
-        print(manga)
-        print(chap)
 
         manga_clean = str(manga)[4:-4]
 
@@ -339,9 +333,6 @@ def func_find_daily_chaps(session1):
         imgs_srcs = tree.xpath('//span[@class="info-image"]/img/@src')
         links = tree.xpath('//a[@class="chapter-name text-nowrap"]/@href')
 
-        print(manga)
-        print(chap)
-
         manga_clean = str(manga)[2:-2]
 
         if " " not in manga_clean:
@@ -441,9 +432,6 @@ def func_find_daily_chaps(session1):
         dates = r.html.xpath('//span[@class="chapter-release-date"]/i/text()')
         imgs_srcs = r.html.xpath('//div[@class="summary_image"]/a/img/@data-src')
         links = r.html.xpath('//li[@class="wp-manga-chapter"]/a/@href')
-
-        print(manga)
-        print(chap)
 
         if len(manga) >= 2:
             manga_clean = str(manga[1])[7:-20]
