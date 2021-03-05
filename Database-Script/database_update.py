@@ -28,10 +28,9 @@ def func_find_daily_chaps(session1):
                 'https://mangakakalot.com/read-ja7yn158504838124', 'https://mangakakalot.com/read-jc2wf158504842343',
                 'https://mangakakalot.com/read-rp1kv158504840628', 'https://mangakakalot.com/read-ie2ho158504839970',
                 'https://mangakakalot.com/read-wx1xd158504840874', 'https://mangakakalot.com/read-od1pe158504845657',
-                'https://mangakakalot.com/read-yp6cp158504846116', 'https://mangakakalot.com/read-ol2fi158504849602',
+                'https://mangakakalot.com/read-ol2fi158504849602', 'https://mangakakalot.com/manga/lo924793',
                 'https://mangakakalot.com/read-sz0gg158504854945', 'https://mangakakalot.com/read-dl7bc158504854888',
                 'https://mangakakalot.com/read-yv2vd158504858458', 'https://mangakakalot.com/read-fv5mg158504856152',
-                'https://mangakakalot.com/read-ml8nb158504854664', 'https://mangakakalot.com/read-ek1hu158504836793',
                 'https://mangakakalot.com/read-ts3gp158504833220', 'https://mangakakalot.com/read-ny9yj158504835342',
                 'https://mangakakalot.com/read-zg1oh158504842553', 'https://mangakakalot.com/read-vg0sa158504844980',
                 'https://mangakakalot.com/read-gj8eg158504836414', 'https://mangakakalot.com/read-of6id158504884374',
@@ -40,8 +39,8 @@ def func_find_daily_chaps(session1):
                 'https://mangakakalot.com/read-oe6uc158504836571', 'https://mangakakalot.com/read-mo5of158504931270',
                 'https://mangakakalot.com/read-kh6ab158504854282', 'https://mangakakalot.com/read-rc4ti158504848110',
                 'https://mangakakalot.com/read-of5ex158504840587', 'https://mangakakalot.com/read-iq9la158504835986',
-                'https://mangakakalot.com/manga/xo924628', 'https://mangakakalot.com/manga/gz922893',
-                'https://mangakakalot.com/manga/fe922634', 'https://mangakakalot.com/manga/lo924793',
+                'https://mangakakalot.com/manga/xo924628', 'https://mangakakalot.com/manga/fe922634',
+
                 'https://mangakakalot.com/manga/lg924896', 'https://mangakakalot.com/manga/yl923871',
                 'https://mangakakalot.com/read-iw9rf158504883256', 'https://mangakakalot.com/read-bo1jc158504861718',
                 'https://mangakakalot.com/manga/py923734', 'https://mangakakalot.com/manga/ni924461',
@@ -57,6 +56,9 @@ def func_find_daily_chaps(session1):
         times = tree.xpath('//div[@class="row"]/span/text()')
         imgs_srcs = tree.xpath('//div[@class="manga-info-pic"]/img/@src')
         links = tree.xpath('//div[@class="row"]/span/a/@href')
+
+        print(manga)
+        print(chap)
 
         manga_clean = str(manga)[2:-2]
         times = [times[i] for i in range(1, len(times), 2)]
@@ -182,6 +184,9 @@ def func_find_daily_chaps(session1):
         dates = tree.xpath('//a[@class="item-company text-muted h-1x"]/text()')
         imgs_srcs = tree.xpath('//a[@class="media-content"]/@style')
         links = tree.xpath('//a[@class="item-author text-color "]/@href')
+
+        print(manga)
+        print(chap)
 
         manga_clean = str(manga)[4:-4]
 
@@ -318,7 +323,10 @@ def func_find_daily_chaps(session1):
                 'https://manganelo.com/manga/pd924480', 'https://manganelo.com/manga/martial_peak',
                 'https://manganelo.com/manga/do918903', 'https://manganelo.com/manga/nidoume_no_jinsei_wo_isekai_de',
                 'https://manganelo.com/manga/ku920038', 'https://manganelo.com/manga/mq918999',
-                'https://manganelo.com/manga/lj919175', 'https://manganelo.com/manga/dr_frost']
+                'https://manganelo.com/manga/lj919175', 'https://manganelo.com/manga/dr_frost',
+                'https://manganelo.com/manga/gz922893', 'https://manganelo.com/manga/shikkaku_mon_no_saikyou_kenja',
+                'https://manganelo.com/manga/the_other_world_doesnt_stand_a_chance_against_the_power_of_instant_death',
+                'https://manganelo.com/manga/tensei_kenja_no_isekai_raifu_daini_no_shokugyo_wo_ete_sekai_saikyou_ni_narimashita']
 
     while url_counter < len(url_list):
 
@@ -330,6 +338,9 @@ def func_find_daily_chaps(session1):
         dates = tree.xpath('//span[@class="chapter-time text-nowrap"]/text()')
         imgs_srcs = tree.xpath('//span[@class="info-image"]/img/@src')
         links = tree.xpath('//a[@class="chapter-name text-nowrap"]/@href')
+
+        print(manga)
+        print(chap)
 
         manga_clean = str(manga)[2:-2]
 
@@ -430,6 +441,9 @@ def func_find_daily_chaps(session1):
         dates = r.html.xpath('//span[@class="chapter-release-date"]/i/text()')
         imgs_srcs = r.html.xpath('//div[@class="summary_image"]/a/img/@data-src')
         links = r.html.xpath('//li[@class="wp-manga-chapter"]/a/@href')
+
+        print(manga)
+        print(chap)
 
         if len(manga) >= 2:
             manga_clean = str(manga[1])[7:-20]
