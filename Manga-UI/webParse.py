@@ -170,7 +170,7 @@ class MainGrid(GridLayout):
             lst_chapters_nos = document.get("manga_chapters")
             lst_chapters_links = document.get("chapter_links")
 
-            func_find_imgs_manga_active(document.get("img_link_bg"), img_name)
+            # func_find_imgs_manga_active(document.get("img_link_bg"), img_name)
 
             self.add_widget(BabyGrids(manga_name, img_name, lst_chapters_nos, lst_chapters_links))
 
