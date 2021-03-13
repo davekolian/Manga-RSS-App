@@ -474,20 +474,20 @@ def clear_and_update_database():
 
 async def main_manga():
     tasks_mp = []
-    url_list = ['https://manhuaplus.com/manga/almighty-master/', 'https://manhuaplus.com/manga/global-martial-arts/',
-                'https://manhuaplus.com/manga/the-great-ruler/', 'https://manhuaplus.com/manga/the-strongest-god-king/',
-                'https://manhuaplus.com/manga/rebirth-of-the-urban-immortal-cultivator/',
-                'https://manhuaplus.com/manga/demon-magic-emperor/', 'https://manhuaplus.com/manga/apotheosis/',
-                'https://manhuaplus.com/manga/battle-through-the-heavens/',
-                'https://manhuaplus.com/manga/peerless-battle-spirit/', 'https://manhuaplus.com/manga/versatile-mage/',
-                'https://manhuaplus.com/manga/tales-of-demons-and-gods/',
-                'https://manhuaplus.com/manga/lit-the-supreme-being/',
-                'https://manhuaplus.com/manga/rebirth-city-deity/']
-
-    for link in url_list:
-        tasks_mp.append(asyncio.create_task(find_manga_mangaplus(link)))
-
-    await asyncio.gather(*tasks_mp)
+    # url_list = ['https://manhuaplus.com/manga/almighty-master/', 'https://manhuaplus.com/manga/global-martial-arts/',
+    #             'https://manhuaplus.com/manga/the-great-ruler/', 'https://manhuaplus.com/manga/the-strongest-god-king/',
+    #             'https://manhuaplus.com/manga/rebirth-of-the-urban-immortal-cultivator/',
+    #             'https://manhuaplus.com/manga/demon-magic-emperor/', 'https://manhuaplus.com/manga/apotheosis/',
+    #             'https://manhuaplus.com/manga/battle-through-the-heavens/',
+    #             'https://manhuaplus.com/manga/peerless-battle-spirit/', 'https://manhuaplus.com/manga/versatile-mage/',
+    #             'https://manhuaplus.com/manga/tales-of-demons-and-gods/',
+    #             'https://manhuaplus.com/manga/lit-the-supreme-being/',
+    #             'https://manhuaplus.com/manga/rebirth-city-deity/']
+    #
+    # for link in url_list:
+    #     tasks_mp.append(asyncio.create_task(find_manga_mangaplus(link)))
+    #
+    # await asyncio.gather(*tasks_mp)
 
     tasks_mp = []
     url_list = ['https://zeroscans.com/comics/55416-record-of-the-war-god',
@@ -568,7 +568,8 @@ async def main_manga():
                 'https://manganelo.com/manga/lj919175', 'https://manganelo.com/manga/dr_frost',
                 'https://manganelo.com/manga/gz922893', 'https://manganelo.com/manga/shikkaku_mon_no_saikyou_kenja',
                 'https://manganelo.com/manga/the_other_world_doesnt_stand_a_chance_against_the_power_of_instant_death',
-                'https://manganelo.com/manga/tensei_kenja_no_isekai_raifu_daini_no_shokugyo_wo_ete_sekai_saikyou_ni_narimashita']
+                'https://manganelo.com/manga/tensei_kenja_no_isekai_raifu_daini_no_shokugyo_wo_ete_sekai_saikyou_ni_narimashita',
+                'https://manganelo.com/manga/ec925329']
 
     for link in url_list:
         tasks_mp.append(asyncio.create_task(find_manga_manganelo(link)))
@@ -597,7 +598,7 @@ if __name__ == "__main__":
             log.write(output_console)
             log.close()
 
-            # clear_and_update_database()
+            clear_and_update_database()
         except Exception as ex:
             exception_type, exception_object, exception_traceback = sys.exc_info()
             line_no = exception_traceback.tb_lineno
@@ -616,7 +617,7 @@ if __name__ == "__main__":
             lst_not_read_dicts = []
 
             # Make the app sleep for x mins before restarting
-            time.sleep(10 * 60)
+            time.sleep(2 * 60)
 
             # Adding when the sleep timer is over
             current_time = str(datetime.datetime.now())
