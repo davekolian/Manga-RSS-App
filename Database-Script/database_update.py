@@ -6,7 +6,7 @@ import pymongo
 from lxml import html
 import requests
 import time
-from requests_html import AsyncHTMLSession
+# from requests_html import AsyncHTMLSession
 import datetime
 import sys
 from configparser import ConfigParser
@@ -26,6 +26,7 @@ async def find_manga_mangakakalot(url):
     await asyncio.sleep(1)
     global not_read
     global document_count
+    global error_urls
 
     page = requests.get(url)
     tree = html.fromstring(page.content)
@@ -37,9 +38,6 @@ async def find_manga_mangakakalot(url):
     links = tree.xpath('//div[@class="row"]/span/a/@href')
 
     if page.status_code == 200 and manga:
-
-        print(manga)
-        print(chap)
         times = [times[i] for i in range(1, len(times), 2)]
 
         # Cleaning the manga's name
@@ -117,15 +115,14 @@ async def find_manga_mangakakalot(url):
             lst_not_read_dicts.append(new_document)
 
         not_read = []
-    else:
-        pass
-        # log the url
 
 
 async def find_manga_manganelo(url):
+    await asyncio.sleep(1)
     global not_read
     global document_count
-    await asyncio.sleep(1)
+    global error_urls
+
     page = requests.get(url)
     tree = html.fromstring(page.content)
 
@@ -136,10 +133,6 @@ async def find_manga_manganelo(url):
     links = tree.xpath('//a[@class="chapter-name text-nowrap"]/@href')
 
     if page.status_code == 200 and manga:
-
-        print(manga)
-        print(chap)
-
         # Cleaning the manga's name
         manga_clean = str(manga)[2:-2]
 
@@ -227,6 +220,7 @@ async def find_manga_reaperzero(url):
     await asyncio.sleep(1)
     global not_read
     global document_count
+    global error_urls
 
     page = requests.get(url)
     tree = html.fromstring(page.content)
@@ -238,10 +232,6 @@ async def find_manga_reaperzero(url):
     links = tree.xpath('//a[@class="item-author text-color "]/@href')
 
     if page.status_code == 200 and manga:
-
-        print(manga)
-        print(chap)
-
         # Preparing image links to upload to DB
         if "reaper" in url:
             if "reaperscans.com" in str(imgs_srcs[0]):
@@ -340,115 +330,109 @@ async def find_manga_reaperzero(url):
         not_read = []
 
 
-def find_manga_leviathan(url):
-    pass
-
-
-async def find_manga_mangaplus(url):
-    global not_read
-    global document_count
-
-    session = AsyncHTMLSession()
-    r = await session.get(url)
-    manga = r.html.xpath('//div[@class="post-title"]/h1/text()')
-    if r.status_code == 200 and manga:
-        await r.html.arender(timeout=7000)
-
-        chap = r.html.xpath('//li[@class="wp-manga-chapter"]/a/text()')
-        dates = r.html.xpath('//span[@class="chapter-release-date"]/i/text()')
-        imgs_srcs = r.html.xpath('//div[@class="summary_image"]/a/img/@data-src')
-        links = r.html.xpath('//li[@class="wp-manga-chapter"]/a/@href')
-
-        print(manga)
-        print(chap)
-
-        if len(manga) >= 2:
-            manga_clean = str(manga[1])[7:-20]
-        else:
-            manga_clean = str(manga)[30:-22]
-            # Done just for Lit The Supreme Being which was buggy
-
-        # Cleaning the manga's name
-        if " " not in manga_clean:
-            manga_clean += " "
-
-        # Removing the 'Chapter' word and getting the chapter number
-        chap_clean = []
-
-        for x in range(0, len(chap)):
-            chap[x] = str(chap[x])[10:-8]
-            start_chapter = chap[x].find("Chapter")
-            if ":" in chap[x]:
-                end_line = chap[x].find(":")
-                chap_clean.append(str(chap[x][start_chapter + 8:end_line]))
-            elif " -" in chap[x]:
-                end_line = chap[x].find(" -")
-                chap_clean.append(str(chap[x][start_chapter + 8:end_line]))
-            else:
-                chap_clean.append(str(chap[x][start_chapter + 8:]))
-
-        # Adding the required manga name and index num into the not_read array
-        for x in range(0, len(dates)):
-            if "day" in dates[x] or "days" in dates[x]:
-                if int(str(dates[x][0:1])) < 2:
-                    not_read.append("s")
-                    not_read.append(document_count)
-                    document_count += 1
-                    not_read.append(manga_clean)
-                    break
-            elif "hour" in dates[x] or "hours" in dates[x]:
-                if int(str(dates[x][0:2])) < 24:
-                    not_read.append("s")
-                    not_read.append(document_count)
-                    document_count += 1
-                    not_read.append(manga_clean)
-                    break
-            elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
-                if int(str(dates[x][0:1])) < 60:
-                    not_read.append("s")
-                    not_read.append(document_count)
-                    document_count += 1
-                    not_read.append(manga_clean)
-                    break
-
-        # Adding the required chapters and their links into array form for MongoDB
-        list_of_chaps = []
-        list_of_chap_links = []
-
-        for x in range(0, len(dates)):
-            if "day" in dates[x] or "days" in dates[x]:
-                if int(str(dates[x][0:1])) < 2:
-                    list_of_chaps.append(chap_clean[x])
-                    list_of_chap_links.append(links[x])
-            elif "hour" in dates[x] or "hours" in dates[x]:
-                if int(str(dates[x][0:2])) < 24:
-                    list_of_chaps.append(chap_clean[x])
-                    list_of_chap_links.append(links[x])
-            elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
-                if int(str(dates[x][0:2])) < 60:
-                    list_of_chaps.append(chap_clean[x])
-                    list_of_chap_links.append(links[x])
-
-        if list_of_chaps:
-            not_read.extend([list_of_chaps, list_of_chap_links])
-
-        # Appending the new chapters into the dictionary
-        if not_read:
-            new_document = {
-                'record_id': not_read[1],
-                'manga_name': not_read[2],
-                'manga_chapters': not_read[3],
-                'img_link_bg': imgs_srcs[0],
-                'chapter_links': not_read[4]
-            }
-
-            lst_not_read_dicts.append(new_document)
-
-        not_read = []
-        await session.close()
+# async def find_manga_mangaplus(url):
+#     global not_read
+#     global document_count
+#
+#     session = AsyncHTMLSession()
+#     r = await session.get(url)
+#     manga = r.html.xpath('//div[@class="post-title"]/h1/text()')
+#     if r.status_code == 200 and manga:
+#         await r.html.arender(timeout=7000)
+#
+#         chap = r.html.xpath('//li[@class="wp-manga-chapter"]/a/text()')
+#         dates = r.html.xpath('//span[@class="chapter-release-date"]/i/text()')
+#         imgs_srcs = r.html.xpath('//div[@class="summary_image"]/a/img/@data-src')
+#         links = r.html.xpath('//li[@class="wp-manga-chapter"]/a/@href')
+#
+#         if len(manga) >= 2:
+#             manga_clean = str(manga[1])[7:-20]
+#         else:
+#             manga_clean = str(manga)[30:-22]
+#             # Done just for Lit The Supreme Being which was buggy
+#
+#         # Cleaning the manga's name
+#         if " " not in manga_clean:
+#             manga_clean += " "
+#
+#         # Removing the 'Chapter' word and getting the chapter number
+#         chap_clean = []
+#
+#         for x in range(0, len(chap)):
+#             chap[x] = str(chap[x])[10:-8]
+#             start_chapter = chap[x].find("Chapter")
+#             if ":" in chap[x]:
+#                 end_line = chap[x].find(":")
+#                 chap_clean.append(str(chap[x][start_chapter + 8:end_line]))
+#             elif " -" in chap[x]:
+#                 end_line = chap[x].find(" -")
+#                 chap_clean.append(str(chap[x][start_chapter + 8:end_line]))
+#             else:
+#                 chap_clean.append(str(chap[x][start_chapter + 8:]))
+#
+#         # Adding the required manga name and index num into the not_read array
+#         for x in range(0, len(dates)):
+#             if "day" in dates[x] or "days" in dates[x]:
+#                 if int(str(dates[x][0:1])) < 2:
+#                     not_read.append("s")
+#                     not_read.append(document_count)
+#                     document_count += 1
+#                     not_read.append(manga_clean)
+#                     break
+#             elif "hour" in dates[x] or "hours" in dates[x]:
+#                 if int(str(dates[x][0:2])) < 24:
+#                     not_read.append("s")
+#                     not_read.append(document_count)
+#                     document_count += 1
+#                     not_read.append(manga_clean)
+#                     break
+#             elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
+#                 if int(str(dates[x][0:1])) < 60:
+#                     not_read.append("s")
+#                     not_read.append(document_count)
+#                     document_count += 1
+#                     not_read.append(manga_clean)
+#                     break
+#
+#         # Adding the required chapters and their links into array form for MongoDB
+#         list_of_chaps = []
+#         list_of_chap_links = []
+#
+#         for x in range(0, len(dates)):
+#             if "day" in dates[x] or "days" in dates[x]:
+#                 if int(str(dates[x][0:1])) < 2:
+#                     list_of_chaps.append(chap_clean[x])
+#                     list_of_chap_links.append(links[x])
+#             elif "hour" in dates[x] or "hours" in dates[x]:
+#                 if int(str(dates[x][0:2])) < 24:
+#                     list_of_chaps.append(chap_clean[x])
+#                     list_of_chap_links.append(links[x])
+#             elif "mins" in dates[x] or "min" in dates[x] or "minutes" in dates[x] or "minute" in dates[x]:
+#                 if int(str(dates[x][0:2])) < 60:
+#                     list_of_chaps.append(chap_clean[x])
+#                     list_of_chap_links.append(links[x])
+#
+#         if list_of_chaps:
+#             not_read.extend([list_of_chaps, list_of_chap_links])
+#
+#         # Appending the new chapters into the dictionary
+#         if not_read:
+#             new_document = {
+#                 'record_id': not_read[1],
+#                 'manga_name': not_read[2],
+#                 'manga_chapters': not_read[3],
+#                 'img_link_bg': imgs_srcs[0],
+#                 'chapter_links': not_read[4]
+#             }
+#
+#             lst_not_read_dicts.append(new_document)
+#
+#         not_read = []
+#         await session.close()
 
 
 # Function which connects to my database, clears the collection, and updates with new list of of documents
+
 def clear_and_update_database():
     # Setting up Config Parser for more security, thanks to @bugnounty
     conf_parser = ConfigParser()
@@ -473,7 +457,7 @@ def clear_and_update_database():
 
 
 async def main_manga():
-    tasks_mp = []
+    # tasks_mp = []
     # url_list = ['https://manhuaplus.com/manga/almighty-master/', 'https://manhuaplus.com/manga/global-martial-arts/',
     #             'https://manhuaplus.com/manga/the-great-ruler/', 'https://manhuaplus.com/manga/the-strongest-god-king/',
     #             'https://manhuaplus.com/manga/rebirth-of-the-urban-immortal-cultivator/',
@@ -509,9 +493,11 @@ async def main_manga():
                 'https://reaperscans.com/comics/507776-return-of-the-frozen-player',
                 'https://reaperscans.com/comics/585562-arcane-sniper']
 
+    # Reaper Scans | Zero Scans
     for link in url_list:
         tasks_mp.append(asyncio.create_task(find_manga_reaperzero(link)))
 
+    # Mangakakalot
     url_list = ['https://mangakakalot.com/read-lm7ib158504847850', 'https://mangakakalot.com/read-ox3yk158504833790',
                 'https://mangakakalot.com/read-zs6sp158504840280', 'https://mangakakalot.com/read-ul6pf158504868718',
                 'https://mangakakalot.com/read-ep8pm158504835723', 'https://mangakakalot.com/read-ro4rv158504853379',
@@ -535,11 +521,16 @@ async def main_manga():
                 'https://mangakakalot.com/manga/py923734', 'https://mangakakalot.com/manga/ni924461',
                 'https://mangakakalot.com/manga/xl923012', 'https://mangakakalot.com/read-ts7tt158504943623',
                 'https://mangakakalot.com/manga/jv925863', 'https://mangakakalot.com/read-fq9iu158504944929',
-                'https://mangakakalot.com/manga/xv925862', 'https://mangakakalot.com/manga/cc925283']
+                'https://mangakakalot.com/manga/xv925862', 'https://mangakakalot.com/manga/cc925283',
+                'https://mangakakalot.com/manga/sw922557', 'https://mangakakalot.com/read-xf9fk158504906020',
+                'https://mangakakalot.com/read-nz2fb158504821825', 'https://mangakakalot.com/read-rl4cd158504850497',
+                'https://mangakakalot.com/manga/gi925311', 'https://mangakakalot.com/manga/vf922819',
+                ]
 
     for link in url_list:
         tasks_mp.append(asyncio.create_task(find_manga_mangakakalot(link)))
 
+    # Manganelo
     url_list = ['https://manganelo.com/manga/xn921310', 'https://manganelo.com/manga/huku267071576897767',
                 'https://manganelo.com/manga/read_boku_no_hero_academia_manga',
                 'https://manganelo.com/manga/read_one_punch_man_manga_online_free3',
@@ -569,7 +560,12 @@ async def main_manga():
                 'https://manganelo.com/manga/gz922893', 'https://manganelo.com/manga/shikkaku_mon_no_saikyou_kenja',
                 'https://manganelo.com/manga/the_other_world_doesnt_stand_a_chance_against_the_power_of_instant_death',
                 'https://manganelo.com/manga/tensei_kenja_no_isekai_raifu_daini_no_shokugyo_wo_ete_sekai_saikyou_ni_narimashita',
-                'https://manganelo.com/manga/ec925329']
+                'https://manganelo.com/manga/ec925329', 'https://manganelo.com/manga/read_doupo_cangqiong_manga',
+                'https://manganelo.com/manga/pg920736', 'https://manganelo.com/manga/the_great_ruler',
+                'https://manganelo.com/manga/rx922672', 'https://manganelo.com/manga/vrin278571580265812',
+                'https://manganelo.com/manga/apotheosis', 'https://manganelo.com/manga/kk921357',
+                'https://manganelo.com/manga/hyer5231574354229', 'https://manganelo.com/manga/sw923218',
+                'https://manganelo.com/manga/rx919523', 'https://manganelo.com/manga/uw924618']
 
     for link in url_list:
         tasks_mp.append(asyncio.create_task(find_manga_manganelo(link)))
@@ -589,11 +585,10 @@ if __name__ == "__main__":
             log.close()
 
             asyncio.run(main_manga())
-            print(lst_not_read_dicts)
+            # print(lst_not_read_dicts)
 
             current_time = str(datetime.datetime.now())
-            output_console = "[" + current_time + "] " + str(lst_not_read_dicts) + "\n"
-            # print(output_console)
+            output_console = "[" + str(current_time) + "] " + str(lst_not_read_dicts) + "\n"
             log = open("log.txt", "a")
             log.write(output_console)
             log.close()
@@ -604,7 +599,7 @@ if __name__ == "__main__":
             line_no = exception_traceback.tb_lineno
             # Adding (an) exception(s) on the log file
             current_time = str(datetime.datetime.now())
-            output_console = "[" + current_time + "] " + "Exception has occured: " + line_no + " - " + str(
+            output_console = "[" + current_time + "] " + "Exception has occured: " + str(line_no) + " - " + str(
                 ex.args) + " !\n"
 
             log = open("log.txt", "a")
@@ -617,7 +612,7 @@ if __name__ == "__main__":
             lst_not_read_dicts = []
 
             # Make the app sleep for x mins before restarting
-            time.sleep(2 * 60)
+            time.sleep(10 * 60)
 
             # Adding when the sleep timer is over
             current_time = str(datetime.datetime.now())
