@@ -1,6 +1,5 @@
 import React from "react";
 import Post from "./Post/Post";
-import { Grid, CircularProgress } from "@material-ui/core";
 
 import { useSelector } from "react-redux";
 
@@ -10,13 +9,13 @@ const Posts = () => {
   console.log(posts);
 
   return !posts.length ? (
-    <CircularProgress />
+    <p>Empty DB! :c</p>
   ) : (
-    <Grid>
+    <>
       {posts.map((post) => (
         <Post post={post} />
       ))}
-    </Grid>
+    </>
   );
 };
 

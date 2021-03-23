@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./styles.css";
 
 const Post = ({ post }) => {
   const items = [];
@@ -9,9 +10,11 @@ const Post = ({ post }) => {
 
   return (
     <>
-      <h1>{post.manga_name}</h1>
-      <img src={post.img_link_bg} alt="Manga Background" />
-      {items}
+      <div>
+        <h1>{post.manga_name}</h1>
+        <img src={post.img_link_bg} alt="{Manga} Background" />
+        {items}
+      </div>
     </>
   );
 };

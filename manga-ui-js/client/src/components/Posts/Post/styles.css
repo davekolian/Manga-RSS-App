@@ -1,0 +1,31 @@
+div {
+  position: relative;
+  display: inline-block;
+  margin: 0 10px 0 0;
+}
+
+h1 {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  padding: 10px 0 10px 0;
+  background-color: rgba(255, 207, 255, 0.5);
+
+  text-align: center;
+}
+
+a {
+  position: absolute;
+  bottom: 10px;
+  right: 5px;
+  background-color: grey;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+img {
+  width: 225px;
+  height: 337px;
+}
