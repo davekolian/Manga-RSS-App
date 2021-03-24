@@ -1,31 +1,33 @@
-div {
-  position: relative;
-  display: inline-block;
-  margin: 0 10px 0 0;
+.main:hover p {
+  visibility: visible;
 }
 
-h1 {
+p {
+  visibility: hidden;
   position: absolute;
-  top: 0px;
-  left: 0px;
-  padding: 10px 0 10px 0;
-  background-color: rgba(255, 207, 255, 0.5);
-
+  margin: 0 auto;
+  padding: 15px 0;
+  background-color: rgba(70, 70, 70, 0.8);
+  color: #ffffff;
+  width: 100%;
+  font-size: 23px;
   text-align: center;
+  font-family: Verdana;
 }
 
 a {
-  position: absolute;
-  bottom: 10px;
-  right: 5px;
   background-color: grey;
   color: #ffffff;
   padding: 10px;
   border-radius: 5px;
   text-decoration: none;
+  margin: 0 5px 0 0;
+  font-family: sans-serif;
+  font-size: 15px;
 }
 
-img {
-  width: 225px;
-  height: 337px;
+.chaps {
+  position: absolute;
+  bottom: 15px;
+  right: 0px;
 }
