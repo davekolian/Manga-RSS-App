@@ -30,7 +30,6 @@ const Post = ({ post }) => {
   let gridDivStyle = {
     display: "grid",
     gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
-    alignItems: "center",
   };
 
   for (var i = post.manga_chapters.length - 1; i >= 0; i--) {
@@ -42,14 +41,12 @@ const Post = ({ post }) => {
   }
 
   return (
-    <>
-      <div class="main" style={mainDivStyle}>
-        <p style={styles.p}>{post.manga_name}</p>
-        <div class="chaps">
-          <div style={gridDivStyle}>{items}</div>
-        </div>
+    <div className="main" style={mainDivStyle}>
+      <p style={styles.p}>{post.manga_name}</p>
+      <div className="chaps">
+        <div style={gridDivStyle}>{items}</div>
       </div>
-    </>
+    </div>
   );
 };
 

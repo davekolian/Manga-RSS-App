@@ -2,7 +2,7 @@
   visibility: visible;
 }
 
-p {
+.main p {
   visibility: hidden;
   position: absolute;
   margin: 0 auto;
@@ -15,7 +15,14 @@ p {
   font-family: Verdana;
 }
 
-a {
+.chaps {
+  position: absolute;
+  bottom: 10px;
+  left: 5px;
+  margin: 0 auto;
+}
+
+.chaps a {
   background-color: grey;
   color: #ffffff;
   padding: 10px;
@@ -25,10 +32,4 @@ a {
   font-family: sans-serif;
   font-size: 15px;
   text-align: center;
-}
-
-.chaps {
-  position: absolute;
-  bottom: 10px;
-  left: 5px;
 }

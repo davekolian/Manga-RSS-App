@@ -1,0 +1,43 @@
+h1 {
+  text-align: center;
+  background-color: #ffffff;
+  padding: 10px 0;
+  font-family: Verdana;
+  font-size: 50px;
+  margin: 0 auto;
+  border-radius: 5px;
+  box-shadow: 2px 2px 10px #707070;
+}
+
+.container {
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.footer {
+  background-color: #ffffff;
+  margin: 0 auto;
+  padding: 10px 0;
+  border-radius: 5px;
+  box-shadow: 2px 2px 10px #707070;
+}
+
+.footer p {
+  font-size: 20px;
+  margin: 0 auto;
+  font-family: Verdana;
+  font-size: 15px;
+  width: fit-content;
+  margin-bottom: 10px;
+}
+
+img {
+  width: 25px;
+  padding: 5px;
+}
+
+.images {
+  margin: 5px auto;
+  width: fit-content;
+}
