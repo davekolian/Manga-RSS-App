@@ -21,13 +21,14 @@ a {
   padding: 10px;
   border-radius: 5px;
   text-decoration: none;
-  margin: 0 5px 0 0;
+  margin: 5px 0 0 5px;
   font-family: sans-serif;
   font-size: 15px;
+  text-align: center;
 }
 
 .chaps {
   position: absolute;
-  bottom: 15px;
-  right: 0px;
+  bottom: 10px;
+  left: 5px;
 }

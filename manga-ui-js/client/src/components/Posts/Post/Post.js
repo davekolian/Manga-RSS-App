@@ -15,7 +15,25 @@ const Post = ({ post }) => {
     display: "inline-block",
   };
 
-  for (var i = 0; i < post.manga_chapters.length; i++) {
+  let chapSize = String(post.manga_chapters[0]);
+
+  let gridSize = 0;
+
+  if (chapSize.length == 2) {
+    gridSize = 5;
+  } else if (chapSize.length == 3) {
+    gridSize = 4;
+  } else {
+    gridSize = 3;
+  }
+
+  let gridDivStyle = {
+    display: "grid",
+    gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
+    alignItems: "center",
+  };
+
+  for (var i = post.manga_chapters.length - 1; i >= 0; i--) {
     items.push(
       <a style={styles.a} href={post.chapter_links[i]}>
         {post.manga_chapters[i]}
@@ -27,7 +45,9 @@ const Post = ({ post }) => {
     <>
       <div class="main" style={mainDivStyle}>
         <p style={styles.p}>{post.manga_name}</p>
-        <div class="chaps">{items}</div>
+        <div class="chaps">
+          <div style={gridDivStyle}>{items}</div>
+        </div>
       </div>
     </>
   );
