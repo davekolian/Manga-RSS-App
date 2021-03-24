@@ -1,15 +1,24 @@
 # Manga RSS App
- Manga RSS App is a Desktop application that shows if any of the manga I (currently) read has any new chapters.
+ Manga RSS App is a Web application that shows if any of the manga I (currently) read has any new chapters.
  
- ## Installation
-   * Navigate to Manga-UI/webParse.zip (https://github.com/davekolian/Manga-RSS-App/raw/master/Manga-UI/webParse.zip) and download the zip file.
-   * Extract the file and navigate to /dist/webParse
-   * Run webParse.exe to run the code
+ ## How to use
+  * The app is currently live over on my [netlify](https://manga-rss-app.netlify.app/).
    
 ## How does it work
-   * It uses Web Scraping technology to scrape Scanalation websites and check if any of the specified manga have released any new chapters recently.
-   * Then it updates the data on MongoDB.
-   * The webParse.exe then reads from the database and uses Kivy UI to display the data cleanly.
+
+ #### Web Scraper
+   1. It uses Web Scraping technology to scrape Scanalation websites and check if any of the specified manga have released any new chapters recently.
+   2. This web scraper runs every 10 minutes on an Oracle Cloud Instance where it populates the database.
+   3. The web app the reads the the database and shows the data.
+ 
+ #### Backend
+   1. With the help of Heroku and Mongoose I am able to read the data in the database.
+
+
+ #### Front-end
+ 1. Using React.js and Redux I am able to communicate with the backend part wherein I receive the data from the database
+ 2. I then display it on the screen with the help of JavaScript, HTML and CSS.
+
    
 ## Coming Soon
    * Addition of a login system
