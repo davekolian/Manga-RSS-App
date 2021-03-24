@@ -19,9 +19,9 @@ const Post = ({ post }) => {
 
   let gridSize = 0;
 
-  if (chapSize.length == 2) {
+  if (chapSize.length === 2) {
     gridSize = 5;
-  } else if (chapSize.length == 3) {
+  } else if (chapSize.length === 3) {
     gridSize = 4;
   } else {
     gridSize = 3;
