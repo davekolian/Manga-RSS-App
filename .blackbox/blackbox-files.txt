@@ -1,1 +1,0 @@
-d/Documents/Github/Manga-RSS-App/Database-Script/db_config.ini
