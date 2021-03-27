@@ -1,4 +1,2 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-**/blackbox-admins.txt text eol=lf
-**/blackbox-files.txt text eol=lf
