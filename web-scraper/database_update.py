@@ -43,6 +43,9 @@ async def find_manga_mangakakalot(url):
         # Cleaning the manga's name
         manga_clean = str(manga)[2:-2]
 
+        print(manga)
+        print(chap)
+
         if " " not in manga_clean:
             manga_clean += " "
 
@@ -135,6 +138,9 @@ async def find_manga_manganelo(url):
     if page.status_code == 200 and manga:
         # Cleaning the manga's name
         manga_clean = str(manga)[2:-2]
+
+        print(manga)
+        print(chap)
 
         if " " not in manga_clean:
             manga_clean += " "
@@ -239,15 +245,18 @@ async def find_manga_reaperzero(url):
             else:
                 imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://reaperscans.com")
             imgs_srcs = imgs_srcs.replace(")", "")
-        else:
-            if "zeroscans.com" in str(imgs_srcs[0]):
-                imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "")
-            else:
-                imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://zeroscans.com")
-            imgs_srcs = imgs_srcs.replace(")", "")
+        # else:
+        #     if "zeroscans.com" in str(imgs_srcs[0]):
+        #         imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "")
+        #     else:
+        #         imgs_srcs = str(imgs_srcs[0]).replace("background-image:url(", "https://zeroscans.com")
+        #     imgs_srcs = imgs_srcs.replace(")", "")
 
         # Cleaning the manga's name
         manga_clean = str(manga)[4:-4]
+
+        print(manga)
+        print(chap)
 
         if " " not in manga_clean:
             manga_clean += " "
@@ -474,29 +483,28 @@ async def main_manga():
     # await asyncio.gather(*tasks_mp)
 
     tasks_mp = []
-    url_list = ['https://reaperscans.com/comics/27937-god-of-blackfield',
-                'https://reaperscans.com/comics/316621-the-great-mage-returns-after-4000-years',
-                'https://reaperscans.com/comics/917294-kill-the-hero',
-                'https://reaperscans.com/comics/563929-limit-breaker',
-                'https://reaperscans.com/comics/535459-mercenary-enrollment',
-                'https://reaperscans.com/comics/335355-sss-class-suicide-hunter',
-                'https://reaperscans.com/comics/147221-superhuman-era',
-                'https://reaperscans.com/comics/364640-the-tutorial-is-too-hard',
-                'https://reaperscans.com/comics/326450-the-player-that-cant-level-up',
-                'https://reaperscans.com/comics/276469-strongest-fighter',
-                'https://reaperscans.com/comics/507776-return-of-the-frozen-player',
-                'https://reaperscans.com/comics/585562-arcane-sniper']
-
-    # 'https://zeroscans.com/comics/55416-record-of-the-war-god',
-    # 'https://zeroscans.com/comics/133460-yong-heng-zhi-zun',
-    # 'https://zeroscans.com/comics/325051-bowblade-spirit',
-    # 'https://zeroscans.com/comics/188504-second-life-ranker',
-    # 'https://zeroscans.com/comics/21941-taming-master',
-    # 'https://zeroscans.com/comics/585998-the-undefeatable-swordsman'
-
-    # Reaper Scans | Zero Scans
-    for link in url_list:
-        tasks_mp.append(asyncio.create_task(find_manga_reaperzero(link)))
+    # url_list = ['https://reaperscans.com/comics/27937-god-of-blackfield',
+    #             'https://reaperscans.com/comics/316621-the-great-mage-returns-after-4000-years',
+    #             'https://reaperscans.com/comics/917294-kill-the-hero',
+    #             'https://reaperscans.com/comics/563929-limit-breaker',
+    #             'https://reaperscans.com/comics/535459-mercenary-enrollment',
+    #             'https://reaperscans.com/comics/335355-sss-class-suicide-hunter',
+    #             'https://reaperscans.com/comics/147221-superhuman-era',
+    #             'https://reaperscans.com/comics/364640-the-tutorial-is-too-hard',
+    #             'https://reaperscans.com/comics/326450-the-player-that-cant-level-up',
+    #             'https://reaperscans.com/comics/276469-strongest-fighter',
+    #             'https://reaperscans.com/comics/507776-return-of-the-frozen-player',
+    #             'https://reaperscans.com/comics/585562-arcane-sniper',
+    #             'https://zeroscans.com/comics/55416-record-of-the-war-god',
+    #             'https://zeroscans.com/comics/133460-yong-heng-zhi-zun',
+    #             'https://zeroscans.com/comics/325051-bowblade-spirit',
+    #             'https://zeroscans.com/comics/188504-second-life-ranker',
+    #             'https://zeroscans.com/comics/21941-taming-master',
+    #             'https://zeroscans.com/comics/585998-the-undefeatable-swordsman']
+    #
+    # # Reaper Scans | Zero Scans
+    # for link in url_list:
+    #     tasks_mp.append(asyncio.create_task(find_manga_reaperzero(link)))
 
     # Mangakakalot
     url_list = ['https://mangakakalot.com/read-lm7ib158504847850', 'https://mangakakalot.com/read-ox3yk158504833790',
@@ -515,9 +523,9 @@ async def main_manga():
                 'https://mangakakalot.com/read-tv7mr158504845382', 'https://mangakakalot.com/read-cq3sf158504857171',
                 'https://mangakakalot.com/read-oe6uc158504836571', 'https://mangakakalot.com/read-mo5of158504931270',
                 'https://mangakakalot.com/read-kh6ab158504854282', 'https://mangakakalot.com/read-rc4ti158504848110',
-                'https://mangakakalot.com/read-iq9la158504835986',
-                'https://mangakakalot.com/manga/xo924628',
-                'https://mangakakalot.com/manga/yl923871',
+                'https://mangakakalot.com/read-iq9la158504835986', 'https://mangakakalot.com/manga/dy925897',
+                'https://mangakakalot.com/manga/xo924628', 'https://mangakakalot.com/manga/eo924794',
+                'https://mangakakalot.com/manga/yl923871', 'https://mangakakalot.com/manga/vi924713',
                 'https://mangakakalot.com/read-iw9rf158504883256', 'https://mangakakalot.com/read-bo1jc158504861718',
                 'https://mangakakalot.com/manga/py923734', 'https://mangakakalot.com/manga/ni924461',
                 'https://mangakakalot.com/manga/xl923012', 'https://mangakakalot.com/read-ts7tt158504943623',
@@ -526,7 +534,8 @@ async def main_manga():
                 'https://mangakakalot.com/manga/sw922557', 'https://mangakakalot.com/read-xf9fk158504906020',
                 'https://mangakakalot.com/read-nz2fb158504821825', 'https://mangakakalot.com/read-rl4cd158504850497',
                 'https://mangakakalot.com/manga/gi925311', 'https://mangakakalot.com/manga/vf922819',
-                'https://mangakakalot.com/manga/ks924647']
+                'https://mangakakalot.com/manga/ks924647', 'https://mangakakalot.com/manga/ph925967',
+                'https://mangakakalot.com/manga/xv925862',]
 
     for link in url_list:
         tasks_mp.append(asyncio.create_task(find_manga_mangakakalot(link)))
@@ -570,8 +579,12 @@ async def main_manga():
                 'https://manganelo.com/manga/dz919342', 'https://manganelo.com/manga/pe922986',
                 'https://manganelo.com/manga/pb925700', 'https://manganelo.com/manga/zm924455',
                 'https://manganelo.com/manga/yong_heng_zhi_zun', 'https://manganelo.com/manga/kg923596',
-                'https://manganelo.com/manga/jx925356','https://manganelo.com/manga/jf921342',
-                'https://manganelo.com/manga/lg924896', 'https://manganelo.com/manga/fe922634']
+                'https://manganelo.com/manga/jx925356', 'https://manganelo.com/manga/jf921342',
+                'https://manganelo.com/manga/lg924896', 'https://manganelo.com/manga/fe922634',
+                'https://manganelo.com/manga/qp925636', 'https://manganelo.com/manga/dq922693',
+                'https://manganelo.com/manga/rm922554', 'https://manganelo.com/manga/go922760',
+                'https://manganelo.com/manga/ph925080', 'https://manganelo.com/manga/kj923068',
+                'https://manganelo.com/manga/rf925407']
 
     for link in url_list:
         tasks_mp.append(asyncio.create_task(find_manga_manganelo(link)))
