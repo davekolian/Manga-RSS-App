@@ -23,7 +23,40 @@ const App = () => {
     margin: "0 auto",
   };
   return !posts.length ? (
-    <p>Empty DB! :c</p>
+    <>
+      <div style={test}>
+        <div className="header">
+          <h1 style={styles.h1}>Manga-RSS-App</h1>
+        </div>
+        <p>Loading Manga! Beep Boop!</p>
+        <div className="footer">
+          <div className="images">
+            <a
+              href="https://github.com/davekolian"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img src={github} alt="Github Link" />
+            </a>
+            <a
+              href="https://www.instagram.com/thekolboy/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img src={instagram} alt="Instagram Link" />
+            </a>
+            <a
+              href="https://davekolian.github.io/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img src={website} alt="Personal Website Link" />
+            </a>
+          </div>
+          <p>Made by davekolian.</p>
+        </div>
+      </div>
+    </>
   ) : (
     <div style={test}>
       <div className="header">
@@ -36,13 +69,25 @@ const App = () => {
       </div>
       <div className="footer">
         <div className="images">
-          <a href="https://github.com/davekolian" target="_blank">
+          <a
+            href="https://github.com/davekolian"
+            target="_blank"
+            rel="noreferrer"
+          >
             <img src={github} alt="Github Link" />
           </a>
-          <a href="https://www.instagram.com/thekolboy/" target="_blank">
+          <a
+            href="https://www.instagram.com/thekolboy/"
+            target="_blank"
+            rel="noreferrer"
+          >
             <img src={instagram} alt="Instagram Link" />
           </a>
-          <a href="" target="_blank">
+          <a
+            href="https://davekolian.github.io/"
+            target="_blank"
+            rel="noreferrer"
+          >
             <img src={website} alt="Personal Website Link" />
           </a>
         </div>

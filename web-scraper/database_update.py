@@ -527,7 +527,7 @@ async def main_manga():
                 'https://mangakakalot.com/read-nz2fb158504821825', 'https://mangakakalot.com/read-rl4cd158504850497',
                 'https://mangakakalot.com/manga/gi925311', 'https://mangakakalot.com/manga/vf922819',
                 'https://mangakakalot.com/manga/ks924647', 'https://mangakakalot.com/manga/ph925967',
-                'https://mangakakalot.com/manga/xv925862', ]
+                'https://mangakakalot.com/manga/wb925651', 'https://mangakakalot.com/manga/yx924697']
 
     for link in url_list:
         tasks_mp.append(asyncio.create_task(find_manga_mangakakalot(link)))
@@ -576,7 +576,8 @@ async def main_manga():
                 'https://manganelo.com/manga/qp925636', 'https://manganelo.com/manga/dq922693',
                 'https://manganelo.com/manga/rm922554', 'https://manganelo.com/manga/go922760',
                 'https://manganelo.com/manga/ph925080', 'https://manganelo.com/manga/kj923068',
-                'https://manganelo.com/manga/rf925407']
+                'https://manganelo.com/manga/rf925407', 'https://manganelo.com/manga/jb924592',
+                'https://manganelo.com/manga/iu923224', 'https://manganelo.com/manga/ks924647']
 
     for link in url_list:
         tasks_mp.append(asyncio.create_task(find_manga_manganelo(link)))
