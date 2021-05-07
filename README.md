@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/26fcc39c-ba88-4d2a-876f-f9fb1fe26de7/deploy-status)](https://app.netlify.com/sites/manga-rss-app/deploys)
+
 # Manga RSS App
  Manga RSS App is a Web application that shows if any of the manga I (currently) read has any new chapters.
  
