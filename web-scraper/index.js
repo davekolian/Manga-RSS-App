@@ -16,6 +16,12 @@ const new_chapters = [];
 let record_ids = 0;
 
 async function main_scrapers(urls) {
+	let browser = await puppeteer.launch({
+		headless: false,
+		args: ['--start-maximized'],
+		defaultViewport: NaN,
+	});
+
 	for (let url of urls) {
 		let domain = '';
 		let split = url.split('//')[1].split('.');
@@ -25,44 +31,48 @@ async function main_scrapers(urls) {
 			domain = split[0];
 		}
 
-		if (domain == 'manhuaplus') await get_from_MP(url);
-		else if (domain == 'reaperscans') await get_from_Reaper(url);
-		else if (domain == 'asurascans') await get_from_Asura(url);
+		let page = await browser.newPage();
+
+		await page.setRequestInterception(true);
+		await page.setDefaultNavigationTimeout(0);
+
+		page.on('request', (req) => {
+			if (
+				req.resourceType() == 'stylesheet' ||
+				req.resourceType() == 'font' ||
+				req.resourceType() == 'image' ||
+				req.resourceType() == 'script'
+			) {
+				req.abort();
+			} else {
+				req.continue();
+			}
+		});
+
+		if (domain == 'manhuaplus') await get_from_MP(page, url);
+		else if (domain == 'reaperscans') await get_from_Reaper(page, url);
+		else if (domain == 'asurascans') await get_from_Asura(page, url);
+		else if (domain == 'earlym') await get_from_Early(page, url);
+
+		await page.close();
 	}
+
+	await browser.close();
 }
 
-async function get_from_MP(url) {
-	console.log('Reading ManhuaPLus');
-	let browser = await puppeteer.launch({
-		headless: false,
-		args: ['--start-maximized'],
-		defaultViewport: NaN,
-	});
-	let page = await browser.newPage();
-
-	await page.setRequestInterception(true);
-	await page.setDefaultNavigationTimeout(0);
-
-	page.on('request', (req) => {
-		if (
-			req.resourceType() == 'stylesheet' ||
-			req.resourceType() == 'font' ||
-			req.resourceType() == 'image' ||
-			req.resourceType() == 'script'
-		) {
-			req.abort();
-		} else {
-			req.continue();
-		}
-	});
+async function get_from_MP(page, url) {
+	const local_chapters = [];
+	const local_links = [];
 
 	await page.goto(url);
+	await new Promise((r) => setTimeout(r, 10000));
 
 	let name = await page.evaluate(() => {
 		let x = document.getElementsByTagName('h1');
 
 		return x[0].innerText;
 	});
+	console.log('Reading: ' + name);
 
 	let img_link = await page.evaluate(() => {
 		let x = document.getElementsByClassName('summary_image');
@@ -86,9 +96,6 @@ async function get_from_MP(url) {
 		return arr;
 	});
 
-	const local_chapters = [];
-	const local_links = [];
-
 	for (let chap of arr) {
 		let date = chap[1].split(' ')[0];
 		let period = chap[1].split(' ')[1];
@@ -114,42 +121,21 @@ async function get_from_MP(url) {
 		record_ids += 1;
 		new_chapters.push(new_document);
 	}
-
-	await browser.close();
 }
 
-async function get_from_Reaper(url) {
-	console.log('Reading Reaper');
-	let browser = await puppeteer.launch({
-		headless: false,
-		args: ['--start-maximized'],
-		defaultViewport: NaN,
-	});
-	let page = await browser.newPage();
-
-	await page.setRequestInterception(true);
-	await page.setDefaultNavigationTimeout(0);
-
-	page.on('request', (req) => {
-		if (
-			req.resourceType() == 'stylesheet' ||
-			req.resourceType() == 'font' ||
-			req.resourceType() == 'image' ||
-			req.resourceType() == 'script'
-		) {
-			req.abort();
-		} else {
-			req.continue();
-		}
-	});
+async function get_from_Reaper(page, url) {
+	const local_chapters = [];
+	const local_links = [];
 
 	await page.goto(url);
+	await new Promise((r) => setTimeout(r, 10000));
 
 	let name = await page.evaluate(() => {
 		let x = document.getElementsByTagName('h1');
 
 		return x[0].innerText;
 	});
+	console.log('Reading: ' + name);
 
 	let img_link = await page.evaluate(() => {
 		let x = document.getElementsByClassName('summary_image');
@@ -172,9 +158,6 @@ async function get_from_Reaper(url) {
 		return arr;
 	});
 
-	const local_chapters = [];
-	const local_links = [];
-
 	for (let chap of arr) {
 		let date = chap[1].split(' ')[0];
 		let period = chap[1].split(' ')[1];
@@ -200,44 +183,25 @@ async function get_from_Reaper(url) {
 		record_ids += 1;
 		new_chapters.push(new_document);
 	}
-
-	await browser.close();
 }
 
-async function get_from_Early(url) {}
+async function get_from_Early(page, url) {
+	//Do later
+}
 
-async function get_from_Asura(url) {
-	console.log('Reading Asura');
-	let browser = await puppeteer.launch({
-		headless: false,
-		args: ['--start-maximized'],
-		defaultViewport: NaN,
-	});
-	let page = await browser.newPage();
-
-	await page.setRequestInterception(true);
-	await page.setDefaultNavigationTimeout(0);
-
-	page.on('request', (req) => {
-		if (
-			req.resourceType() == 'stylesheet' ||
-			req.resourceType() == 'font' ||
-			req.resourceType() == 'image' ||
-			req.resourceType() == 'script'
-		) {
-			req.abort();
-		} else {
-			req.continue();
-		}
-	});
+async function get_from_Asura(page, url) {
+	const local_chapters = [];
+	const local_links = [];
 
 	await page.goto(url);
+	await new Promise((r) => setTimeout(r, 10000));
 
 	let name = await page.evaluate(() => {
 		let x = document.getElementsByTagName('h1');
 
 		return x[0].innerText;
 	});
+	console.log('Reading: ' + name);
 
 	let img_link = await page.evaluate(() => {
 		let x = document.getElementsByClassName('wp-post-image');
@@ -259,9 +223,6 @@ async function get_from_Asura(url) {
 
 		return arr;
 	});
-
-	const local_chapters = [];
-	const local_links = [];
 
 	for (let chap of arr) {
 		let d = new Date();
@@ -301,8 +262,6 @@ async function get_from_Asura(url) {
 		record_ids += 1;
 		new_chapters.push(new_document);
 	}
-
-	await browser.close();
 }
 
 async function getURLs() {
@@ -387,13 +346,20 @@ async function pushNewToDB() {
 }
 
 async function main() {
-	await getURLs();
-	await main_scrapers(urls);
+	while (true) {
+		record_ids = 0;
+		await getURLs();
+		await main_scrapers(urls);
 
-	console.log(new_chapters);
+		console.log(new_chapters);
 
-	//Push
-	pushNewToDB();
+		//Push
+		pushNewToDB();
+
+		let sleep = 1000 * 60 * 60;
+		console.log('Sleep for an hour');
+		await new Promise((r) => setTimeout(r, sleep));
+	}
 }
 
 main();
