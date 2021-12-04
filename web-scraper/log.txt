@@ -1,0 +1,114 @@
+[2021-12-01 16:26:14.016036] Starting the search for mangas!
+[2021-12-01 16:27:25.951317] Starting the search for mangas!
+[2021-12-01 16:27:25.954319] []
+[2021-12-01 16:27:25.976321] Exception has occured: 600 - ('The "dnspython" module must be installed to use mongodb+srv:// URIs',) !
+[2021-12-01 16:28:18.370057] Starting the search for mangas!
+[2021-12-01 16:28:18.372024] []
+[2021-12-01 16:28:20.096964] Exception has occured: 600 - ('documents must be a non-empty list',) !
+[2021-12-01 16:29:07.763606] Starting the search for mangas!
+[2021-12-01 16:29:07.767607] []
+[2021-12-01 16:29:07.767607] Exception has occured: 600 - ("name 'clear_and_update_database' is not defined",) !
+[2021-12-01 16:29:44.916881] Starting the search for mangas!
+[2021-12-01 16:29:44.930881] []
+[2021-12-01 16:30:05.289528] Starting the search for mangas!
+[2021-12-01 16:30:07.591848] []
+[2021-12-01 16:30:42.767852] Starting the search for mangas!
+[2021-12-01 16:30:44.231207] Exception has occured: 590 - ('list index out of range',) !
+[2021-12-01 16:31:05.570750] Starting the search for mangas!
+[2021-12-01 16:31:08.002487] Exception has occured: 590 - ('list index out of range',) !
+[2021-12-01 16:31:19.296380] Starting the search for mangas!
+[2021-12-01 16:31:21.551621] Exception has occured: 590 - ('list index out of range',) !
+[2021-12-01 16:41:21.552934] Restarting the loop!
+[2021-12-01 16:41:21.553936] Starting the search for mangas!
+[2021-12-01 16:41:23.181038] Exception has occured: 590 - ('list index out of range',) !
+[2021-12-01 16:43:07.188566] Starting the search for mangas!
+[2021-12-01 16:43:12.116846] Exception has occured: 589 - ('list index out of range',) !
+[2021-12-01 16:45:08.807877] Starting the search for mangas!
+[2021-12-01 16:45:10.345886] []
+[2021-12-01 16:45:32.368240] Starting the search for mangas!
+[2021-12-01 16:45:33.818578] []
+[2021-12-01 16:49:18.673078] Starting the search for mangas!
+[2021-12-01 16:49:20.093907] Exception has occured: 594 - ("fromstring() got an unexpected keyword argument 'header'",) !
+[2021-12-01 16:49:35.418944] Starting the search for mangas!
+[2021-12-01 16:49:36.432735] Exception has occured: 594 - ("request() got an unexpected keyword argument 'header'",) !
+[2021-12-01 16:50:19.769928] Starting the search for mangas!
+[2021-12-01 16:50:21.309604] []
+[2021-12-01 17:00:21.325283] Restarting the loop!
+[2021-12-01 17:00:21.405251] Starting the search for mangas!
+[2021-12-01 17:00:22.955247] []
+[2021-12-01 17:10:22.983276] Restarting the loop!
+[2021-12-01 17:10:22.983276] Starting the search for mangas!
+[2021-12-01 17:10:24.641152] []
+[2021-12-01 17:10:31.012875] Starting the search for mangas!
+[2021-12-01 17:10:32.431277] Exception has occured: 603 - ('Document is empty',) !
+[2021-12-01 17:11:58.043322] Starting the search for mangas!
+[2021-12-01 17:11:59.538478] Exception has occured: 603 - ('Document is empty',) !
+[2021-12-01 17:12:26.043062] Starting the search for mangas!
+[2021-12-01 17:12:27.513134] []
+[2021-12-01 17:12:34.483268] Starting the search for mangas!
+[2021-12-01 17:12:36.043213] []
+[2021-12-01 17:12:40.567985] Starting the search for mangas!
+[2021-12-01 17:12:42.123069] Exception has occured: 603 - ('Document is empty',) !
+[2021-12-01 17:12:57.129948] Starting the search for mangas!
+[2021-12-01 17:12:58.553319] Exception has occured: 603 - ('Document is empty',) !
+[2021-12-01 17:14:32.327599] Starting the search for mangas!
+[2021-12-01 17:14:33.802448] Exception has occured: 602 - ('Document is empty',) !
+[2021-12-01 17:15:40.985563] Starting the search for mangas!
+[2021-12-01 17:15:42.564027] Exception has occured: 602 - ('Document is empty',) !
+[2021-12-01 17:17:45.411902] Starting the search for mangas!
+[2021-12-01 17:17:46.421818] Exception has occured: 606 - ('Invalid return character or leading space in header: Host',) !
+[2021-12-01 17:17:58.261744] Starting the search for mangas!
+[2021-12-01 17:17:59.275087] Exception has occured: 606 - ("Value for header {Upgrade-Insecure-Requests: 1} must be of type str or bytes, not <class 'int'>",) !
+[2021-12-01 17:18:10.322530] Starting the search for mangas!
+[2021-12-01 17:18:11.879159] Exception has occured: 606 - ('Document is empty',) !
+[2021-12-01 17:48:01.541637] Starting the search for mangas!
+[2021-12-01 17:48:34.975157] Exception has occured: 606 - ('Navigation Timeout Exceeded: 30000 ms exceeded.',) !
+[2021-12-01 17:49:01.929941] Starting the search for mangas!
+[2021-12-01 19:02:11.707645] Starting the search for mangas!
+[2021-12-01 19:02:45.093161] Exception has occured: 607 - ('Navigation Timeout Exceeded: 30000 ms exceeded.',) !
+[2021-12-01 19:11:27.159147] Starting the search for mangas!
+[2021-12-01 19:11:44.941541] Starting the search for mangas!
+[2021-12-01 19:12:16.909171] Exception has occured: 615 - ('Navigation Timeout Exceeded: 30000 ms exceeded.',) !
+[2021-12-01 19:12:41.558201] Starting the search for mangas!
+[2021-12-01 19:13:14.216918] Exception has occured: 615 - ('Navigation Timeout Exceeded: 30000 ms exceeded.',) !
+[2021-12-01 19:15:15.886389] Starting the search for mangas!
+[2021-12-01 19:15:49.503262] Exception has occured: 615 - ('Navigation Timeout Exceeded: 30000 ms exceeded.',) !
+[2021-12-01 19:16:23.641575] Starting the search for mangas!
+[2021-12-01 19:16:56.048636] Exception has occured: 615 - ('Navigation Timeout Exceeded: 30000 ms exceeded.',) !
+[2021-12-01 19:19:36.599351] Starting the search for mangas!
+[2021-12-01 19:20:09.487422] Exception has occured: 615 - ('Navigation Timeout Exceeded: 30000 ms exceeded.',) !
+[2021-12-01 19:20:43.383861] Starting the search for mangas!
+[2021-12-01 19:20:48.561834] Exception has occured: 615 - ("Evaluation failed: TypeError: Cannot read property 'innerText' of undefined\n    at sell_price (__pyppeteer_evaluation_script__:7:36)",) !
+[2021-12-01 19:26:43.342492] Starting the search for mangas!
+[2021-12-01 19:26:45.911530] Exception has occured: 617 - ("'Page' object has no attribute 'pageSetDefaultNavigationTimeout'",) !
+[2021-12-01 19:27:07.211591] Starting the search for mangas!
+[2021-12-01 19:27:09.682424] Exception has occured: 617 - ("object NoneType can't be used in 'await' expression",) !
+[2021-12-01 19:27:31.457562] Starting the search for mangas!
+[2021-12-01 19:36:45.960891] Restarting the loop!
+[2021-12-01 19:36:45.963307] Starting the search for mangas!
+[2021-12-01 19:36:48.151048] Exception has occured: 617 - ("'Page' object has no attribute 'pageSetDefaultNavigationTimeout'",) !
+[2021-12-01 19:46:03.350913] Starting the search for mangas!
+[2021-12-01 19:46:06.360987] Exception has occured: 617 - ("Evaluation failed: TypeError: Cannot read property 'innerText' of undefined\n    at sell_price (__pyppeteer_evaluation_script__:7:36)",) !
+[2021-12-01 19:46:48.153371] Restarting the loop!
+[2021-12-01 19:46:48.155728] Starting the search for mangas!
+[2021-12-01 19:46:50.089088] Exception has occured: 617 - ("'Page' object has no attribute 'pageSetDefaultNavigationTimeout'",) !
+[2021-12-01 19:48:18.658532] Starting the search for mangas!
+[2021-12-01 19:48:20.502695] Exception has occured: 617 - ("Evaluation failed: TypeError: Cannot read property 'innerText' of undefined\n    at sell_price (__pyppeteer_evaluation_script__:7:36)",) !
+[2021-12-01 19:49:35.015343] Starting the search for mangas!
+[2021-12-01 19:56:50.096343] Restarting the loop!
+[2021-12-01 19:56:50.104302] Starting the search for mangas!
+[2021-12-01 19:56:52.523311] Exception has occured: 617 - ("'Page' object has no attribute 'pageSetDefaultNavigationTimeout'",) !
+[2021-12-01 20:06:52.534215] Restarting the loop!
+[2021-12-01 20:06:52.669361] Starting the search for mangas!
+[2021-12-01 20:06:55.911330] Exception has occured: 617 - ("'Page' object has no attribute 'pageSetDefaultNavigationTimeout'",) !
+[2021-12-03 17:19:48.857333] Starting the search for mangas!
+[2021-12-03 17:19:51.283027] Exception has occured: 625 - ("object function can't be used in 'await' expression",) !
+[2021-12-03 17:21:03.908585] Starting the search for mangas!
+[2021-12-03 17:21:05.603970] Exception has occured: 626 - ("object function can't be used in 'await' expression",) !
+[2021-12-03 17:21:50.646201] Starting the search for mangas!
+[2021-12-03 17:21:52.356546] Exception has occured: 626 - ("object function can't be used in 'await' expression",) !
+[2021-12-03 17:22:02.334983] Starting the search for mangas!
+[2021-12-03 17:22:04.125132] Exception has occured: 624 - ("object function can't be used in 'await' expression",) !
+[2021-12-03 17:22:23.114768] Starting the search for mangas!
+[2021-12-03 17:22:28.106156] Exception has occured: 622 - ("object function can't be used in 'await' expression",) !
+[2021-12-03 17:22:46.085289] Starting the search for mangas!

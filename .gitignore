@@ -1,3 +1,5 @@
 /virt-env
 /web-scraper/db_config.ini
+/web-scraper/.env
+/web-scraper/node_modules
 /manga-ui-js/server/.env
