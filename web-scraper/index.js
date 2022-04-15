@@ -27,6 +27,7 @@ async function main_scrapers(urls) {
 
 		if (domain == 'manhuaplus') await get_from_MP(url);
 		else if (domain == 'reaperscans') await get_from_Reaper(url);
+		else if (domain == 'asurascans') await get_from_Asura(url);
 	}
 }
 
@@ -205,7 +206,104 @@ async function get_from_Reaper(url) {
 
 async function get_from_Early(url) {}
 
-async function get_from_Asura(url) {}
+async function get_from_Asura(url) {
+	console.log('Reading Asura');
+	let browser = await puppeteer.launch({
+		headless: false,
+		args: ['--start-maximized'],
+		defaultViewport: NaN,
+	});
+	let page = await browser.newPage();
+
+	await page.setRequestInterception(true);
+	await page.setDefaultNavigationTimeout(0);
+
+	page.on('request', (req) => {
+		if (
+			req.resourceType() == 'stylesheet' ||
+			req.resourceType() == 'font' ||
+			req.resourceType() == 'image' ||
+			req.resourceType() == 'script'
+		) {
+			req.abort();
+		} else {
+			req.continue();
+		}
+	});
+
+	await page.goto(url);
+
+	let name = await page.evaluate(() => {
+		let x = document.getElementsByTagName('h1');
+
+		return x[0].innerText;
+	});
+
+	let img_link = await page.evaluate(() => {
+		let x = document.getElementsByClassName('wp-post-image');
+		let link = x[0].dataset.src;
+
+		return link;
+	});
+
+	let arr = await page.evaluate(() => {
+		let x = document.getElementsByClassName('eph-num');
+		console.log(x);
+		let arr = [];
+		for (let i = 0; i < 10; i++) {
+			let chapter = x[i].children[0].children[0].innerText;
+			let date = x[i].children[0].children[1].innerText;
+			let link = x[i].children[0].href;
+			arr.push([chapter, date, link]);
+		}
+
+		return arr;
+	});
+
+	const local_chapters = [];
+	const local_links = [];
+
+	for (let chap of arr) {
+		let d = new Date();
+		const months = [
+			'January',
+			'February',
+			'March',
+			'April',
+			'May',
+			'June',
+			'July',
+			'August',
+			'September',
+			'October',
+			'November',
+			'December',
+		];
+		let todays_date =
+			months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+		let yest_date =
+			months[d.getMonth()] + ' ' + (d.getDate() - 1) + ', ' + d.getFullYear();
+		let chap_no = chap[0].split(' ')[1];
+
+		if (chap[1] == todays_date || chap[1] == yest_date) {
+			local_chapters.push(chap_no);
+			local_links.push(chap[2]);
+		}
+	}
+	if (local_chapters.length > 0) {
+		new_document = {
+			record_id: record_ids,
+			manga_name: name,
+			manga_chapters: local_chapters,
+			img_link_bg: img_link,
+			chapter_links: local_links,
+		};
+		record_ids += 1;
+		new_chapters.push(new_document);
+	}
+
+	await browser.close();
+}
 
 async function getURLs() {
 	const uri = process.env.CONNECTION_URL;
