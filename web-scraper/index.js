@@ -34,21 +34,20 @@ async function mainScrapers(objs) {
 
 			let page = await browser.newPage();
 
-			//await page.setRequestInterception(true);
-			//await page.setDefaultNavigationTimeout(0);
+			await page.setRequestInterception(true);
+			await page.setDefaultNavigationTimeout(0);
 
-			// page.on('request', (req) => {
-			// 	if (
-			// 		req.resourceType() == 'stylesheet' ||
-			// 		req.resourceType() == 'font' ||
-			// 		req.resourceType() == 'image' ||
-			// 		req.resourceType() == 'script'
-			// 	) {
-			// 		req.abort();
-			// 	} else {
-			// 		req.continue();
-			// 	}
-			// });
+			page.on('request', (req) => {
+				if (
+					req.resourceType() == 'stylesheet' ||
+					req.resourceType() == 'font' ||
+					req.resourceType() == 'image'
+				) {
+					req.abort();
+				} else {
+					req.continue();
+				}
+			});
 
 			if (domain == 'manhuaplus') await getFromMP(page, url, last_read);
 			else if (domain == 'reaperscans')
