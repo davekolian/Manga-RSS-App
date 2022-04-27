@@ -2,70 +2,72 @@
 //#                All rights reserved to davekolian                  #
 //#####################################################################
 
-const puppeteer = require('puppeteer');
 require('dotenv').config();
-const mongoose = require('mongoose');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const express = require('express');
 
-const app = express();
-const PORT = 5000;
+const puppeteer = require('puppeteer-extra');
+// add stealth plugin and use defaults (all evasion techniques)
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+const stealth = StealthPlugin();
+stealth.enabledEvasions.delete('chrome.runtime');
+stealth.enabledEvasions.delete('iframe.contentWindow');
+puppeteer.use(stealth);
 
-const urls = [];
 const new_chapters = [];
 let record_ids = 0;
 
-async function main_scrapers(urls) {
-	let browser = await puppeteer.launch({
-		headless: false,
-		args: ['--start-maximized'],
-		defaultViewport: NaN,
-	});
+async function mainScrapers(objs) {
+	let browser = await puppeteer.launch({ headless: true });
 
-	for (let url of urls) {
-		let domain = '';
-		let split = url.split('//')[1].split('.');
-		if (split[0] == 'www') {
-			domain = split[1];
-		} else {
-			domain = split[0];
-		}
-
-		let page = await browser.newPage();
-
-		await page.setRequestInterception(true);
-		await page.setDefaultNavigationTimeout(0);
-
-		page.on('request', (req) => {
-			if (
-				req.resourceType() == 'stylesheet' ||
-				req.resourceType() == 'font' ||
-				req.resourceType() == 'image' ||
-				req.resourceType() == 'script'
-			) {
-				req.abort();
+	for (let obj of objs) {
+		if (obj.update === true) {
+			let url = obj.url;
+			let last_read = obj.last_read;
+			let domain = '';
+			let split = url.split('//')[1].split('.');
+			if (split[0] == 'www') {
+				domain = split[1];
 			} else {
-				req.continue();
+				domain = split[0];
 			}
-		});
 
-		if (domain == 'manhuaplus') await get_from_MP(page, url);
-		else if (domain == 'reaperscans') await get_from_Reaper(page, url);
-		else if (domain == 'asurascans') await get_from_Asura(page, url);
-		else if (domain == 'earlym') await get_from_Early(page, url);
+			let page = await browser.newPage();
 
-		await page.close();
+			//await page.setRequestInterception(true);
+			//await page.setDefaultNavigationTimeout(0);
+
+			// page.on('request', (req) => {
+			// 	if (
+			// 		req.resourceType() == 'stylesheet' ||
+			// 		req.resourceType() == 'font' ||
+			// 		req.resourceType() == 'image' ||
+			// 		req.resourceType() == 'script'
+			// 	) {
+			// 		req.abort();
+			// 	} else {
+			// 		req.continue();
+			// 	}
+			// });
+
+			if (domain == 'manhuaplus') await getFromMP(page, url, last_read);
+			else if (domain == 'reaperscans')
+				await getFromReaper(page, url, last_read);
+			else if (domain == 'asurascans') await getFromAsura(page, url, last_read);
+			//else if (domain == 'earlym') await get_from_Early(page, url);
+
+			await page.close();
+		}
 	}
 
 	await browser.close();
 }
 
-async function get_from_MP(page, url) {
+async function getFromMP(page, url, last_read) {
 	const local_chapters = [];
 	const local_links = [];
 
 	await page.goto(url);
-	await new Promise((r) => setTimeout(r, 10000));
 
 	let name = await page.evaluate(() => {
 		let x = document.getElementsByTagName('h1');
@@ -87,29 +89,25 @@ async function get_from_MP(page, url) {
 		let x = document.getElementsByClassName('wp-manga-chapter');
 		console.log(x);
 		let arr = [];
-		for (let i = 0; i < 10; i++) {
+		let chap_no = 10;
+		for (let i = 0; i < chap_no; i++) {
 			let chapter = x[i].innerText.split(' ').slice(0, 2).join(' ');
+			chap_no = chapter.split(' ')[1];
+
 			let date = x[i].innerText.split(' ').slice(2).join(' ');
-			arr.push([chapter, date, x[i].children[0].href]);
+			arr.push([chap_no, date, x[i].children[0].href]);
 		}
 
 		return arr;
 	});
 
 	for (let chap of arr) {
-		let date = chap[1].split(' ')[0];
-		let period = chap[1].split(' ')[1];
-		let chap_no = chap[0].split(' ')[1];
-		if (period == 'day' || period == 'hours' || period == 'hour') {
-			if (
-				((period == 'hour' || period == 'hours') && date <= 24) ||
-				(period == 'day' && date <= 1)
-			) {
-				local_chapters.push(chap_no);
-				local_links.push(chap[2]);
-			}
+		if (chap[0] > last_read) {
+			local_chapters.push(chap[0]);
+			local_links.push(chap[2]);
 		}
 	}
+
 	if (local_chapters.length > 0) {
 		new_document = {
 			record_id: record_ids,
@@ -117,13 +115,18 @@ async function get_from_MP(page, url) {
 			manga_chapters: local_chapters,
 			img_link_bg: img_link,
 			chapter_links: local_links,
+			last_read: last_read,
 		};
 		record_ids += 1;
+
+		console.log(new_document);
 		new_chapters.push(new_document);
 	}
+
+	console.log('Done reading above');
 }
 
-async function get_from_Reaper(page, url) {
+async function getFromReaper(page, url, last_read) {
 	const local_chapters = [];
 	const local_links = [];
 
@@ -148,30 +151,33 @@ async function get_from_Reaper(page, url) {
 		let x = document.getElementsByClassName('wp-manga-chapter');
 		console.log(x);
 		let arr = [];
-		for (let i = 0; i < 10; i++) {
+		let chap_no = 10;
+		for (let i = 0; i < chap_no; i++) {
 			let chapter = x[i].children[1].children[0].children[0].innerText;
+
+			if (chapter.includes('S2')) {
+				// Mainly for GOB
+				clean_chapt = chapter.split(' - ')[1].replace(/[()]/g, '');
+				chap_no = clean_chapt.split(' ')[1];
+			} else {
+				chap_no = chapter.split(' ')[1];
+			}
+
 			let date = x[i].children[1].children[0].children[1].innerText;
 			let link = x[i].children[1].children[0].href;
-			arr.push([chapter, date, link]);
+			arr.push([chap_no, date, link]);
 		}
 
 		return arr;
 	});
 
 	for (let chap of arr) {
-		let date = chap[1].split(' ')[0];
-		let period = chap[1].split(' ')[1];
-		let chap_no = chap[0].split(' ')[1];
-		if (period == 'day' || period == 'hours' || period == 'hour') {
-			if (
-				((period == 'hour' || period == 'hours') && date <= 24) ||
-				(period == 'day' && date <= 1)
-			) {
-				local_chapters.push(chap_no);
-				local_links.push(chap[2]);
-			}
+		if (chap[0] > last_read) {
+			local_chapters.push(chap[0]);
+			local_links.push(chap[2]);
 		}
 	}
+
 	if (local_chapters.length > 0) {
 		new_document = {
 			record_id: record_ids,
@@ -179,17 +185,21 @@ async function get_from_Reaper(page, url) {
 			manga_chapters: local_chapters,
 			img_link_bg: img_link,
 			chapter_links: local_links,
+			last_read: last_read,
 		};
 		record_ids += 1;
+		console.log(new_document);
 		new_chapters.push(new_document);
 	}
+
+	console.log('Done reading above');
 }
 
 async function get_from_Early(page, url) {
 	//Do later
 }
 
-async function get_from_Asura(page, url) {
+async function getFromAsura(page, url, last_read) {
 	const local_chapters = [];
 	const local_links = [];
 
@@ -205,7 +215,7 @@ async function get_from_Asura(page, url) {
 
 	let img_link = await page.evaluate(() => {
 		let x = document.getElementsByClassName('wp-post-image');
-		let link = x[0].dataset.src;
+		let link = x[0].src;
 
 		return link;
 	});
@@ -214,43 +224,26 @@ async function get_from_Asura(page, url) {
 		let x = document.getElementsByClassName('eph-num');
 		console.log(x);
 		let arr = [];
-		for (let i = 0; i < 10; i++) {
+		let chap_no = 10;
+		for (let i = 0; i < chap_no; i++) {
 			let chapter = x[i].children[0].children[0].innerText;
+			chap_no = chapter.split(' ')[1];
+
 			let date = x[i].children[0].children[1].innerText;
 			let link = x[i].children[0].href;
-			arr.push([chapter, date, link]);
+			arr.push([chap_no, date, link]);
 		}
 
 		return arr;
 	});
 
 	for (let chap of arr) {
-		let d = new Date();
-		const months = [
-			'January',
-			'February',
-			'March',
-			'April',
-			'May',
-			'June',
-			'July',
-			'August',
-			'September',
-			'October',
-			'November',
-			'December',
-		];
-		let todays_date =
-			months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
-		let yest_date =
-			months[d.getMonth()] + ' ' + (d.getDate() - 1) + ', ' + d.getFullYear();
-		let chap_no = chap[0].split(' ')[1];
-
-		if (chap[1] == todays_date || chap[1] == yest_date) {
-			local_chapters.push(chap_no);
+		if (chap[0] > last_read) {
+			local_chapters.push(chap[0]);
 			local_links.push(chap[2]);
 		}
 	}
+
 	if (local_chapters.length > 0) {
 		new_document = {
 			record_id: record_ids,
@@ -258,103 +251,66 @@ async function get_from_Asura(page, url) {
 			manga_chapters: local_chapters,
 			img_link_bg: img_link,
 			chapter_links: local_links,
+			last_read: last_read,
 		};
 		record_ids += 1;
+
+		console.log(new_document);
 		new_chapters.push(new_document);
 	}
+
+	console.log('Done reading above');
 }
 
 async function getURLs() {
 	const uri = process.env.CONNECTION_URL;
-	try {
-		mongoose
-			.connect(uri, {
-				useNewUrlParser: true,
-				useUnifiedTopology: true,
-			})
-			.then(() => {
-				let server = app.listen(PORT, () =>
-					console.log(`Server Running on Port: ${PORT}`)
-				);
-				server.close();
-			})
-			.catch((error) => console.log(`${error} did not connect`));
+	const db = process.env.MANGAS_DB;
+	const col = process.env.MANGAS_URL_COL;
 
-		const getListOfUrls = mongoose.Schema(
-			{
-				url: String,
-			},
-			{ collection: process.env.MANGA_LIST_COL }
-		);
+	const client = new MongoClient(uri, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+		serverApi: ServerApiVersion.v1,
+	});
 
-		const URLCollector = mongoose.model(
-			process.env.MANGA_LIST_COL,
-			getListOfUrls
-		);
-		const getURLs = await URLCollector.find({});
+	await client.connect();
+	const collection = client.db(db).collection(col);
+	const data = await collection.find({}).toArray();
 
-		for (let i of getURLs) {
-			urls.push(i.url);
-		}
-	} catch (e) {
-		console.error(e);
-	} finally {
-		await mongoose.disconnect();
-		//await app.disconnect();
-		//await app.close();
-	}
+	client.close();
+
+	return data;
 }
 
-async function pushNewToDB() {
+async function pushNewToDB(newData) {
 	const uri = process.env.CONNECTION_URL;
-	try {
-		mongoose
-			.connect(uri, {
-				useNewUrlParser: true,
-				useUnifiedTopology: true,
-			})
-			.then(() => {
-				let server = app.listen(PORT, () =>
-					console.log(`Server Running on Port: ${PORT}`)
-				);
-				server.close();
-			})
-			.catch((error) => console.log(`${error} did not connect`));
+	const db = process.env.MANGAS_DB;
+	const col = process.env.MANGAS_ALL_COL;
 
-		const getListOfUrls = mongoose.Schema(
-			{
-				record_id: Number,
-				manga_name: String,
-				manga_chapters: Array,
-				img_link_bg: String,
-				chapter_links: Array,
-			},
-			{ collection: process.env.MANGAS_COL }
-		);
+	const client = new MongoClient(uri, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+		serverApi: ServerApiVersion.v1,
+	});
 
-		const URLCollector = mongoose.model(process.env.MANGAS_COL, getListOfUrls);
-		await URLCollector.deleteMany({});
+	await client.connect();
+	const collection = client.db(db).collection(col);
 
-		await URLCollector.insertMany(new_chapters);
-	} catch (e) {
-		console.error(e);
-	} finally {
-		await mongoose.disconnect();
-		//await app.disconnect();
-		//await app.close();
-	}
+	await collection.deleteMany({});
+	await collection.insertMany(newData);
+
+	client.close();
+
+	console.log('Completed updating DB');
 }
 
 async function main() {
 	while (true) {
 		record_ids = 0;
-		await getURLs();
-		await main_scrapers(urls);
-
-		console.log(new_chapters);
-
-		//Push
-		pushNewToDB();
+		console.log('Starting the process...');
+		const data = await getURLs();
+		await mainScrapers(data);
+		await pushNewToDB(new_chapters);
 
 		let sleep = 1000 * 60 * 60;
 		console.log('Sleep for an hour');
