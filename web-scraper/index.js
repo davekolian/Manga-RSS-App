@@ -362,6 +362,7 @@ async function main() {
 		const data = await getURLs();
 		await mainScrapers(data);
 		await pushNewToDB(new_chapters);
+		new_chapters = [];
 
 		let sleep = 1000 * 60 * 60;
 		console.log('Sleep for an hour');
