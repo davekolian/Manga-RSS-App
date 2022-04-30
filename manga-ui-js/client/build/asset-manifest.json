@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/static/css/main.f09c5784.css",
+    "main.js": "/static/js/main.a54d9868.js",
+    "static/media/instagram.png": "/static/media/instagram.b4a1d55a2dc7aa57b70c.png",
+    "static/media/github.png": "/static/media/github.d2bd8b0e05674aa05613.png",
+    "static/media/quicksand_book-webfont.woff": "/static/media/quicksand_book-webfont.ba6a920d697e6939a47e.woff",
+    "static/media/quicksand_bold-webfont.woff": "/static/media/quicksand_bold-webfont.88dddf7512fcb958355e.woff",
+    "static/media/kiona-regular-webfont.woff": "/static/media/kiona-regular-webfont.a70ac99a81d91de6824e.woff",
+    "index.html": "/index.html",
+    "main.f09c5784.css.map": "/static/css/main.f09c5784.css.map",
+    "main.a54d9868.js.map": "/static/js/main.a54d9868.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f09c5784.css",
+    "static/js/main.a54d9868.js"
+  ]
+}
