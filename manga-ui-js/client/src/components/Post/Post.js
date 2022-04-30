@@ -1,53 +1,91 @@
-import React from "react";
-import styles from "./styles.css";
+import React from 'react';
+import post_css from './post.css';
+import { useDispatch } from 'react-redux';
+import { updatePost } from '../../actions/posts';
 
 const Post = ({ post }) => {
-  const items = [];
+	const dispatch = useDispatch();
 
-  const mainDivStyle = {
-    position: "relative",
-    margin: "10px",
-    width: "225px",
-    height: "337px",
-    backgroundImage: `url(${post.img_link_bg})`,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    display: "inline-block",
-  };
+	const handleSubmitUpdateChps = (e, post) => {
+		e.preventDefault();
 
-  let chapSize = String(post.manga_chapters[0]);
+		const url = post.url;
+		let chapters = post.chapters.map((x) => Number(x));
 
-  let gridSize = 0;
+		const max = Math.max(...chapters);
 
-  if (chapSize.length === 2) {
-    gridSize = 5;
-  } else if (chapSize.length === 3) {
-    gridSize = 4;
-  } else {
-    gridSize = 3;
-  }
+		dispatch(updatePost(url, max));
+	};
 
-  let gridDivStyle = {
-    display: "grid",
-    gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
-  };
+	let len = post.manga_chapters.length - 1;
+	const last_new_chapter = (
+		<a
+			style={post_css.a}
+			href={post.chapter_links[len]}
+			target="_blank"
+			rel="noreferrer"
+		>
+			Read Chapter {post.manga_chapters[len]}
+		</a>
+	);
 
-  for (var i = post.manga_chapters.length - 1; i >= 0; i--) {
-    items.push(
-      <a style={styles.a} href={post.chapter_links[i]}>
-        {post.manga_chapters[i]}
-      </a>
-    );
-  }
+	const chapters = post.manga_chapters.map((x) => Number(x));
 
-  return (
-    <div className="main" style={mainDivStyle}>
-      <p style={styles.p}>{post.manga_name}</p>
-      <div className="chaps">
-        <div style={gridDivStyle}>{items}</div>
-      </div>
-    </div>
-  );
+	const min = Math.min(...chapters);
+	const last_read = post.last_read;
+
+	const btn_svg = (
+		<svg
+			version="1.0"
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 360.000000 360.000000"
+			preserveAspectRatio="xMidYMid meet"
+			fill="currentColor"
+		>
+			<g
+				transform="translate(0.000000,360.000000) scale(0.100000,-0.100000)"
+				stroke="none"
+			>
+				<path
+					d="M3085 2886 c-447 -188 -854 -497 -1168 -886 -106 -132 -231 -314
+   -294 -430 -21 -38 -41 -70 -45 -70 -3 0 -18 21 -33 48 -81 139 -255 361 -373
+   474 -102 98 -130 106 -227 59 -139 -67 -224 -226 -167 -312 9 -15 55 -60 102
+   -101 135 -119 302 -311 458 -528 58 -82 208 -314 245 -381 l19 -33 57 139
+   c273 658 720 1313 1231 1801 87 83 222 201 275 241 39 29 37 29 -80 -21z"
+				/>
+			</g>
+		</svg>
+	);
+
+	return last_read < min && len >= 0 ? (
+		<div className="main">
+			<img
+				src={post.img_link_bg}
+				alt={post.manga_name}
+				referrerPolicy="no-referrer"
+			/>
+			<p id="size">{len + 1}</p>
+			<div className="box">
+				<div className="chaps">
+					{last_new_chapter}
+					<div className="tooltip">
+						<button
+							onClick={(e) =>
+								handleSubmitUpdateChps(e, {
+									url: post.url,
+									chapters: post.manga_chapters,
+								})
+							}
+						>
+							{btn_svg}
+						</button>
+						<span className="tooltiptext">Mark all as read</span>
+					</div>
+				</div>
+				<p>{post.manga_name}</p>
+			</div>
+		</div>
+	) : null;
 };
 
 export default Post;

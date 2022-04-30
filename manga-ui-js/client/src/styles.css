@@ -1,43 +1,110 @@
-h1 {
-  text-align: center;
-  background-color: #ffffff;
-  padding: 10px 0;
-  font-family: Verdana;
+@font-face {
+	font-family: 'QuickSandBold';
+	src: url('./fonts/quicksand_bold-webfont.woff');
+	src: url('./fonts/quicksand_bold-webfont.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'QuickSandBook';
+	src: url('./fonts/quicksand_book-webfont.woff');
+	src: url('./fonts/quicksand_book-webfont.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Kiona';
+	src: url('./fonts/kiona-regular-webfont.woff');
+	src: url('./fonts/kiona-regular-webfont.woff') format('woff');
+}
+
+html, body {
+  background-color: #17212D;
+  margin: 0px;
+  padding: 0px;
+
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0 1em;
+  margin: 1em 0em 1em 2em;
+}
+
+.logo {
+  width: 5%;
+}
+
+.logo img {
+  width: 100%;
+}
+
+.header h1 {
+  margin: 0px;
+  padding: 0px;
+  text-align: left;
+  font-family: Kiona;
   font-size: 50px;
-  margin: 0 auto;
-  border-radius: 5px;
-  box-shadow: 2px 2px 10px #707070;
+  color: white;
+}
+
+.nav-bar {
+  padding: 0.5em;
+  border-top: white 0.5px solid;
+  background-color: #B1C1D2;
+}
+
+.nav-bar a {
+  margin-left: 1em;
+  font-size: 17px;
+  text-decoration: none;
+  font-family: Kiona;
+  font-weight: 700;
+  color: #17212D;
+}
+
+.right {
+  float: right;
+  margin-right: 1em;
 }
 
 .container {
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2.5em;
+  margin: 2em 2em;
+  background-color: #B1C1D2;
+  /* border: white 0.5px solid; */
+  padding: 2em 0em;
+  border-radius: 1em;
 }
 
 .footer {
-  background-color: #ffffff;
   margin: 0 auto;
   padding: 10px 0;
-  border-radius: 5px;
-  box-shadow: 2px 2px 10px #707070;
+    border-top: white 1px solid;
 }
 
 .footer p {
   font-size: 20px;
   margin: 0 auto;
-  font-family: Verdana;
+  font-family: "QuickSandBold";
   font-size: 15px;
   width: fit-content;
-  margin-bottom: 10px;
-}
-
-img {
-  width: 25px;
-  padding: 5px;
+  margin-bottom: 0.75em;
+  color: white;
 }
 
 .images {
-  margin: 5px auto;
-  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.images img {
+  width: 30px;
+  padding: 5px;
 }

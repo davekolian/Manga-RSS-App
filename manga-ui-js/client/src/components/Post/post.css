@@ -1,0 +1,151 @@
+.main {
+  position: relative;
+  width: 14em;
+  display: flex;
+  flex-direction: column;
+}
+
+.main p {
+  margin: 0 auto;
+  color: #000000;
+  font-size: 23px;
+  text-align: center;
+  font-family: Verdana;
+  margin-top: 20px;
+}
+
+.main img {
+  width: 14em;
+  height: 21em;
+  object-fit: cover;
+  position: relative;
+  padding: 0px;
+  box-shadow: 0px 3px 6px #707070;
+
+}
+
+.chaps {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+
+}
+
+
+.chaps a {
+  padding: 10px 0px;
+  text-decoration: none;
+  font-family: "Kiona";
+  font-size: 15px;
+  text-align: center;
+  width: 78%;
+  margin-right: 2%;
+  box-shadow: 0px 3px 6px #707070;
+  background-color: #17212D;
+  color: white;
+
+  transition: ease-in-out background-color 500ms, ease-in-out color 500ms;
+}
+
+.chaps a:hover {
+  background-color: white;
+  color: #17212D;
+}
+
+.tooltip {
+  margin: 0;
+  padding: 0;
+  width: 20%;
+}
+
+span {
+  margin: 0;
+  padding: 0;
+}
+
+.tooltip .tooltiptext {
+  opacity: 0;
+  visibility: hidden;
+  width: 150px;
+  background-color: white;
+  color: #17212D;
+  text-align: center;
+  font-family: "Kiona";
+  border-radius: 5px;
+  padding: 0.75em;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0px 3px 6px #707070;
+
+  transition: ease-in-out opacity 500ms, ease-in-out visibility 500ms;
+
+  /* Position the tooltip */
+  position: absolute;
+  bottom: 7.5em;
+  left: 8em;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+
+}
+
+.chaps button {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0px 3px 6px #707070;
+  border: none;
+  background-color: #17212D;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: ease-in-out background-color 500ms;
+}
+
+.chaps button svg {
+  fill: white;
+  transition: ease-in-out fill 500ms;
+}
+
+.chaps button:hover svg {
+  fill: #17212D;
+}
+
+.chaps button:hover {
+  background-color: white;
+}
+
+.box {
+  word-wrap: break-word;
+  margin-top: 2%;
+}
+
+.box p {
+  font-family: "Kiona";
+  font-weight: 800;
+}
+
+
+#size {
+  font-size: 1em;
+  position: absolute;
+  margin: 0;
+  color: white;
+  border-radius: 100%;
+  background: #ff0404;
+  padding: 0.4em 0.4em 0.5em 0.4em;
+  width: 1em;
+  height: 1em;
+  right: -0.75em;
+  top: -0.75em;
+  text-align: center;
+  font-family: "Kiona";
+  box-shadow: 0px 3px 5px #707070;
+}
