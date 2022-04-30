@@ -14,7 +14,7 @@ stealth.enabledEvasions.delete('chrome.runtime');
 stealth.enabledEvasions.delete('iframe.contentWindow');
 puppeteer.use(stealth);
 
-const new_chapters = [];
+let new_chapters = [];
 let record_ids = 0;
 
 async function pageInterception(page, domain) {
@@ -132,6 +132,7 @@ async function getFromMP(page, url, last_read) {
 		if (local_chapters.length > 0) {
 			new_document = {
 				record_id: record_ids,
+				url: url,
 				manga_name: name,
 				manga_chapters: local_chapters,
 				img_link_bg: img_link,
@@ -215,6 +216,7 @@ async function getFromReaper(page, url, last_read) {
 		if (local_chapters.length > 0) {
 			new_document = {
 				record_id: record_ids,
+				url: url,
 				manga_name: name,
 				manga_chapters: local_chapters,
 				img_link_bg: img_link,
@@ -284,6 +286,7 @@ async function getFromAsura(page, url, last_read) {
 		if (local_chapters.length > 0) {
 			new_document = {
 				record_id: record_ids,
+				url: url,
 				manga_name: name,
 				manga_chapters: local_chapters,
 				img_link_bg: img_link,
