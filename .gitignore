@@ -2,5 +2,7 @@
 /web-scraper/db_config.ini
 /web-scraper/.env
 /web-scraper/node_modules
+/manga-ui-js/client/node_modules
+/manga-ui-js/server/node_modules
 /web-scraper/update_manga_list.js
 /manga-ui-js/server/.env
