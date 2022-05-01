@@ -1,4 +1,5 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/26fcc39c-ba88-4d2a-876f-f9fb1fe26de7/deploy-status)](https://app.netlify.com/sites/manga-rss-app/deploys)
+[![Heroku](https://heroku-badge.herokuapp.com/?app=heroku-badge)]
 
 # Manga RSS App
 
