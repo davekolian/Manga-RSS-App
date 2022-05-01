@@ -50,22 +50,62 @@ html, body {
 
 .nav-bar {
   padding: 0.5em;
-  border-top: white 0.5px solid;
+  /* border-top: white 0.5px solid; */
   background-color: #B1C1D2;
 }
 
-.nav-bar a {
+
+.nav-bar-container {
   margin-left: 1em;
+}
+
+.nav-bar a {
   font-size: 17px;
   text-decoration: none;
   font-family: Kiona;
   font-weight: 700;
   color: #17212D;
+  padding: 1%;
+  transition: ease-in-out color 500ms, ease-in-out background-color 500ms;
 }
 
-.right {
+.nav-bar a:hover {
+  background-color: #17212D;
+  color: white;
+}
+
+.search {
   float: right;
   margin-right: 1em;
+  padding: 0px !important;
+}
+
+.search:hover {
+  background-color: transparent !important;
+  color:#17212D !important;
+}
+
+.loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25vh;
+}
+
+.loader {
+  width: 2em;
+  height: 2em;
+  animation: loading-animation 2s infinite ease-in-out;
+  border: 0.25em solid white;
+  border-radius: 5px;
+  margin: 2em;
+}
+
+.loader-text {
+  font-family: "Kiona";
+  color: white;
+  font-size: 25px;
+  font-weight: 600;
 }
 
 .container {
@@ -107,4 +147,12 @@ html, body {
 .images img {
   width: 30px;
   padding: 5px;
+}
+
+@keyframes loading-animationd {
+  0% { transform: rotate(0deg);}
+  25% { transform: rotate(180deg);}
+  50% { transform: rotate(180deg);}
+  75% { transform: rotate(360deg);}
+  100% { transform: rotate(360deg);}
 }

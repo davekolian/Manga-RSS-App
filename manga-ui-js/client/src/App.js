@@ -30,14 +30,19 @@ const App = () => {
 				<h1 style={styles.h1}>Manga RSS</h1>
 			</div>
 			<div className="nav-bar">
-				<a href="/#">Latest</a>
-				<a href="/#">Manga List</a>
-				<a href="/#" className="right">
-					Search
-				</a>
+				<div className="nav-bar-container">
+					<a href="/">Latest</a>
+					<a href="/#">Manga List</a>
+					<a href="/#" className="search">
+						Search
+					</a>
+				</div>
 			</div>
 			{!posts.length ? (
-				<p>Loading Manga! Beep Boop!</p>
+				<div class="loader-wrapper">
+					<span class="loader"></span>
+					<span class="loader-text">Loading... Please wait</span>
+				</div>
 			) : (
 				<div className="container">
 					{posts.map((post) => (
