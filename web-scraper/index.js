@@ -32,7 +32,11 @@ async function pageInterception(page, domain) {
 				req.continue();
 			}
 		});
-	} else if (domain == 'reaperscans' || domain == 'asurascans') {
+	} else if (
+		domain == 'reaperscans' ||
+		domain == 'asurascans' ||
+		domain == 'earlym'
+	) {
 		await page.setRequestInterception(true);
 
 		page.on('request', (req) => {
@@ -76,8 +80,10 @@ async function mainScrapers(objs) {
 			} else if (domain == 'asurascans') {
 				await pageInterception(page, domain);
 				await getFromAsura(page, url, last_read);
+			} else if (domain == 'earlym') {
+				await pageInterception(page, domain);
+				await getFromEarly(page, url, last_read);
 			}
-			//else if (domain == 'earlym') await get_from_Early(page, url);
 
 			await page.close();
 		}
@@ -235,8 +241,77 @@ async function getFromReaper(page, url, last_read) {
 	}
 }
 
-async function get_from_Early(page, url) {
-	//Do later
+async function getFromEarly(page, url, last_read) {
+	const local_chapters = [];
+	const local_links = [];
+
+	try {
+		await page.goto(url, { timeout: 0 });
+		// await new Promise((r) => setTimeout(r, 10000));
+
+		let name = await page.evaluate(() => {
+			let x = document.getElementsByClassName('mx-1');
+
+			return x[0].innerText;
+		});
+		console.log('Reading: ' + name);
+
+		let img_link = await page.evaluate(() => {
+			let x = document.getElementsByClassName('manga-page-img');
+			let link = x[0].src;
+
+			return link;
+		});
+
+		let arr = await page.evaluate((last_read) => {
+			let x = document.getElementsByClassName('chapter-row');
+			console.log(x);
+			let arr = [];
+			let top = Number(
+				x[2].children[1].children[0].children[0].innerText
+					.split('\n')[0]
+					.split(' ')[1]
+			);
+
+			for (let i = 2; i < (top - last_read) * 2 + 2; i += 2) {
+				let chap_no = x[i].children[1].children[0].children[0].innerText
+					.split('\n')[0]
+					.split(' ')[1];
+				let date = x[i].children[3].title.split(' ')[0];
+				arr.push([chap_no, date, x[i].children[1].children[0].href]);
+			}
+
+			print(arr);
+
+			return arr;
+		}, last_read);
+
+		for (let chap of arr) {
+			local_chapters.push(chap[0]);
+			local_links.push(chap[2]);
+		}
+
+		if (local_chapters.length > 0) {
+			new_document = {
+				record_id: record_ids,
+				url: url,
+				manga_name: name,
+				manga_chapters: local_chapters,
+				img_link_bg: img_link,
+				chapter_links: local_links,
+				last_read: last_read,
+			};
+			record_ids += 1;
+
+			console.log(new_document);
+			new_chapters.push(new_document);
+		}
+
+		console.log('Done reading above');
+	} catch (error) {
+		console.log('Something wrong with reading this EarlyM page');
+		console.log(error);
+	}
 }
 
 async function getFromAsura(page, url, last_read) {

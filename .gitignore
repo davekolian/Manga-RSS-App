@@ -6,4 +6,8 @@
 /manga-ui-js/client/build
 /manga-ui-js/server/node_modules
 /web-scraper/update_manga_list.js
+/web-scraper/update.js
+/web-scraper/test.js
+/web-scraper/update_manga_list_earlym.js
 /manga-ui-js/server/.env
+/extras
