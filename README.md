@@ -4,7 +4,7 @@ Manga RSS App is a web application that shows if any of the manga I (currently) 
 
 ## How to use
 
-- The app is currently live over on my [netlify](https://manga-rss-app.netlify.app/).
+- Coming Soon!
 
 ## How to build for yourself
 
