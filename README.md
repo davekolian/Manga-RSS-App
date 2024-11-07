@@ -1,13 +1,10 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/26fcc39c-ba88-4d2a-876f-f9fb1fe26de7/deploy-status)](https://app.netlify.com/sites/manga-rss-app/deploys)
-![Heroku](https://heroku-badge.herokuapp.com/?app=heroku-badge)
-
 # Manga RSS App
 
 Manga RSS App is a web application that shows if any of the manga I (currently) read has any new chapters. It is now able to store the last read chapter and counts new chapters from the last read. Additionally, it shows the number of new chapters that you **have not read yet**. However, updating the last read chapter is manual and is done by pressing a button for each manga.
 
 ## How to use
 
-- The app is currently live over on my [netlify](https://manga-rss-app.netlify.app/).
+- Coming Soon!
 
 ## How to build for yourself
 
