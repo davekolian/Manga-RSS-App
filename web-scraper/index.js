@@ -433,18 +433,36 @@ async function pushNewToDB(newData) {
 	}
 }
 
+async function test() {
+	let browser = await puppeteer.launch({ headless: true });
+	let page = await browser.newPage();
+	await page.goto('https://mangakakalot.com/manga/wo929163', { timeout: 0 });
+	let name = await page.evaluate(() => {
+		let x = document.getElementsByTagName('h1');
+
+		return x[0].innerText;
+	});
+	await page.close();
+	await browser.close;
+
+	return name;
+}
+
 async function main() {
 	while (true) {
 		record_ids = 0;
 		console.log('Starting the process...');
-		const data = await getURLs();
-		await mainScrapers(data);
-		await pushNewToDB(new_chapters);
-		new_chapters = [];
 
-		let sleep = 1000 * 60 * 60;
-		console.log('Sleep for an hour');
-		await new Promise((r) => setTimeout(r, sleep));
+		let name = await test();
+		console.log(name);
+		// const data = await getURLs();
+		// await mainScrapers(data);
+		// await pushNewToDB(new_chapters);
+		// new_chapters = [];
+
+		// let sleep = 1000 * 60 * 60;
+		// console.log('Sleep for an hour');
+		// await new Promise((r) => setTimeout(r, sleep));
 	}
 }
 
