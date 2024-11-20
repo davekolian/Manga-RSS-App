@@ -630,4 +630,8 @@ async function main() {
 	}
 }
 
-main();
+// main();
+
+export async function handler(event, context) {
+	await main();
+}
