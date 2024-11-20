@@ -2,7 +2,6 @@
 //#                All rights reserved to davekolian                  #
 //#####################################################################
 
-require('dotenv').config();
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const express = require('express');
 
@@ -83,6 +82,12 @@ async function mainScrapers(objs) {
 			} else if (domain == 'earlym') {
 				await pageInterception(page, domain);
 				await getFromEarly(page, url, last_read);
+			} else if (domain == 'mangakakalot') {
+				await pageInterception(page, domain);
+				await getFromMangakakalot(page, url, last_read);
+			} else if (domain == 'chapmanganato') {
+				await pageInterception(page, domain);
+				await getFromManganato(page, url, last_read);
 			}
 
 			await page.close();
@@ -314,6 +319,157 @@ async function getFromEarly(page, url, last_read) {
 	}
 }
 
+async function getFromMangakakalot(page, url, last_read) {
+	const local_chapters = [];
+	const local_links = [];
+
+	try {
+		await page.goto(url, { timeout: 0 });
+		// await new Promise((r) => setTimeout(r, 10000));
+
+		let name = await page.evaluate(() => {
+			let x = document.getElementsByTagName('h1');
+
+			return x[0].innerText;
+		});
+		console.log('Reading: ' + name);
+
+		let img_link = await page.evaluate(() => {
+			let x = document.getElementsByClassName('manga-info-pic');
+			let link = x[0].children[0].src;
+
+			return link;
+		});
+
+		let arr = await page.evaluate((last_read) => {
+			let x = document.getElementsByClassName('row');
+			console.log(x);
+			let arr = [];
+			let _len_top = x[1].children[0].innerText.length;
+			let top = Number(
+				x[1].children[0].innerText
+					.slice(_len_top - 4, _len_top)
+					.replace(/\D/g, '')
+			);
+
+			for (let i = 1; i < top - last_read; i += 1) {
+				let _len = x[i].children[0].innerText.length;
+				let chap_no = Number(
+					x[i].children[0].innerText.slice(_len - 4, _len).replace(/\D/g, '')
+				);
+				let date = x[i].children[2].title.split(' ')[0];
+				let ch_link = x[i].children[0].children[0].href;
+				// console.log(chap_no, date, ch_link);
+				arr.push([chap_no, date, ch_link]);
+			}
+
+			return arr;
+		}, last_read);
+
+		for (let chap of arr) {
+			local_chapters.push(chap[0]);
+			local_links.push(chap[2]);
+		}
+
+		if (local_chapters.length > 0) {
+			new_document = {
+				record_id: record_ids,
+				url: url,
+				manga_name: name,
+				manga_chapters: local_chapters,
+				img_link_bg: img_link,
+				chapter_links: local_links,
+				last_read: last_read,
+			};
+			record_ids += 1;
+
+			console.log(new_document);
+			new_chapters.push(new_document);
+		}
+
+		console.log('Done reading above');
+	} catch (error) {
+		console.log('Something wrong with reading this Mangakakalot page');
+		console.log(error);
+	}
+}
+
+async function getFromManganato(page, url, last_read) {
+	const local_chapters = [];
+	const local_links = [];
+
+	try {
+		await page.goto(url, { timeout: 0 });
+		// await new Promise((r) => setTimeout(r, 10000));
+
+		let name = await page.evaluate(() => {
+			let x = document.getElementsByTagName('h1');
+
+			return x[0].innerText;
+		});
+		console.log('Reading: ' + name);
+
+		let img_link = await page.evaluate(() => {
+			let x = document.getElementsByClassName('info-image');
+			let link = x[0].children[0].src;
+
+			return link;
+		});
+
+		let arr = await page.evaluate((last_read) => {
+			let x = document.getElementsByClassName('row-content-chapter')[0]
+				.children;
+			console.log(x);
+			let arr = [];
+			let _len_top = x[0].children[0].innerText.length;
+			let top = Number(
+				x[0].children[0].innerText
+					.slice(_len_top - 4, _len_top)
+					.replace(/\D/g, '')
+			);
+
+			for (let i = 0; i < top - last_read; i += 1) {
+				let _len = x[i].children[0].innerText.length;
+				let chap_no = Number(
+					x[i].children[0].innerText.slice(_len - 4, _len).replace(/\D/g, '')
+				);
+				let date = x[i].children[2].title.slice(0, 11);
+				let ch_link = x[i].children[0].href;
+				// console.log(chap_no, date, ch_link);
+				arr.push([chap_no, date, ch_link]);
+			}
+
+			return arr;
+		}, last_read);
+
+		for (let chap of arr) {
+			local_chapters.push(chap[0]);
+			local_links.push(chap[2]);
+		}
+
+		if (local_chapters.length > 0) {
+			new_document = {
+				record_id: record_ids,
+				url: url,
+				manga_name: name,
+				manga_chapters: local_chapters,
+				img_link_bg: img_link,
+				chapter_links: local_links,
+				last_read: last_read,
+			};
+			record_ids += 1;
+
+			console.log(new_document);
+			new_chapters.push(new_document);
+		}
+
+		console.log('Done reading above');
+	} catch (error) {
+		console.log('Something wrong with reading this Mangakakalot page');
+		console.log(error);
+	}
+}
+
 async function getFromAsura(page, url, last_read) {
 	const local_chapters = [];
 	const local_links = [];
@@ -335,6 +491,7 @@ async function getFromAsura(page, url, last_read) {
 
 			return link;
 		});
+		console.log(img_link);
 
 		let arr = await page.evaluate((last_read) => {
 			console.log('here');
@@ -388,9 +545,11 @@ async function getURLs() {
 
 	try {
 		const client = new MongoClient(uri, {
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
-			serverApi: ServerApiVersion.v1,
+			serverApi: {
+				version: ServerApiVersion.v1,
+				strict: true,
+				deprecationErrors: true,
+			},
 		});
 
 		await client.connect();
@@ -398,6 +557,7 @@ async function getURLs() {
 		const data = await collection.find({}).toArray();
 
 		client.close();
+		// console.log(data);
 
 		return data;
 	} catch (error) {
@@ -413,11 +573,12 @@ async function pushNewToDB(newData) {
 
 	try {
 		const client = new MongoClient(uri, {
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
-			serverApi: ServerApiVersion.v1,
+			serverApi: {
+				version: ServerApiVersion.v1,
+				strict: true,
+				deprecationErrors: true,
+			},
 		});
-
 		await client.connect();
 		const collection = client.db(db).collection(col);
 
@@ -451,18 +612,21 @@ async function test() {
 async function main() {
 	while (true) {
 		record_ids = 0;
+
 		console.log('Starting the process...');
 
-		let name = await test();
-		console.log(name);
-		// const data = await getURLs();
-		// await mainScrapers(data);
-		// await pushNewToDB(new_chapters);
-		// new_chapters = [];
+		// let name = await test();
+		// console.log(name);
+		const data = await getURLs();
+		await mainScrapers(data);
+		if (new_chapters.length > 0) {
+			await pushNewToDB(new_chapters);
+			new_chapters = [];
+		}
 
-		// let sleep = 1000 * 60 * 60;
-		// console.log('Sleep for an hour');
-		// await new Promise((r) => setTimeout(r, sleep));
+		let sleep = 12000 * 60 * 60;
+		console.log('Sleep for a 12 hours');
+		await new Promise((r) => setTimeout(r, sleep));
 	}
 }
 
