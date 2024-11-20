@@ -6,7 +6,7 @@ app.use(function (req, res, next) {
 	const allowedOrigins = [
 		'http://localhost:5000',
 		'http://localhost:3000',
-		'https://manga-rss-app.netlify.app/',
+		'https://manga-rss-app.netlify.app',
 	];
 	const origin = req.headers.origin;
 	if (allowedOrigins.includes(origin)) {
