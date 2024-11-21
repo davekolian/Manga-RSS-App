@@ -1,11 +1,11 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+import { MongoClient, ServerApiVersion } from 'mongodb';
 import express from 'express';
 
 const router = express.Router();
 
-const puppeteer = require('puppeteer-extra');
+import puppeteer from 'puppeteer-extra';
 // add stealth plugin and use defaults (all evasion techniques)
-const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 const stealth = StealthPlugin();
 stealth.enabledEvasions.delete('chrome.runtime');
 stealth.enabledEvasions.delete('iframe.contentWindow');
