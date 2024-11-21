@@ -645,8 +645,10 @@ export const getPosts = async (req, res) => {
 		res.status(200).json('Completed Scraping');
 
 		client.close();
+		return;
 	} catch (error) {
 		res.status(404).json({ message: error.message });
+		return;
 	}
 };
 
