@@ -13,6 +13,10 @@ stealth.enabledEvasions.delete('chrome.runtime');
 stealth.enabledEvasions.delete('iframe.contentWindow');
 puppeteer.use(stealth);
 
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 6000;
+
 let new_chapters = [];
 let record_ids = 0;
 
@@ -641,3 +645,7 @@ async function main() {
 }
 
 main();
+
+app.get('/', (req, res) => {
+	res.send('Hello World!');
+});

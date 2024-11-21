@@ -13,10 +13,6 @@ stealth.enabledEvasions.delete('chrome.runtime');
 stealth.enabledEvasions.delete('iframe.contentWindow');
 puppeteer.use(stealth);
 
-var chromium = require('@sparticuz/chromium');
-chromium.setHeadlessMode = true;
-chromium.setGraphicsMode = false;
-
 let new_chapters = [];
 let record_ids = 0;
 
@@ -59,11 +55,13 @@ async function pageInterception(page, domain) {
 
 async function mainScrapers(objs) {
 	let browser = await puppeteer.launch({
-		args: chromium.args,
-		defaultViewport: chromium.defaultViewport,
-		executablePath:
-			process.env.CHROME_EXECUTABLE_PATH ||
-			(await chromium.executablePath('node_modules/@sparticuz/chromium/bin')),
+		headless: true,
+		args: [
+			'--disable-gpu',
+			'--disable-infobars',
+			'--disable-extensions',
+			'--disable-plugins',
+		],
 	});
 
 	for (let obj of objs) {
@@ -604,63 +602,42 @@ async function pushNewToDB(newData) {
 	}
 }
 
-// async function test() {
-// 	let browser = await puppeteer.launch({ headless: true });
-// 	let page = await browser.newPage();
-// 	await page.goto('https://mangakakalot.com/manga/wo929163', { timeout: 0 });
-// 	let name = await page.evaluate(() => {
-// 		let x = document.getElementsByTagName('h1');
+async function test() {
+	let browser = await puppeteer.launch({ headless: true });
+	let page = await browser.newPage();
+	await page.goto('https://mangakakalot.com/manga/wo929163', { timeout: 0 });
+	let name = await page.evaluate(() => {
+		let x = document.getElementsByTagName('h1');
 
-// 		return x[0].innerText;
-// 	});
-// 	await page.close();
-// 	await browser.close;
+		return x[0].innerText;
+	});
+	await page.close();
+	await browser.close;
 
-// 	return name;
-// }
+	return name;
+}
 
 async function main() {
-	while (true) {
-		record_ids = 0;
+	// while (true) {
+	record_ids = 0;
 
-		console.log('Starting the process...');
+	console.log('Starting the process...');
 
-		// let name = await test();
-		// console.log(name);
-		const data = await getURLs();
-		await mainScrapers(data);
-		if (new_chapters.length > 0) {
-			await pushNewToDB(new_chapters);
-			new_chapters = [];
-		}
-
-		let sleep = 12000 * 60 * 60;
-		console.log('Sleep for a 12 hours');
-		await new Promise((r) => setTimeout(r, sleep));
+	// let name = await test();
+	// console.log(name);
+	const data = await getURLs();
+	await mainScrapers(data);
+	if (new_chapters.length > 0) {
+		await pushNewToDB(new_chapters);
+		new_chapters = [];
 	}
+
+	console.log('...Finshing the process');
+
+	// 	let sleep = 12000 * 60 * 60;
+	// 	console.log('Sleep for a 12 hours');
+	// 	await new Promise((r) => setTimeout(r, sleep));
+	// }
 }
 
 main();
-
-async function test(n) {
-	for (let i = 1; i <= n; i++) {
-		console.log(i);
-		await new Promise((r) => setTimeout(r, 1000));
-	}
-}
-
-// exports.handler = async () => {
-// 	try {
-// 		await test(40);
-// 		return {
-// 			statusCode: 200,
-// 			body: 'Scraping completed successfully!',
-// 		};
-// 	} catch (error) {
-// 		console.error('Scraping failed:', error);
-// 		return {
-// 			statusCode: 500,
-// 			body: 'An error occurred during scraping.',
-// 		};
-// 	}
-// };
