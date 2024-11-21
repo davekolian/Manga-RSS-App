@@ -632,6 +632,18 @@ async function main() {
 
 // main();
 
-export async function handler(event, context) {
-	await main();
-}
+exports.handler = async () => {
+	try {
+		await main();
+		return {
+			statusCode: 200,
+			body: 'Scraping completed successfully!',
+		};
+	} catch (error) {
+		console.error('Scraping failed:', error);
+		return {
+			statusCode: 500,
+			body: 'An error occurred during scraping.',
+		};
+	}
+};
