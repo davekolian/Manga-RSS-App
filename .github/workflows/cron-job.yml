@@ -3,7 +3,8 @@ name: Cron Job Runner
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # Every 6 hours
+    - cron: "0 */6 * * *"  # Every 6 hours
+  workflow_dispatch:        # Allows manual triggering of the workflow
 
 jobs:
   run-cron-job:
@@ -12,5 +13,4 @@ jobs:
       - name: Send GET request to secret URL
         env:
           SECRET_URL: ${{ secrets.SECRET_URL }}
-        run: |
-          curl -X GET "$SECRET_URL"
+        run: curl -X GET "$SECRET_URL"
