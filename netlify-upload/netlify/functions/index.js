@@ -643,9 +643,16 @@ async function main() {
 
 // main();
 
+async function test(n) {
+	for (let i = 1; i <= n; i++) {
+		console.log(i);
+		await new Promise((r) => setTimeout(r, 1000));
+	}
+}
+
 exports.handler = async () => {
 	try {
-		await main();
+		await test();
 		return {
 			statusCode: 200,
 			body: 'Scraping completed successfully!',
