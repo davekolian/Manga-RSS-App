@@ -54,7 +54,16 @@ async function pageInterception(page, domain) {
 }
 
 async function mainScrapers(objs) {
-	let browser = await puppeteer.launch({ headless: true });
+	let browser = await puppeteer.launch({
+		headless: true,
+		args: [
+			'--disable-gpu',
+			'--disable-infobars',
+			'--disable-extensions',
+			'--disable-plugins',
+			'--no-sandbox',
+		],
+	});
 
 	for (let obj of objs) {
 		if (obj.update === true) {
