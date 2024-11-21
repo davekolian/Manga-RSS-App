@@ -61,7 +61,6 @@ async function mainScrapers(objs) {
 			'--disable-infobars',
 			'--disable-extensions',
 			'--disable-plugins',
-			'--no-sandbox',
 		],
 	});
 
