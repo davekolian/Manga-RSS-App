@@ -4,6 +4,8 @@
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const express = require('express');
+const app = express();
+const port = process.env.PORT || 6000;
 
 const puppeteer = require('puppeteer-extra');
 // add stealth plugin and use defaults (all evasion techniques)
@@ -12,10 +14,6 @@ const stealth = StealthPlugin();
 stealth.enabledEvasions.delete('chrome.runtime');
 stealth.enabledEvasions.delete('iframe.contentWindow');
 puppeteer.use(stealth);
-
-const express = require('express');
-const app = express();
-const port = process.env.PORT || 6000;
 
 let new_chapters = [];
 let record_ids = 0;
