@@ -352,17 +352,17 @@ async function getFromMangakakalot(page, url, last_read) {
 			let x = document.getElementsByClassName('row');
 			console.log(x);
 			let arr = [];
-			let _len_top = x[1].children[0].innerText.length;
+			let _len_top = x[1].children[0].innerText.indexOf('Chapter ') + 8;
 			let top = Number(
 				x[1].children[0].innerText
-					.slice(_len_top - 4, _len_top)
+					.slice(_len_top, _len_top + 4)
 					.replace(/\D/g, '')
 			);
 
 			for (let i = 1; i < top - last_read; i += 1) {
-				let _len = x[i].children[0].innerText.length;
+				let _len = x[i].children[0].innerText.indexOf('Chapter ') + 8;
 				let chap_no = Number(
-					x[i].children[0].innerText.slice(_len - 4, _len).replace(/\D/g, '')
+					x[i].children[0].innerText.slice(_len, _len + 4).replace(/\D/g, '')
 				);
 				let date = x[i].children[2].title.split(' ')[0];
 				let ch_link = x[i].children[0].children[0].href;
@@ -428,17 +428,17 @@ async function getFromManganato(page, url, last_read) {
 				.children;
 			console.log(x);
 			let arr = [];
-			let _len_top = x[0].children[0].innerText.length;
+			let _len_top = x[0].children[0].innerText.indexOf('Chapter ') + 8;
 			let top = Number(
 				x[0].children[0].innerText
-					.slice(_len_top - 4, _len_top)
+					.slice(_len_top, _len_top + 4)
 					.replace(/\D/g, '')
 			);
 
 			for (let i = 0; i < top - last_read; i += 1) {
-				let _len = x[i].children[0].innerText.length;
+				let _len = x[i].children[0].innerText.indexOf('Chapter ') + 8;
 				let chap_no = Number(
-					x[i].children[0].innerText.slice(_len - 4, _len).replace(/\D/g, '')
+					x[i].children[0].innerText.slice(_len, _len + 4).replace(/\D/g, '')
 				);
 				let date = x[i].children[2].title.slice(0, 11);
 				let ch_link = x[i].children[0].href;

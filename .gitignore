@@ -4,6 +4,7 @@
 /netlify-upload/.env
 /netlify-upload/node_modules
 /web-scraper/node_modules
+/web-scraper/.cache
 /manga-ui-js/client/node_modules
 /manga-ui-js/client/build
 /manga-ui-js/server/node_modules
