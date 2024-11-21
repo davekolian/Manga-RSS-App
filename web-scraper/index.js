@@ -7,13 +7,12 @@ import postRoutes from './routes/posts.js';
 
 const app = express();
 
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/posts', postRoutes);
 app.get('/', (req, res) => {
-	res.send('Hello to Manga-RSS-App Api!');
+	res.send('Welcome to the Manga-RSS-App Web-Fries');
 });
 
 const PORT = process.env.PORT || 5000;

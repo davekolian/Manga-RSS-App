@@ -13,6 +13,7 @@ puppeteer.use(stealth);
 
 let new_chapters = [];
 let record_ids = 0;
+let new_document = {};
 
 async function pageInterception(page, domain) {
 	if (domain == 'manhuaplus') {
