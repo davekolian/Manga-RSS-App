@@ -1,6 +1,7 @@
 /virt-env
 /web-scraper/db_config.ini
 /web-scraper/.env
+/netlify-upload/.env
 /netlify-upload/node_modules
 /web-scraper/node_modules
 /manga-ui-js/client/node_modules
