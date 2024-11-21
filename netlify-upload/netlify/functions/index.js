@@ -605,20 +605,20 @@ async function pushNewToDB(newData) {
 	}
 }
 
-async function test() {
-	let browser = await puppeteer.launch({ headless: true });
-	let page = await browser.newPage();
-	await page.goto('https://mangakakalot.com/manga/wo929163', { timeout: 0 });
-	let name = await page.evaluate(() => {
-		let x = document.getElementsByTagName('h1');
+// async function test() {
+// 	let browser = await puppeteer.launch({ headless: true });
+// 	let page = await browser.newPage();
+// 	await page.goto('https://mangakakalot.com/manga/wo929163', { timeout: 0 });
+// 	let name = await page.evaluate(() => {
+// 		let x = document.getElementsByTagName('h1');
 
-		return x[0].innerText;
-	});
-	await page.close();
-	await browser.close;
+// 		return x[0].innerText;
+// 	});
+// 	await page.close();
+// 	await browser.close;
 
-	return name;
-}
+// 	return name;
+// }
 
 async function main() {
 	while (true) {
