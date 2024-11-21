@@ -1,0 +1,16 @@
+# .github/workflows/cron-job.yml
+name: Cron Job Runner
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Every 6 hours
+
+jobs:
+  run-cron-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send GET request to secret URL
+        env:
+          SECRET_URL: ${{ secrets.SECRET_URL }}
+        run: |
+          curl -X GET "$SECRET_URL"
