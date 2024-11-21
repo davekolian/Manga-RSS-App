@@ -610,7 +610,7 @@ async function test() {
 }
 
 async function main() {
-	// while (true) {s
+	// while (true) {
 	record_ids = 0;
 
 	console.log('Starting the process...');

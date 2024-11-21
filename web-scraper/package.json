@@ -11,11 +11,9 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@sparticuz/chromium": "^131.0.0",
 		"express": "^4.21.1",
 		"mongodb": "^6.10.0",
 		"puppeteer": "^23.7.1",
-		"puppeteer-core": "^23.8.0",
 		"puppeteer-extra": "^3.3.6",
 		"puppeteer-extra-plugin-stealth": "^2.11.2"
 	}
