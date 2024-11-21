@@ -54,7 +54,14 @@ async function pageInterception(page, domain) {
 }
 
 async function mainScrapers(objs) {
-	let browser = await puppeteer.launch({ headless: true });
+	let browser = await puppeteer.launch({
+		headless: true,
+		executablePath:
+			process.env.CHROME_EXECUTABLE_PATH ||
+			(await chromium.executablePath(
+				'/var/task/node_modules/@sparticuz/chromium/bin'
+			)),
+	});
 
 	for (let obj of objs) {
 		if (obj.update === true) {
