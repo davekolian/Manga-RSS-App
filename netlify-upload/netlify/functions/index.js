@@ -13,6 +13,9 @@ stealth.enabledEvasions.delete('chrome.runtime');
 stealth.enabledEvasions.delete('iframe.contentWindow');
 puppeteer.use(stealth);
 
+import chromium from '@sparticuz/chromium';
+chromium.setHeadlessMode = true;
+chromium.setGraphicsMode = false;
 let new_chapters = [];
 let record_ids = 0;
 
@@ -55,7 +58,8 @@ async function pageInterception(page, domain) {
 
 async function mainScrapers(objs) {
 	let browser = await puppeteer.launch({
-		headless: true,
+		args: chromium.args,
+		defaultViewport: chromium.defaultViewport,
 		executablePath:
 			process.env.CHROME_EXECUTABLE_PATH ||
 			(await chromium.executablePath(
