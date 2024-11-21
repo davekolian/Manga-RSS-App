@@ -13,7 +13,7 @@ stealth.enabledEvasions.delete('chrome.runtime');
 stealth.enabledEvasions.delete('iframe.contentWindow');
 puppeteer.use(stealth);
 
-import chromium from '@sparticuz/chromium';
+var chromium = require('@sparticuz/chromium');
 chromium.setHeadlessMode = true;
 chromium.setGraphicsMode = false;
 let new_chapters = [];
