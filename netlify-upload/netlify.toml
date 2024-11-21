@@ -1,3 +1,6 @@
+[build]
+  functions = "netlify/functions"
+
 [functions]
-directory = "netlify/functions"
-node_bundler = "esbuild"
+  node_bundler = "esbuild"
+  external_node_modules = ["@sparticuz/chromium"]
