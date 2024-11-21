@@ -1,6 +1,7 @@
-const router = express.Router();
-
 const { MongoClient, ServerApiVersion } = require('mongodb');
+import express from 'express';
+
+const router = express.Router();
 
 const puppeteer = require('puppeteer-extra');
 // add stealth plugin and use defaults (all evasion techniques)
