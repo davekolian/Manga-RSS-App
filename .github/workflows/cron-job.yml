@@ -13,4 +13,5 @@ jobs:
       - name: Send GET request to secret URL
         env:
           SECRET_URL: ${{ secrets.SECRET_URL }}
-        run: curl -X GET "$SECRET_URL"
+        run: |
+          curl -X GET $SECRET_URL
