@@ -652,7 +652,7 @@ async function test(n) {
 
 exports.handler = async () => {
 	try {
-		await test();
+		await test(40);
 		return {
 			statusCode: 200,
 			body: 'Scraping completed successfully!',
