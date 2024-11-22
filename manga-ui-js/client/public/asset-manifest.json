@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.a7bbc400.css",
-    "main.js": "/static/js/main.3a3a9356.js",
+    "main.css": "/static/css/main.a8e5bc6e.css",
+    "main.js": "/static/js/main.241befc7.js",
     "static/media/instagram.png": "/static/media/instagram.b4a1d55a2dc7aa57b70c.png",
     "static/media/github.png": "/static/media/github.d2bd8b0e05674aa05613.png",
     "static/media/quicksand_book-webfont.woff": "/static/media/quicksand_book-webfont.ba6a920d697e6939a47e.woff",
     "static/media/quicksand_bold-webfont.woff": "/static/media/quicksand_bold-webfont.88dddf7512fcb958355e.woff",
     "static/media/kiona-regular-webfont.woff": "/static/media/kiona-regular-webfont.a70ac99a81d91de6824e.woff",
     "index.html": "/index.html",
-    "main.a7bbc400.css.map": "/static/css/main.a7bbc400.css.map",
-    "main.3a3a9356.js.map": "/static/js/main.3a3a9356.js.map"
+    "main.a8e5bc6e.css.map": "/static/css/main.a8e5bc6e.css.map",
+    "main.241befc7.js.map": "/static/js/main.241befc7.js.map"
   },
   "entrypoints": [
-    "static/css/main.a7bbc400.css",
-    "static/js/main.3a3a9356.js"
+    "static/css/main.a8e5bc6e.css",
+    "static/js/main.241befc7.js"
   ]
 }

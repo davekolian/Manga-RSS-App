@@ -58,7 +58,7 @@ const Post = ({ post }) => {
 	);
 
 	return last_read < min && len >= 0 ? (
-		<div className="main">
+		<div className="manga_whole">
 			<img
 				src={post.img_link_bg}
 				alt={post.manga_name}

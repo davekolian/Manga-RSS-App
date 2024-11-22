@@ -39,14 +39,14 @@ const App = () => {
 				</div>
 			</div>
 			{!posts.length ? (
-				<div class="loader-wrapper">
-					<span class="loader"></span>
-					<span class="loader-text">Loading... Please wait</span>
+				<div className="loader-wrapper">
+					<span className="loader"></span>
+					<span className="loader-text">Loading... Please wait</span>
 				</div>
 			) : (
 				<div className="container">
 					{posts.map((post) => (
-						<Post post={post} />
+						<Post post={post} key={post.record_id} />
 					))}
 				</div>
 			)}
