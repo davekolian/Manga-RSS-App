@@ -644,7 +644,7 @@ export const getPosts = async (req, res) => {
 		await main();
 		res.status(200).json('Completed Scraping');
 	} catch (error) {
-		res.status(404).json('Failed to scrape');
+		res.status(404).json({ message: error.message });
 	}
 };
 
